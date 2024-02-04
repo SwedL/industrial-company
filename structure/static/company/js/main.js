@@ -3,8 +3,6 @@ let context = canvas.getContext("2d");
 
 
 canvas.width = 1440;
-//canvas.width = window.innerWidth;
-//canvas.width = window.innerWidth;
 canvas.height = 1000;
 
 console.log(canvas.width);
@@ -170,18 +168,25 @@ let draw_shapes = function (event) {
     context.fillStyle = "#8B959B";
     context.fillRect(0, 0, canvas_width, canvas_height);
 
-    if (event) {
-        var rect = canvas.getBoundingClientRect();
-        let startX = event.clientX - rect.left;
-        let startY = event.clientY - rect.top;
+    let rect = canvas.getBoundingClientRect();
 
-        for (let shape of shapes) {
-        if (shape.is_manager) {
-            if (startX > shape.x && startX < shape.x + shape.width && startY > shape.y && startY < shape.y + shape.height) {context.fillStyle = "#FFA24C";}
-            else context.fillStyle = "#E67A17";
-        }
-        else {
-            if (startX > shape.x && startX < shape.x + shape.width && startY > shape.y && startY < shape.y + shape.height) {context.fillStyle = "#FFF2E5";}
+    if (event) {
+        startX = event.clientX - rect.left;
+        startY = event.clientY - rect.top;
+    };
+
+    for (let shape of shapes) {
+        /* проверка что указатель мыши находится в блоке, исходя из этого выбираем цвет блока */
+        if (event) {
+            if (shape.is_manager) {
+                if (startX > shape.x && startX < shape.x + shape.width && startY > shape.y && startY < shape.y + shape.height) context.fillStyle = "#FFA24C";
+                else context.fillStyle = "#E67A17";
+            } else {
+                if (startX > shape.x && startX < shape.x + shape.width && startY > shape.y && startY < shape.y + shape.height) context.fillStyle = "#FFF2E5";
+                else context.fillStyle = "#F9D5B0";
+            }
+        } else {
+            if (shape.is_manager) context.fillStyle = "#E67A17";
             else context.fillStyle = "#F9D5B0";
         }
 
@@ -190,19 +195,6 @@ let draw_shapes = function (event) {
         context.strokeRect(shape.x, shape.y, shape.width, shape.height);
         context.font = shape.font + " Arial";
         wrapText(context, shape);
-    }
-    }
-    else {
-        for (let shape of shapes) {
-            if (shape.is_manager) {context.fillStyle = "#E67A17";}
-            else {context.fillStyle = "#F9D5B0";}
-
-            context.fillRect(shape.x, shape.y, shape.width, shape.height);
-            context.fillStyle = "black";
-            context.strokeRect(shape.x, shape.y, shape.width, shape.height);
-            context.font = shape.font + " Arial";
-            wrapText(context, shape);
-        }
     }
 };
 
@@ -250,7 +242,6 @@ let is_mouse_in_shape = function (x, y, shape) {
     if (x > shape_left && x < shape_right && y > shape_top && y < shape_bottom) {
         return true;
     }
-
     return false;
 };
 
