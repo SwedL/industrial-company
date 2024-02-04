@@ -11,7 +11,6 @@ main {
   display: block;
 }
 
-/* line 29, ../../Users/Алексей/PycharmProjects/aquamarine-server/aquamarine/carwash/static/carwash/sass/base.sass */
 .container {
   display: flex;
   flex-direction: row;
@@ -19,18 +18,14 @@ main {
   align-items: center;
 }
 
-/* line 35, ../../Users/Алексей/PycharmProjects/aquamarine-server/aquamarine/carwash/static/carwash/sass/base.sass */
 .text {
   color: #e3e3e3;
 }
 
-/* line 38, ../../Users/Алексей/PycharmProjects/aquamarine-server/aquamarine/carwash/static/carwash/sass/base.sass */
 .header {
-  /* position: sticky; */
   top: 0;
   height: 50px;
   background: #0F1C23;
-  /*background: #2F3336; */
   padding-top: 25px;
   z-index: 5;
 }

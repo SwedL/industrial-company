@@ -1,19 +1,21 @@
-{% extends 'company/base.html' %}
+{% extends 'structure/base.html' %}
 
 {% load static %}
 
-{% block css %} 
+{% block css %}
 <!--    <link rel="stylesheet" href="{% static 'carwash/css/index.css' %}" xmlns="http://www.w3.org/1999/html">-->
 {% endblock %}
 
 
 
 {% block content %}
-    {% include 'company/structure_of_company.html' %}
+    <div class="canv">
+        <canvas id="canvas"></canvas>
+    </div>
 {% endblock %}
 
 {% block script %}
-    <script src="{% static 'company/js/main.js' %}"></script>
+    <script src="{% static 'structure/js/main.js' %}"></script>
 <!--    <script>-->
 <!--        base_url = `${window.location.hostname}:${window.location.port}/`-->
 

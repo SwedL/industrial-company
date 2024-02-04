@@ -30,4 +30,4 @@ class EmployeeAdmin(admin.ModelAdmin):
 
 
 
-admin.site.site_title = 'Администрирование Aquamarine company'
+admin.site.site_title = 'Администрирование Aquamarine structure'

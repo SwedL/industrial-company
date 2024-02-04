@@ -1,4 +1,4 @@
-"""Определяет схемы URL для carwash"""
+"""Определяет схемы URL для structure"""
 
 from django.urls import path
 
@@ -7,7 +7,8 @@ from .views import *
 app_name = 'structure'
 
 urlpatterns = [
-    path('', IndexTemplateView.as_view(), name='home'),
+    path('', UserLoginView.as_view(), name='login'),
+    path('structure-company/', StructureCompanyTemplateView.as_view(), name='structure_company'),
     path('position/<int:position_id>/', PositionView.as_view(), name='position_view'),
     # path('request-call/', RequestCallFormView.as_view(), name='call_me'),
     # path(

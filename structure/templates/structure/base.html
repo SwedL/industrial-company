@@ -9,7 +9,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
                 <!-- Base CSS -->
-        <link rel="stylesheet" href="{% static 'company/css/base.css' %}" xmlns="http://www.w3.org/1999/html">
+        <link rel="stylesheet" href="{% static 'structure/css/base.css' %}" xmlns="http://www.w3.org/1999/html">
+        <link rel="stylesheet" href="{% static 'structure/css/login.css' %}" xmlns="http://www.w3.org/1999/html">
     </head>
 
     <body>
@@ -24,20 +25,9 @@
     </header>
 
         <!-- Контент страницы -->
-        {% block content %} {% endblock %}
-    <!-- Footer-->
-    <footer id="footer" class="footer">
-        <div class="container footer__container">
-        </div>
-    </footer>
+    {% block content %} {% endblock %}
 
     </body>
     {% block script %} {% endblock script %}
-    <script>
-        window.onload = function() {
-            setTimeout(function(){
-            window.scrollTo(0, 0);
-            }, 1);
-        }
-    </script>
+
 </html>
