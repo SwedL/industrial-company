@@ -1,0 +1,45 @@
+body {
+  margin: 0;
+  background-color: #8B959B;
+}
+
+/**
+ * Render the `main` element consistently in IE.
+ */
+/* line 31, ../../Users/Алексей/PycharmProjects/aquamarine-server/aquamarine/carwash/static/carwash/sass/normalizez.scss */
+main {
+  display: block;
+}
+
+/* line 29, ../../Users/Алексей/PycharmProjects/aquamarine-server/aquamarine/carwash/static/carwash/sass/base.sass */
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* line 35, ../../Users/Алексей/PycharmProjects/aquamarine-server/aquamarine/carwash/static/carwash/sass/base.sass */
+.text {
+  color: #e3e3e3;
+}
+
+/* line 38, ../../Users/Алексей/PycharmProjects/aquamarine-server/aquamarine/carwash/static/carwash/sass/base.sass */
+.header {
+  /* position: sticky; */
+  top: 0;
+  height: 50px;
+  background: #0F1C23;
+  /*background: #2F3336; */
+  padding-top: 25px;
+  z-index: 5;
+}
+.canv {
+  max-width: 1440px;
+  margin: 0 auto;
+};
+
+#canvas {
+  display: block;
+  margin: 0 auto;
+};

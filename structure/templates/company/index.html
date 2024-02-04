@@ -1,0 +1,73 @@
+{% extends 'company/base.html' %}
+
+{% load static %}
+
+{% block css %} 
+<!--    <link rel="stylesheet" href="{% static 'carwash/css/index.css' %}" xmlns="http://www.w3.org/1999/html">-->
+{% endblock %}
+
+
+
+{% block content %}
+    {% include 'company/structure_of_company.html' %}
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'company/js/main.js' %}"></script>
+<!--    <script>-->
+<!--        base_url = `${window.location.hostname}:${window.location.port}/`-->
+
+<!--        const websocket = new WebSocket(`ws://${base_url}`)-->
+
+
+<!--        function add_event_to_all_buttons() {-->
+<!--            /*Добавим прослушиватель событий, который отправляет сообщение о событии на все кнопки*/-->
+<!--            const keys = document.querySelectorAll('.group_option');-->
+<!--            keys.forEach(item => {-->
+<!--                    item.addEventListener('click', send_event_message)-->
+<!--                }-->
+<!--            )-->
+<!--        }-->
+
+
+<!--        function send_event_message(event) {-->
+<!--            /*Отправим uuid и значение кнопки, которая была нажата*/-->
+<!--            const {target} = event;-->
+<!--            group = target.value.split(" ")-->
+<!--            group_uuid = group[1]-->
+<!--            action = group[0] //Leave or Join or Open-->
+<!--            if (action == "open_group") {-->
+<!--                window.location.replace(`http://${base_url}groups/${group_uuid}`)-->
+<!--            } else {-->
+<!--                data = {-->
+<!--                    "type": action,-->
+<!--                    "data": group_uuid,-->
+<!--                }-->
+<!--                websocket.send(JSON.stringify(data))-->
+<!--            }-->
+<!--        }-->
+
+<!--        add_event_to_all_buttons()-->
+
+<!--        websocket.onopen = function (event) {-->
+<!--            console.log("Connection Open")-->
+
+<!--        }-->
+
+<!--        websocket.onmessage = function (event) {-->
+<!--            /*Вызывается, когда сервер веб-сокета отправляет сообщение клиентскому веб-сокету*/-->
+<!--            const message = JSON.parse(event.data)-->
+<!--            console.log(data)-->
+<!--            type = data.type-->
+<!--            data = message.data-->
+<!--            switch (type) {-->
+<!--                case "leave_group":-->
+<!--                    leave_group_handler(data)-->
+<!--                    break;-->
+<!--                case "join_group":-->
+<!--                    join_group_handler(data)-->
+<!--                    break;-->
+<!--            }-->
+<!--        }-->
+<!--    </script>-->
+{% endblock script %}
