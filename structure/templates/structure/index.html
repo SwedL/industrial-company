@@ -2,6 +2,10 @@
 
 {% load static %}
 
+{% block css %}
+<link rel="stylesheet" href="{% static 'structure/css/login.css' %}" xmlns="http://www.w3.org/1999/html">
+{% endblock %}
+
 {% block content %}
 
 <div class="login">
@@ -17,3 +21,7 @@
 </div>
 
 {% endblock %}
+
+{% block script %}
+    <link rel="stylesheet" href="{% static 'structure/css/structure-company.css' %}" xmlns="http://www.w3.org/1999/html">
+{% endblock script %}

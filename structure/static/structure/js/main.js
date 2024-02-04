@@ -3,9 +3,8 @@ let context = canvas.getContext("2d");
 
 
 canvas.width = 1440;
-canvas.height = 1000;
+canvas.height = 915;
 
-console.log(canvas.width);
 let canvas_width = canvas.width;
 let canvas_height = canvas.height;
 let shapes = [];
@@ -153,7 +152,7 @@ function wrapText(context, shape)
         if (countLines == 1) {
             context.fillText(shape.text, shape.x + shape.width/2, shape.y + shape.height/2);
         }
-        else {            
+        else {
             for (var n = 0; n < countLines; n++) {
 //                context.fillText(lines[n], shape.x + shape.width/2, shape.y + shape.height/countLines * n);
                 context.fillText(lines[n], shape.x + shape.width/2, shape.y + shape.height/2 - countLines * 20/2 + 6*countLines + n * 14);
@@ -217,14 +216,14 @@ let draw_arrows = function () {
         else if (arrow.rotate == 2) lt = [[-arrow.arrow_length, 0], [4, -4], [-4, 4], [4, 4]];
         else lt = [[0, arrow.arrow_length], [-4, -4], [4, 4], [4, -4]];
 
-        context.moveTo(arrow.mt_x, arrow.mt_y);        
+        context.moveTo(arrow.mt_x, arrow.mt_y);
         let temp_ltx = arrow.mt_x;
         let temp_lty = arrow.mt_y;
         for (let m of lt) {
             temp_ltx += m[0];
             temp_lty += m[1];
             context.lineTo(temp_ltx, temp_lty);
-        };        
+        };
     };
     context.stroke();
 };

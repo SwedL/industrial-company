@@ -3,10 +3,8 @@
 {% load static %}
 
 {% block css %}
-<!--    <link rel="stylesheet" href="{% static 'carwash/css/index.css' %}" xmlns="http://www.w3.org/1999/html">-->
+<link rel="stylesheet" href="{% static 'structure/css/structure-company.css' %}" xmlns="http://www.w3.org/1999/html">
 {% endblock %}
-
-
 
 {% block content %}
     <div class="canv">
@@ -16,6 +14,13 @@
 
 {% block script %}
     <script src="{% static 'structure/js/main.js' %}"></script>
+    <script>
+        window.onload = function() {
+            setTimeout(function(){
+            window.scrollTo(0, 0);
+            }, 1);
+        }
+    </script>
 <!--    <script>-->
 <!--        base_url = `${window.location.hostname}:${window.location.port}/`-->
 
