@@ -26,8 +26,11 @@ class StructureCompanyTemplateView(TemplateView):
 class PositionView(View):
     def get(self, request, position_id):
         position = Position.objects.filter(id=position_id).first()
+        employee = position.employee_set.all().first()
+        manager_name = f'{employee.last_name} {employee.first_name[0]}.{employee.patronymic[0]}.'
 
         context = {
             'position_name': position.name,
+            'manager_name': manager_name,
         }
         return render(request, 'structure/position-view.html', context=context)

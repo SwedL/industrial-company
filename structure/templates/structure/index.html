@@ -23,5 +23,15 @@
 {% endblock %}
 
 {% block script %}
-    <link rel="stylesheet" href="{% static 'structure/css/structure-company.css' %}" xmlns="http://www.w3.org/1999/html">
+    <script>
+        base_url = `${window.location.hostname}:${window.location.port}`
+        const websocket = new WebSocket(`ws://${base_url}`)
+        websocket.onopen = function (event) {
+            console.log('client says connection opened')
+            websocket.send("Client sends Welcome")
+        }
+        websocket.onmessage = function (event) {
+            console.log("client says server message received: ", event)
+        }
+    </script>
 {% endblock script %}

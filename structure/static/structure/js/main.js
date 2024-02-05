@@ -11,63 +11,63 @@ let shapes = [];
 let lines = [];
 let arrows = [];
 
-shapes.push({x: 570, y: 20, width: 300, height: 90, text: "Руководитель /n /n Водоворотов П.А.", is_manager: true, font: "20px"});
+shapes.push({x: 570, y: 20, width: 300, height: 90, position: "Руководитель /n ", is_manager: true, font: "20px"});
 
-shapes.push( {x: 50, y: 170, width: 160, height: 90, text: "Директор по /n стратегическому /n планированию /n Водоворотов П.А.", is_manager: true, font: "14px"} );
-shapes.push( {x: 70, y: 275, width: 140, height: 40, text: "Экспериментальный /n участок", font: "12px"} );
-shapes.push( {x: 70, y: 330, width: 140, height: 55, text: "Отдел /n финансового /n планирования", font: "12px"} );
-shapes.push( {x: 70, y: 400, width: 140, height: 40, text: "Служба /n маркетинга", font: "12px"} );
+shapes.push( {x: 50, y: 170, width: 160, height: 90, position: "Директор по /n стратегическому /n планированию", is_manager: true, font: "14px"} );
+shapes.push( {x: 70, y: 275, width: 140, height: 40, position: "Экспериментальный /n участок", font: "12px"} );
+shapes.push( {x: 70, y: 330, width: 140, height: 55, position: "Отдел /n финансового /n планирования", font: "12px"} );
+shapes.push( {x: 70, y: 400, width: 140, height: 40, position: "Служба /n маркетинга", font: "12px"} );
 
-shapes.push( {x: 230, y: 170, width: 160, height: 90, text: "Директор по /n персоналу /n Водоворотов П.А.", is_manager: true, font: "14px"} );
-shapes.push( {x: 250, y: 275, width: 140, height: 40, text: "Отдел кадров", font: "12px"} );
-shapes.push( {x: 250, y: 330, width: 140, height: 40, text: "Табельное бюро", font: "12px"} );
-shapes.push( {x: 250, y: 385, width: 140, height: 40, text: "Отдел обучения", font: "12px"} );
-shapes.push( {x: 250, y: 440, width: 140, height: 40, text: "Бытовой отдел", font: "12px"} );
+shapes.push( {x: 230, y: 170, width: 160, height: 90, position: "Директор по /n персоналу", is_manager: true, font: "14px"} );
+shapes.push( {x: 250, y: 275, width: 140, height: 40, position: "Отдел кадров", font: "12px"} );
+shapes.push( {x: 250, y: 330, width: 140, height: 40, position: "Табельное бюро", font: "12px"} );
+shapes.push( {x: 250, y: 385, width: 140, height: 40, position: "Отдел обучения", font: "12px"} );
+shapes.push( {x: 250, y: 440, width: 140, height: 40, position: "Бытовой отдел", font: "12px"} );
 
-shapes.push( {x: 510, y: 170, width: 500, height: 70, text: "Исполнительный директор /n /n Водоворотов П.А.", is_manager: true, font: "16px"} );
+shapes.push( {x: 510, y: 170, width: 500, height: 70, position: "Исполнительный директор /n ", is_manager: true, font: "16px"} );
 
-shapes.push( {x: 410, y: 300, width: 160, height: 90, text: "Заместитель /n директора /n по производству /n Водоворотов П.А.", is_manager: true, font: "14px"} );
-shapes.push( {x: 430, y: 405, width: 140, height: 40, text: "Производственный /n цех 1", font: "12px"} );
-shapes.push( {x: 430, y: 460, width: 140, height: 40, text: "Производственный /n цех 2", font: "12px"} );
-shapes.push( {x: 430, y: 515, width: 140, height: 40, text: "Производственный /n цех 3", font: "12px"} );
-shapes.push( {x: 430, y: 570, width: 140, height: 40, text: "Производственный /n цех 4", font: "12px"} );
-shapes.push( {x: 430, y: 625, width: 140, height: 40, text: "Автотранспортный /n цех", font: "12px"} );
-shapes.push( {x: 430, y: 680, width: 140, height: 40, text: "Служба снабжения", font: "12px"} );
+shapes.push( {x: 410, y: 300, width: 160, height: 90, position: "Заместитель /n директора /n по производству", is_manager: true, font: "14px"} );
+shapes.push( {x: 430, y: 405, width: 140, height: 40, position: "Производственный /n цех 1", font: "12px"} );
+shapes.push( {x: 430, y: 460, width: 140, height: 40, position: "Производственный /n цех 2", font: "12px"} );
+shapes.push( {x: 430, y: 515, width: 140, height: 40, position: "Производственный /n цех 3", font: "12px"} );
+shapes.push( {x: 430, y: 570, width: 140, height: 40, position: "Производственный /n цех 4", font: "12px"} );
+shapes.push( {x: 430, y: 625, width: 140, height: 40, position: "Автотранспортный /n цех", font: "12px"} );
+shapes.push( {x: 430, y: 680, width: 140, height: 40, position: "Служба снабжения", font: "12px"} );
 
-shapes.push( {x: 590, y: 300, width: 160, height: 90, text: "Главный инженер", is_manager: true, font: "14px"} );
-shapes.push( {x: 610, y: 405, width: 140, height: 40, text: "ОГЭ", font: "12px"} );
-shapes.push( {x: 610, y: 460, width: 140, height: 40, text: "ОГМ", font: "12px"} );
-shapes.push( {x: 610, y: 515, width: 140, height: 40, text: "АСУ", font: "12px"} );
-shapes.push( {x: 610, y: 570, width: 140, height: 40, text: "Инструментальное /n производство", font: "12px"} );
-shapes.push( {x: 610, y: 625, width: 140, height: 40, text: "ОКС", font: "12px"} );
+shapes.push( {x: 590, y: 300, width: 160, height: 90, position: "Главный инженер", is_manager: true, font: "14px"} );
+shapes.push( {x: 610, y: 405, width: 140, height: 40, position: "ОГЭ", font: "12px"} );
+shapes.push( {x: 610, y: 460, width: 140, height: 40, position: "ОГМ", font: "12px"} );
+shapes.push( {x: 610, y: 515, width: 140, height: 40, position: "АСУ", font: "12px"} );
+shapes.push( {x: 610, y: 570, width: 140, height: 40, position: "Инструментальное /n производство", font: "12px"} );
+shapes.push( {x: 610, y: 625, width: 140, height: 40, position: "ОКС", font: "12px"} );
 
-shapes.push( {x: 770, y: 300, width: 160, height: 90, text: "Коммерческий /n директор", is_manager: true, font: "14px"} );
-shapes.push( {x: 790, y: 405, width: 140, height: 40, text: "Отдел сбыта", font: "12px"} );
-shapes.push( {x: 790, y: 460, width: 140, height: 40, text: "Складское хозяйство", font: "12px"} );
-shapes.push( {x: 790, y: 515, width: 140, height: 40, text: "Финансовый отдел", font: "12px"} );
-shapes.push( {x: 790, y: 570, width: 140, height: 40, text: "Собственный /n транспорт", font: "12px"} );
-shapes.push( {x: 790, y: 625, width: 140, height: 55, text: "Производственно -/n коммерческая /n фирма", font: "12px"} );
+shapes.push( {x: 770, y: 300, width: 160, height: 90, position: "Коммерческий /n директор", is_manager: true, font: "14px"} );
+shapes.push( {x: 790, y: 405, width: 140, height: 40, position: "Отдел сбыта", font: "12px"} );
+shapes.push( {x: 790, y: 460, width: 140, height: 40, position: "Складское хозяйство", font: "12px"} );
+shapes.push( {x: 790, y: 515, width: 140, height: 40, position: "Финансовый отдел", font: "12px"} );
+shapes.push( {x: 790, y: 570, width: 140, height: 40, position: "Собственный /n транспорт", font: "12px"} );
+shapes.push( {x: 790, y: 625, width: 140, height: 55, position: "Производственно -/n коммерческая /n фирма", font: "12px"} );
 
-shapes.push( {x: 950, y: 300, width: 160, height: 90, text: "Главный экономист", is_manager: true, font: "14px"} );
-shapes.push( {x: 970, y: 405, width: 140, height: 40, text: "ПЭО", font: "12px"} );
-shapes.push( {x: 970, y: 460, width: 140, height: 40, text: "ОТиЗ", font: "12px"} );
+shapes.push( {x: 950, y: 300, width: 160, height: 90, position: "Главный экономист", is_manager: true, font: "14px"} );
+shapes.push( {x: 970, y: 405, width: 140, height: 40, position: "ПЭО", font: "12px"} );
+shapes.push( {x: 970, y: 460, width: 140, height: 40, position: "ОТиЗ", font: "12px"} );
 
-shapes.push( {x: 1010, y: 535, width: 160, height: 90, text: "Главный бухгалтер", is_manager: true, font: "14px"} );
-shapes.push( {x: 1030, y: 640, width: 140, height: 40, text: "Бухгалтерия", font: "12px"} );
+shapes.push( {x: 1010, y: 535, width: 160, height: 90, position: "Главный бухгалтер", is_manager: true, font: "14px"} );
+shapes.push( {x: 1030, y: 640, width: 140, height: 40, position: "Бухгалтерия", font: "12px"} );
 
-shapes.push( {x: 1200, y: 170, width: 160, height: 90, text: "Начальник ОТК", is_manager: true, font: "14px"} );
-shapes.push( {x: 1220, y: 275, width: 140, height: 40, text: "ВТК", font: "12px"} );
-shapes.push( {x: 1220, y: 330, width: 140, height: 40, text: "ЦЗЛ", font: "12px"} );
-shapes.push( {x: 1220, y: 385, width: 140, height: 40, text: "Служба /n метролога", font: "12px"} );
+shapes.push( {x: 1200, y: 170, width: 160, height: 90, position: "Начальник ОТК", is_manager: true, font: "14px"} );
+shapes.push( {x: 1220, y: 275, width: 140, height: 40, position: "ВТК", font: "12px"} );
+shapes.push( {x: 1220, y: 330, width: 140, height: 40, position: "ЦЗЛ", font: "12px"} );
+shapes.push( {x: 1220, y: 385, width: 140, height: 40, position: "Служба /n метролога", font: "12px"} );
 
-shapes.push( {x: 1220, y: 455, width: 140, height: 40, text: "Канцелярия", font: "12px"} );
-shapes.push( {x: 1220, y: 510, width: 140, height: 40, text: "1 отдел", font: "12px"} );
-shapes.push( {x: 1220, y: 565, width: 140, height: 40, text: "2 отдел", font: "12px"} );
-shapes.push( {x: 1220, y: 620, width: 140, height: 40, text: "ВОХР", font: "12px"} );
-shapes.push( {x: 1220, y: 675, width: 140, height: 55, text: "Служба /n экономической /n безопасности", font: "12px"} );
-shapes.push( {x: 1220, y: 745, width: 140, height: 40, text: "Юридическая /n служба", font: "12px"} );
-shapes.push( {x: 1220, y: 800, width: 140, height: 40, text: "Отдел охраны /n труда", font: "12px"} );
-shapes.push( {x: 1220, y: 855, width: 140, height: 40, text: "Отдел экологии", font: "12px"} );
+shapes.push( {x: 1220, y: 455, width: 140, height: 40, position: "Канцелярия", font: "12px"} );
+shapes.push( {x: 1220, y: 510, width: 140, height: 40, position: "1 отдел", font: "12px"} );
+shapes.push( {x: 1220, y: 565, width: 140, height: 40, position: "2 отдел", font: "12px"} );
+shapes.push( {x: 1220, y: 620, width: 140, height: 40, position: "ВОХР", font: "12px"} );
+shapes.push( {x: 1220, y: 675, width: 140, height: 55, position: "Служба /n экономической /n безопасности", font: "12px"} );
+shapes.push( {x: 1220, y: 745, width: 140, height: 40, position: "Юридическая /n служба", font: "12px"} );
+shapes.push( {x: 1220, y: 800, width: 140, height: 40, position: "Отдел охраны /n труда", font: "12px"} );
+shapes.push( {x: 1220, y: 855, width: 140, height: 40, position: "Отдел экологии", font: "12px"} );
 
 /* lines */
 lines.push( {mt_x: 130, mt_y: 140, lt_x: 1390, lt_y: 140} );
@@ -141,19 +141,18 @@ arrows.push( {mt_x: 1390, mt_y: 765, rotate: 2, arrow_length: 30} );
 arrows.push( {mt_x: 1390, mt_y: 820, rotate: 2, arrow_length: 30} );
 arrows.push( {mt_x: 1390, mt_y: 875, rotate: 2, arrow_length: 30} );
 
-
-
 /* Функция для переноса строк текста */
-function wrapText(context, shape)
-    {
-        var lines = shape.text.split("/n");
-        var countLines = lines.length;
+function wrapText(context, shape) {
+        let lines = ""
+        if (shape.is_manager) lines = (shape.position + "/n" + shape.manager_name).split("/n")
+        else lines = shape.position.split("/n");
+        let countLines = lines.length;
         context.textBaseline = "middle";
         if (countLines == 1) {
-            context.fillText(shape.text, shape.x + shape.width/2, shape.y + shape.height/2);
+            context.fillText(shape.position, shape.x + shape.width/2, shape.y + shape.height/2);
         }
         else {
-            for (var n = 0; n < countLines; n++) {
+            for (let n = 0; n < countLines; n++) {
 //                context.fillText(lines[n], shape.x + shape.width/2, shape.y + shape.height/countLines * n);
                 context.fillText(lines[n], shape.x + shape.width/2, shape.y + shape.height/2 - countLines * 20/2 + 6*countLines + n * 14);
             }
@@ -228,10 +227,6 @@ let draw_arrows = function () {
     context.stroke();
 };
 
-draw_shapes();
-draw_lines();
-draw_arrows();
-
 /* проверка, что указатель мыши находится в блоке */
 let is_mouse_in_shape = function (x, y, shape) {
     let shape_left = shape.x;
@@ -246,7 +241,7 @@ let is_mouse_in_shape = function (x, y, shape) {
 
 /* функция обработки нажатия клавиши мыши */
 let mouse_down = function(event) {
-    var rect = canvas.getBoundingClientRect();
+    let rect = canvas.getBoundingClientRect();
     let startX = event.clientX - rect.left;
     let startY = event.clientY - rect.top;
 
@@ -269,3 +264,21 @@ let mouse_move = function(event) {
 
 canvas.onmousemove = mouse_move;
 canvas.onmousedown = mouse_down;
+
+base_url = `${window.location.hostname}:${window.location.port}`
+        const websocket = new WebSocket(`ws://${base_url}`)
+        websocket.onopen = function (event) {
+            console.log('client says connection opened')
+            websocket.send("Client sends Welcome")
+        }
+        websocket.onmessage = function (event) {
+            message = JSON.parse(event.data)
+            let position = message.position
+//            console.log(position)
+            /* функция записи имён менеджеров в фигуры */
+            for(let i=0;i < shapes.length; ++i) {
+                shapes[i].manager_name = position[i]
+            draw_shapes(event);
+            draw_arrows();
+            draw_lines();
+        }}

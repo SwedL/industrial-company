@@ -2,6 +2,7 @@ import json
 
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
+from .models import Position
 
 
 class JoinAndLeave(WebsocketConsumer):
@@ -11,7 +12,16 @@ class JoinAndLeave(WebsocketConsumer):
 
     def receive(self, text_data=None, bytes_data=None):
         print("server says client message received: ", text_data)
-        self.send("Server sends Welcome")
+        position = {}
+        for i in Position.objects.filter(is_manager=True):
+            employee = i.employee_set.all().first()
+            manager_name = f'{employee.last_name} {employee.first_name[0]}.{employee.patronymic[0]}.'
+            position[i.id-1] = manager_name
+        data = {
+            "position": position,
+        }
+        self.send(json.dumps(data))
+        # self.send("Server sends Welcome")
 
     def disconnect(self, code):
         print("server says disconnected")
@@ -22,29 +32,25 @@ class GroupConsumer(WebsocketConsumer):
     # room_name = "update_date"
 
     def connect(self):
-        # Join room group
         print("server says connected")
-        async_to_sync(self.channel_layer.group_add)(
-            self.room_group_name, self.channel_name
-        )
-        self.accept()
+        self.accept()  # new
 
-    def disconnect(self, close_code):
-        # Leave room group
-        async_to_sync(self.channel_layer.group_discard)(
-            self.room_group_name, self.channel_name
-        )
-
-    # Receive message from WebSocket
     def receive(self, text_data=None, bytes_data=None):
-        # Send message to room group
-        print("server says connected")
-        async_to_sync(self.channel_layer.group_send)(
-            self.room_group_name, {"type": "staff_message", "message": 'update_data'}
-        )
+        print("server says client message received: ", text_data)
+        position = {}
+        for i in Position.objects.filter(is_manager=True):
+            employee = i.employee_set.all().first()
+            manager_name = f'{employee.last_name} {employee.first_name[0]}.{employee.patronymic[0]}.'
+            position[i.id-1] = manager_name
+        data = {
+            "position": position,
+        }
+        self.send(json.dumps(data))
 
-    # Receive message from room group
-    def staff_message(self, event):
-        message = event["message"]
-        # Send message to WebSocket
-        self.send(text_data=json.dumps({"message": message}))
+    def disconnect(self, code):
+        print("server says disconnected")
+
+    # def staff_message(self, event):
+    #     message = event["message"]
+    #     # Send message to WebSocket
+    #     self.send(text_data=json.dumps({"message": message}))
