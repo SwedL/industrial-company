@@ -8,6 +8,7 @@ canvas.height = 915;
 let canvas_width = canvas.width;
 let canvas_height = canvas.height;
 let shapes = [];
+let ghost_shapes = [{x: 130, y: 30, width: 180, height: 10, position: "Снятие /n с занимаемой /n должности", font: "16px"}];
 let lines = [];
 let arrows = [];
 
@@ -141,6 +142,23 @@ arrows.push( {mt_x: 1390, mt_y: 765, rotate: 2, arrow_length: 30} );
 arrows.push( {mt_x: 1390, mt_y: 820, rotate: 2, arrow_length: 30} );
 arrows.push( {mt_x: 1390, mt_y: 875, rotate: 2, arrow_length: 30} );
 
+base_url = `${window.location.hostname}:${window.location.port}`
+        const websocket = new WebSocket(`ws://${base_url}`)
+        websocket.onopen = function (event) {
+            console.log('client says connection opened')
+            websocket.send("Client sends Welcome")
+        }
+        websocket.onmessage = function (event) {
+            message = JSON.parse(event.data)
+            let position = message.position
+            /* функция записи имён менеджеров в фигуры */
+            for(let i=0;i < shapes.length; ++i) {
+                shapes[i].manager_name = position[i]
+            draw_shapes(event);
+            draw_arrows();
+            draw_lines();
+            }
+        }
 /* Функция для переноса строк текста */
 function wrapText(context, shape) {
         let lines = ""
@@ -264,21 +282,7 @@ let mouse_move = function(event) {
 
 canvas.onmousemove = mouse_move;
 canvas.onmousedown = mouse_down;
+document.addEventListener("dblclick",
+            ()=>console.log("dblclick"));
 
-base_url = `${window.location.hostname}:${window.location.port}`
-        const websocket = new WebSocket(`ws://${base_url}`)
-        websocket.onopen = function (event) {
-            console.log('client says connection opened')
-            websocket.send("Client sends Welcome")
-        }
-        websocket.onmessage = function (event) {
-            message = JSON.parse(event.data)
-            let position = message.position
-//            console.log(position)
-            /* функция записи имён менеджеров в фигуры */
-            for(let i=0;i < shapes.length; ++i) {
-                shapes[i].manager_name = position[i]
-            draw_shapes(event);
-            draw_arrows();
-            draw_lines();
-        }}
+
