@@ -41,7 +41,7 @@ class GroupConsumer(WebsocketConsumer):
         for i in Position.objects.filter(is_manager=True):
             employee = i.employee_set.all().first()
             manager_name = f'{employee.last_name} {employee.first_name[0]}.{employee.patronymic[0]}.'
-            position[i.id-1] = manager_name
+            position[i.id] = manager_name
         data = {
             "position": position,
         }
