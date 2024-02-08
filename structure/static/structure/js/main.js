@@ -9,10 +9,9 @@ let canvas_width = canvas.width;
 let canvas_height = canvas.height;
 //let shapes = [];
 
-//let ghost_shapes = [{x: 130, y: 30, width: 180, height: 10, position: "Снятие /n с занимаемой /n должности", font: "16px"}];
 let lines = [];
 let arrows = [];
-
+let ghost_shapes = {};
 let dict_shapes = {
     50: {x: 130, y: 20, width: 180, height: 90, position: "Снятие /n с занимаемой /n должности", font: "16px"},
     0: {x: 570, y: 20, width: 300, height: 90, position: "Руководитель /n ", is_manager: true, font: "20px"},
@@ -150,6 +149,7 @@ let is_dragging = false;
 let start_shapeX;
 let start_shapeY;
 let current_shape;
+let current_shape_key;
 let startX;
 let startY;
 
@@ -158,29 +158,17 @@ base_url = `${window.location.hostname}:${window.location.port}`
         websocket.onopen = function (event) {
             console.log('client says connection opened')
             websocket.send("Client sends Welcome")
-            draw_shapes(event);
-            draw_arrows();
-            draw_lines();
+
         }
         websocket.onmessage = function (event) {
             message = JSON.parse(event.data)
             let position = message.position
-//            console.log(position)
-            /* функция записи имён менеджеров в фигуры */
+            /* запись имён менеджеров в фигуры */
             for(let key in position) {
                 dict_shapes[key].manager_name = position[key]
-            draw_shapes(event);
-            draw_arrows();
-            draw_lines();
+            draw_all();
             }
         }
-
-//function get_mouse_coord(event) {
-//        let rect = canvas.getBoundingClientRect();
-//        let mouseX = event.clientX - rect.left;
-//        let mouseY = event.clientY - rect.top;
-//        return (mouseX, mouseY)
-//}
 
 /* проверка, что указатель мыши находится в блоке */
 let is_mouse_in_shape = function (x, y, shape) {
@@ -194,7 +182,7 @@ let is_mouse_in_shape = function (x, y, shape) {
     return false;
 };
 
-/* Функция для переноса строк текста */
+/* Функция для отображения текста блока и переноса строк текста */
 function wrapText(context, shape) {
         let lines = ""
         if (shape.is_manager) lines = (shape.position + "/n" + shape.manager_name).split("/n")
@@ -214,24 +202,21 @@ function wrapText(context, shape) {
 
 /* рисуем прямоугольники */
 let draw_shapes = function (event) {
-    context.clearRect(0, 0, canvas_width, canvas_height);
     context.textAlign = "center";
-    context.fillStyle = "#8B959B";
-    context.fillRect(0, 0, canvas_width, canvas_height);
 
     let rect = canvas.getBoundingClientRect();
     let shape;
 
     if (event) {
-        startX = event.clientX - rect.left;
-        startY = event.clientY - rect.top;
+        mouseX = event.clientX - rect.left;
+        mouseY = event.clientY - rect.top;
     };
 
     for (let key in dict_shapes) {
         /* проверка что указатель мыши находится в блоке, исходя из этого выбираем цвет блока */
         shape = dict_shapes[key]
         if (event) {
-            if (is_mouse_in_shape(startX, startY, shape)) {
+            if (is_mouse_in_shape(mouseX, mouseY, shape)) {
                 if (shape.is_manager) context.fillStyle = "#FFA24C"
                 else context.fillStyle = "#FFF2E5"
             }
@@ -247,11 +232,7 @@ let draw_shapes = function (event) {
 
         if (key==50) context.fillStyle = "#8B959B"
 
-        context.shadowBlur = 15;
-        context.shadowOffsetX = 0;
-        context.shadowColor = "#5D6468";
         context.fillRect(shape.x, shape.y, shape.width, shape.height);
-        context.shadowBlur = 0;
         context.fillStyle = "black";
         context.strokeRect(shape.x, shape.y, shape.width, shape.height);
         context.font = shape.font + " Arial";
@@ -266,12 +247,11 @@ let draw_lines = function () {
         context.moveTo(line.mt_x, line.mt_y);
         context.lineTo(line.lt_x, line.lt_y);
     };
-    context.shadowColor = "#5D6468";
-    context.shadowBlur = 5;
     context.stroke();
 };
 
 /* рисуем стрелки */
+/* берутся начальные координаты стрелки и в зависимости от длинны и направления рисуются стрелки */
 let draw_arrows = function () {
     context.beginPath();
     let lt = [];
@@ -289,10 +269,34 @@ let draw_arrows = function () {
             context.lineTo(temp_ltx, temp_lty);
         };
     };
-    context.shadowColor = "#5D6468";
-    context.shadowBlur = 5;
     context.stroke();
 };
+
+/* рисуем прямоугольники призраки */
+let draw_ghost_shapes = function (event) {
+    context.clearRect(0, 0, canvas_width, canvas_height);
+    context.fillStyle = "#8B959B";
+    context.fillRect(0, 0, canvas_width, canvas_height);
+    context.textAlign = "center";
+    let ghost_shape;
+
+    for (let key in ghost_shapes) {
+        ghost_shape = ghost_shapes[key]
+        context.fillStyle = "#8B959B"
+        context.fillRect(ghost_shape.x, ghost_shape.y, ghost_shape.width, ghost_shape.height);
+        context.fillStyle = "black";
+        context.strokeRect(ghost_shape.x, ghost_shape.y, ghost_shape.width, ghost_shape.height);
+        context.font = ghost_shape.font + " Arial";
+        wrapText(context, ghost_shapes[key]);
+    }
+}
+
+let draw_all = function() {
+    draw_ghost_shapes();
+    draw_shapes(event);
+    draw_arrows();
+    draw_lines();
+}
 
 /* функция обработки нажатия клавиши мыши */
 let mouse_down = function(event) {
@@ -302,45 +306,59 @@ let mouse_down = function(event) {
 
     let shape_id = 1;
 
-    for (let key in dict_shapes) {
-        if (is_mouse_in_shape(startX, startY, dict_shapes[key])) {
-            if (dict_shapes[key].is_manager) {
-                is_dragging = true;
-                start_shapeX = dict_shapes[key].x;
-                start_shapeY = dict_shapes[key].y;
-                current_shape = dict_shapes[key];
-            }
-            else window.location = `/position/` + shape_id;
-        };
-        shape_id += 1;
+    /* если нажатие клавиши было в блоке менеджера то сохраняются
+        начальные координаты x и y для возврата блока на исходное место,
+       если нажат был блок отдела, то происходит переход на соответствующую страницу */
+
+    /* проверяется нажатие на блок, если блок в данный момент, не несётся */
+    if (!is_dragging && event.which == 1) {
+        for (let key in dict_shapes) {
+            if (is_mouse_in_shape(startX, startY, dict_shapes[key])) {
+                if (dict_shapes[key].is_manager) {
+                    is_dragging = true;
+                    start_shapeX = dict_shapes[key].x;
+                    start_shapeY = dict_shapes[key].y;
+                    current_shape = dict_shapes[key];
+                    current_shape_key = key;
+                    ghost_shapes[key] = {x: start_shapeX, y: start_shapeY, width: current_shape.width, height: current_shape.height, position: current_shape.position, font: current_shape.font};
+                    console.log(ghost_shapes)
+                    break;    // если блок определился, происходит прерывание цикла поиска блока
+                }
+                else window.location = `/position/` + shape_id;
+            };
+            shape_id += 1;
+        }
     }
 };
 
 let mouse_up = function(event) {
+    /* если блок находится в зоне освобождения от занимаемой должности на сервер отправляется соответствующее сообщение */
     if (is_dragging) {
         let rect = canvas.getBoundingClientRect();
         let mouseX = event.clientX - rect.left;
         let mouseY = event.clientY - rect.top;
-        let change_shape = dict_shapes[50];
-        if (mouseX > change_shape.x && mouseX < change_shape.x + change_shape.width && mouseY > change_shape.y && mouseY < change_shape.y + change_shape.height) {
+        if (is_mouse_in_shape(mouseX, mouseY, dict_shapes[50])) {
+        delete dict_shapes[current_shape_key];
         is_dragging = false;
+        websocket.send("Drop change_shape");
         } else {
         current_shape.x = start_shapeX;
         current_shape.y = start_shapeY;
         }
     }
     is_dragging = false;
-    console.log(is_dragging)
 }
 
 /* обработка движения мыши */
 let mouse_move = function(event) {
     if (!is_dragging) {
-        draw_shapes(event);
-        draw_arrows();
-        draw_lines();
+        draw_all();
+//        draw_shapes(event);
+//        draw_arrows();
+//        draw_lines();
     }
     else {
+        /* вычисляем координаты смещения мыши с поднятым блоком и перемещаем блок на это смещение */
         let rect = canvas.getBoundingClientRect();
         let mouseX = event.clientX - rect.left;
         let mouseY = event.clientY - rect.top;
@@ -353,10 +371,12 @@ let mouse_move = function(event) {
         startX = mouseX;
         startY = mouseY;
 
-        draw_shapes(event);
-        draw_arrows();
-        draw_lines();
+        draw_all();
+//        draw_shapes(event);
+//        draw_arrows();
+//        draw_lines();
 
+        /* снова рисуем поднятый блок, чтобы он был сверху всех фигур */
         context.shadowBlur = 15;
         context.shadowOffsetX = 0;
         context.shadowColor = "#5D6468";
@@ -371,6 +391,7 @@ let mouse_move = function(event) {
     }
 }
 
+/* если мышь с блоком выйдет за поле, блок вернётся на своё изначальное место */
 let mouse_out = function(event) {
     if (is_dragging) {
         current_shape.x = start_shapeX;
@@ -384,6 +405,10 @@ canvas.onmousedown = mouse_down;
 canvas.onmouseup = mouse_up;
 canvas.onmouseout = mouse_out;
 
-document.addEventListener("dblclick", ()=>console.log("dblclick"));
+//canvas.addEventListener("dblclick", ()=>console.log("dblclick"));
+//canvas.addEventListener("mousedown", e => mouse_down(e));
+//canvas.addEventListener("mouseup", e => mouse_up(e));
+//canvas.addEventListener("mousemove", e => mouse_move(e));
+//canvas.addEventListener("contextmenu", e => e.preventDefault());
 
 
