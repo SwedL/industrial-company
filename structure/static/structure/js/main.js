@@ -304,8 +304,6 @@ let mouse_down = function(event) {
     startX = event.clientX - rect.left;
     startY = event.clientY - rect.top;
 
-    let shape_id = 1;
-
     /* если нажатие клавиши было в блоке менеджера то сохраняются
         начальные координаты x и y для возврата блока на исходное место,
        если нажат был блок отдела, то происходит переход на соответствующую страницу */
@@ -320,13 +318,18 @@ let mouse_down = function(event) {
                     start_shapeY = dict_shapes[key].y;
                     current_shape = dict_shapes[key];
                     current_shape_key = key;
-                    ghost_shapes[key] = {x: start_shapeX, y: start_shapeY, width: current_shape.width, height: current_shape.height, position: current_shape.position, font: current_shape.font};
+                    ghost_shapes[key] = {};
+                    for (let k in current_shape) {
+                        ghost_shapes[key][k] = current_shape[k]
+                    }
+//                    ghost_shapes[key] = {x: start_shapeX, y: start_shapeY, width: current_shape.width, height: current_shape.height, position: current_shape.position, font: current_shape.font, manager_name: " "};
                     console.log(ghost_shapes)
                     break;    // если блок определился, происходит прерывание цикла поиска блока
+                } else {
+                    let num_key = +key + 1;
+                    window.location = `/position/` + num_key;
                 }
-                else window.location = `/position/` + shape_id;
             };
-            shape_id += 1;
         }
     }
 };
