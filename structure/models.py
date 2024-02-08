@@ -24,8 +24,8 @@ class Employee(models.Model):
     first_name = models.CharField(max_length=50, verbose_name='имя')
     last_name = models.CharField(max_length=50, verbose_name='фамилия')
     patronymic = models.CharField(max_length=50, verbose_name='отчество')
-    position = models.ForeignKey(Position, on_delete=models.SET_DEFAULT,
-                                 default=1, blank=False, null=False, verbose_name='должность')
+    position = models.ForeignKey(Position, on_delete=models.SET_NULL,
+                                 blank=False, null=True, verbose_name='должность')
     employment_date = models.DateField(null=True, blank=True, verbose_name='дата приёма на работу')
     salary = models.IntegerField(default=0, verbose_name='зарплата')
 

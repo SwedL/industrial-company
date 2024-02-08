@@ -157,8 +157,7 @@ base_url = `${window.location.hostname}:${window.location.port}`
         const websocket = new WebSocket(`ws://${base_url}`)
         websocket.onopen = function (event) {
             console.log('client says connection opened')
-            websocket.send("Client sends Welcome")
-
+            websocket.send("Client sends Welcomettt")
         }
         websocket.onmessage = function (event) {
             message = JSON.parse(event.data)
@@ -318,11 +317,12 @@ let mouse_down = function(event) {
                     start_shapeY = dict_shapes[key].y;
                     current_shape = dict_shapes[key];
                     current_shape_key = key;
+                    /* создаём блок призрак поднятого блока и записывем его в список ghost_shapes */
                     ghost_shapes[key] = {};
                     for (let k in current_shape) {
                         ghost_shapes[key][k] = current_shape[k]
                     }
-//                    ghost_shapes[key] = {x: start_shapeX, y: start_shapeY, width: current_shape.width, height: current_shape.height, position: current_shape.position, font: current_shape.font, manager_name: " "};
+                    ghost_shapes[key].manager_name = " "
                     console.log(ghost_shapes)
                     break;    // если блок определился, происходит прерывание цикла поиска блока
                 } else {
@@ -340,13 +340,15 @@ let mouse_up = function(event) {
         let rect = canvas.getBoundingClientRect();
         let mouseX = event.clientX - rect.left;
         let mouseY = event.clientY - rect.top;
+//        appoint a manager
         if (is_mouse_in_shape(mouseX, mouseY, dict_shapes[50])) {
-        delete dict_shapes[current_shape_key];
-        is_dragging = false;
-        websocket.send("Drop change_shape");
+            delete dict_shapes[current_shape_key];
+            is_dragging = false;
+            text_data = {type_message: "remove_manager", position_id: current_shape_key};
+            websocket.send(JSON.stringify(text_data));
         } else {
-        current_shape.x = start_shapeX;
-        current_shape.y = start_shapeY;
+            current_shape.x = start_shapeX;
+            current_shape.y = start_shapeY;
         }
     }
     is_dragging = false;
