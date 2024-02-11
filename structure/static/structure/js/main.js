@@ -1,20 +1,21 @@
 let canvas = document.getElementById("canvas");
 let context = canvas.getContext("2d");
 
-
 canvas.width = 1440;
 canvas.height = 915;
 
 let canvas_width = canvas.width;
 let canvas_height = canvas.height;
 
-let ghost_blocks = {};
+let ghost_blocks = {
+    50: {x: 130, y: 20, width: 180, height: 90, position: "Снятие /n с занимаемой /n должности", font: "16px"},
+    };
 let dict_blocks = {};
 let is_dragging = false;
 let start_blockX;
 let start_blockY;
-let current_block;
-let current_block_key;
+let dragging_block;
+let dragging_block_key;
 let startX;
 let startY;
 
@@ -23,6 +24,7 @@ base_url = `${window.location.hostname}:${window.location.port}`
         websocket.onopen = function (event) {
             console.log('client says connection opened')
             websocket.send("Client sends Welcomettt")
+            draw_all();
         }
         websocket.onmessage = function (event) {
             message = JSON.parse(event.data)
@@ -38,6 +40,12 @@ base_url = `${window.location.hostname}:${window.location.port}`
                             dict_blocks[key][k] = alfa_dict_blocks[key][k]
                         }
                         dict_blocks[key].manager_name = position[key];
+                    } else {
+                        ghost_blocks[key] = {};
+                        for (let k in alfa_dict_blocks[key]) {
+                            ghost_blocks[key][k] = alfa_dict_blocks[key][k]
+                        }
+                        ghost_blocks[key].manager_name = " ";
                     }
                 } else {
                     dict_blocks[key] = {};
@@ -196,18 +204,18 @@ let mouse_down = function(event) {
                     is_dragging = true;
                     start_blockX = dict_blocks[key].x;
                     start_blockY = dict_blocks[key].y;
-                    current_block = dict_blocks[key];
-                    current_block_key = key;
+                    dragging_block = dict_blocks[key];
+                    dragging_block_key = key;
                     /* создаём блок призрак поднятого блока и записывем его в список ghost_blocks */
                     ghost_blocks[key] = {};
-                    for (let k in current_block) {
-                        ghost_blocks[key][k] = current_block[k]
+                    for (let k in dragging_block) {
+                        ghost_blocks[key][k] = dragging_block[k]
                     }
                     ghost_blocks[key].manager_name = " "
 //                    console.log(ghost_blocks)
                     break;    // если блок определился, происходит прерывание цикла поиска блока
                 } else {
-                    let num_key = +key + 1;
+                    let num_key = key;
                     window.location = `/position/` + num_key;
                 }
             };
@@ -215,6 +223,7 @@ let mouse_down = function(event) {
     }
 };
 
+/* функция обработки отпускания клавиши мыши */
 let mouse_up = function(event) {
     /* если блок находится в зоне освобождения от занимаемой должности на сервер отправляется соответствующее сообщение */
     if (is_dragging) {
@@ -222,17 +231,19 @@ let mouse_up = function(event) {
         let mouseX = event.clientX - rect.left;
         let mouseY = event.clientY - rect.top;
 //        appoint a manager
-        if (is_mouse_in_block(mouseX, mouseY, dict_blocks[50])) {
-            console.log(dict_blocks[current_block_key]);
-//            delete dict_blocks[current_block_key];
-//            console.log(dict_blocks[current_block_key]);
-//            console.log(dict_blocks);
+//        remove_manager
+        if (is_mouse_in_block(mouseX, mouseY, ghost_blocks[50])) {
             is_dragging = false;
-            text_data = {type_message: "remove_manager", position_id: current_block_key};
+            dragging_block.x = start_blockX;
+            dragging_block.y = start_blockY;
+            dragging_block.manager_name = " ";
+            ghost_blocks[dragging_block_key] = dragging_block;
+            delete dict_blocks[dragging_block_key]
+            text_data = {type_message: "remove_manager", position_id: dragging_block_key};
             websocket.send(JSON.stringify(text_data));
         } else {
-            current_block.x = start_blockX;
-            current_block.y = start_blockY;
+            dragging_block.x = start_blockX;
+            dragging_block.y = start_blockY;
         }
     }
     is_dragging = false;
@@ -251,8 +262,8 @@ let mouse_move = function(event) {
 
         let dx = mouseX - startX;
         let dy = mouseY - startY;
-        current_block.x += dx;
-        current_block.y += dy;
+        dragging_block.x += dx;
+        dragging_block.y += dy;
 
         startX = mouseX;
         startY = mouseY;
@@ -264,12 +275,12 @@ let mouse_move = function(event) {
         context.shadowOffsetX = 0;
         context.shadowColor = "#5D6468";
         context.fillStyle = "#FFA24C"
-        context.fillRect(current_block.x, current_block.y, current_block.width, current_block.height);
+        context.fillRect(dragging_block.x, dragging_block.y, dragging_block.width, dragging_block.height);
         context.shadowBlur = 0;
         context.fillStyle = "black";
-        context.strokeRect(current_block.x, current_block.y, current_block.width, current_block.height);
-        context.font = current_block.font + " Arial";
-        wrapText(context, current_block);
+        context.strokeRect(dragging_block.x, dragging_block.y, dragging_block.width, dragging_block.height);
+        context.font = dragging_block.font + " Arial";
+        wrapText(context, dragging_block);
 
     }
 }
@@ -277,8 +288,8 @@ let mouse_move = function(event) {
 /* если мышь с блоком выйдет за поле, блок вернётся на своё изначальное место */
 let mouse_out = function(event) {
     if (is_dragging) {
-        current_block.x = start_blockX;
-        current_block.y = start_blockY;
+        dragging_block.x = start_blockX;
+        dragging_block.y = start_blockY;
     }
     is_dragging = false;
 }

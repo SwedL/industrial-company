@@ -34,4 +34,4 @@ class Employee(models.Model):
         verbose_name_plural = 'Сотрудники'
 
 
-# python manage shell_plus --print-sql
+# python manage.py shell_plus --print-sql

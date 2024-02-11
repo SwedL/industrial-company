@@ -14,17 +14,27 @@ class JoinAndLeave(WebsocketConsumer):
         print("server says client message received: ", text_data)
 
         position = {}
+
+        if text_data and "type_message" in text_data:
+            td = json.loads(text_data)
+            if td["type_message"] == "remove_manager":
+                current_position = Position.objects.filter(id=td["position_id"]).first()
+                current_employee = current_position.employee_set.all().first()
+                current_employee.position = None
+                current_employee.save()
+                print(current_employee)
+
         for i in Position.objects.filter(is_manager=True):
-            employee = i.employee_set.all().first()
-            manager_name = f'{employee.last_name} {employee.first_name[0]}.{employee.patronymic[0]}.'
-            position[i.id-1] = manager_name
+            if i.employee_set.all().exists():
+                employee = i.employee_set.all().first()
+                manager_name = f'{employee.last_name} {employee.first_name[0]}.{employee.patronymic[0]}.'
+                position[i.id] = manager_name
+            # position[i.id-1] = manager_name
         data = {
             "position": position,
         }
-        if text_data and "type_message" in text_data:
-            td = json.loads(text_data)
-            print(td)
         self.send(json.dumps(data))
+
         # self.send("Server sends Welcome")
 
     def disconnect(self, code):
