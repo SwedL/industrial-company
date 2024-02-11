@@ -7,9 +7,7 @@ canvas.height = 915;
 let canvas_width = canvas.width;
 let canvas_height = canvas.height;
 
-let ghost_blocks = {
-    50: {x: 130, y: 20, width: 180, height: 90, position: "Снятие /n с занимаемой /n должности", font: "16px"},
-    };
+let ghost_blocks = {};
 let dict_blocks = {};
 let is_dragging = false;
 let start_blockX;
@@ -30,7 +28,11 @@ base_url = `${window.location.hostname}:${window.location.port}`
             message = JSON.parse(event.data)
             let position = message.position
             console.log('Получен position')
+
             /* запись имён менеджеров в фигуры */
+            dict_blocks = {50: {x: 130, y: 20, width: 180, height: 90, position: "Снятие /n с занимаемой /n должности", font: "16px"}};
+            ghost_blocks = {};
+
             for(let key in alfa_dict_blocks) {
                 check_is_manager = alfa_dict_blocks[key].is_manager
                 if (check_is_manager) {
@@ -230,21 +232,32 @@ let mouse_up = function(event) {
         let rect = canvas.getBoundingClientRect();
         let mouseX = event.clientX - rect.left;
         let mouseY = event.clientY - rect.top;
-//        appoint a manager
-//        remove_manager
-        if (is_mouse_in_block(mouseX, mouseY, ghost_blocks[50])) {
+
+        //        appoint_manager
+        for (let key in ghost_blocks) {
+            if (is_mouse_in_block(mouseX, mouseY, ghost_blocks[key])) {
+                is_dragging = false;
+                text_data = {type_message: "appoint_manager", from_position_id: dragging_block_key, to_position_id: key};
+                websocket.send(JSON.stringify(text_data));
+                start_blockX = ghost_blocks[key].x;
+                start_blockY = ghost_blocks[key].y;
+                dragging_block.width = ghost_blocks[key].width
+                dragging_block.height = ghost_blocks[key].height
+                break;
+            }
+        }
+
+        //        remove_manager
+        if (is_mouse_in_block(mouseX, mouseY, dict_blocks[50])) {
             is_dragging = false;
-            dragging_block.x = start_blockX;
-            dragging_block.y = start_blockY;
-            dragging_block.manager_name = " ";
-            ghost_blocks[dragging_block_key] = dragging_block;
-            delete dict_blocks[dragging_block_key]
-            text_data = {type_message: "remove_manager", position_id: dragging_block_key};
+            text_data = {type_message: "remove_manager", from_position_id: dragging_block_key};
             websocket.send(JSON.stringify(text_data));
         } else {
             dragging_block.x = start_blockX;
             dragging_block.y = start_blockY;
         }
+//        dragging_block.x = start_blockX;
+//        dragging_block.y = start_blockY;
     }
     is_dragging = false;
 }

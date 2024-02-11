@@ -11,16 +11,23 @@ class JoinAndLeave(WebsocketConsumer):
         self.accept()    # new
 
     def receive(self, text_data=None, bytes_data=None):
-        print("server says client message received: ", text_data)
+        # print("server says client message received: ", text_data)
 
         position = {}
 
         if text_data and "type_message" in text_data:
             td = json.loads(text_data)
             if td["type_message"] == "remove_manager":
-                current_position = Position.objects.filter(id=td["position_id"]).first()
-                current_employee = current_position.employee_set.all().first()
+                from_position = Position.objects.filter(id=td["from_position_id"]).first()
+                current_employee = from_position.employee_set.all().first()
                 current_employee.position = None
+                current_employee.save()
+
+            if td["type_message"] == "appoint_manager":
+                from_position = Position.objects.filter(id=td["from_position_id"]).first()
+                to_position = Position.objects.filter(id=td["to_position_id"]).first()
+                current_employee = from_position.employee_set.all().first()
+                current_employee.position = to_position
                 current_employee.save()
                 print(current_employee)
 
@@ -29,7 +36,6 @@ class JoinAndLeave(WebsocketConsumer):
                 employee = i.employee_set.all().first()
                 manager_name = f'{employee.last_name} {employee.first_name[0]}.{employee.patronymic[0]}.'
                 position[i.id] = manager_name
-            # position[i.id-1] = manager_name
         data = {
             "position": position,
         }

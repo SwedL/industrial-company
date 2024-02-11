@@ -57,6 +57,8 @@ alfa_dict_blocks = {
     45: {x: 1220, y: 745, width: 140, height: 40, position: "Юридическая /n служба", font: "12px"},
     46: {x: 1220, y: 800, width: 140, height: 40, position: "Отдел охраны /n труда", font: "12px"},
     47: {x: 1220, y: 855, width: 140, height: 40, position: "Отдел экологии", font: "12px"},
+
+    50: {x: 130, y: 20, width: 180, height: 90, position: "Снятие /n с занимаемой /n должности", font: "16px"},
 };
 
 //alfa_dict_blocks = {
