@@ -15,21 +15,4 @@
 {% block script %}
     <script src="{% static 'structure/js/figures.js' %}"></script>
     <script src="{% static 'structure/js/main.js' %}"></script>
-<!--    <script>-->
-<!--        base_url = `${window.location.hostname}:${window.location.port}`-->
-<!--        const websocket = new WebSocket(`ws://${base_url}`)-->
-<!--        websocket.onopen = function (event) {-->
-<!--            console.log('client says connection opened')-->
-<!--            websocket.send("Client sends Welcomettt")-->
-<!--        }-->
-<!--        websocket.onmessage = function (event) {-->
-<!--            message = JSON.parse(event.data)-->
-<!--            let position = message.position-->
-<!--            /* запись имён менеджеров в фигуры */-->
-<!--            for(let key in position) {-->
-<!--                dict_blocks[key].manager_name = position[key]-->
-<!--                draw_all();-->
-<!--            }-->
-<!--        }-->
-<!--    </script>-->
 {% endblock %}

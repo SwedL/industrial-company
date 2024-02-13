@@ -220,7 +220,8 @@ let mouse_down = function(event) {
                     break;    // если блок определился, происходит прерывание цикла поиска блока
                 } else {
                     let num_key = key;
-                    window.location = `/employees-list/` + num_key;
+//                    window.location = `/employees-list/`;
+                    window.location = `/employees-list/` + num_key + `/1`;
                 }
             };
         }
@@ -254,6 +255,12 @@ let mouse_up = function(event) {
         // снятие с должности менеджера
         if (is_mouse_in_block(mouseX, mouseY, dict_blocks[50])) {
             is_dragging = false;
+            confirm("Подтвердите снятие с должности!");
+//            if (confirm(text) == true) {
+//                text = "You pressed OK!";
+//            } else {
+//                text = "You canceled!";
+//            }
             text_data = {type_message: "remove_manager", from_position_id: dragging_block_key};
             websocket.send(JSON.stringify(text_data));
         } else {

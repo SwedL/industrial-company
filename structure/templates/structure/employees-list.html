@@ -11,88 +11,98 @@
 
 {% block content %}
 
-<div>
-    <div>
-        <div>
+
+<div class="main-section">
+    <div class="main-section__table">
+        <!-- Список сотрудников -->
+        <table>
+            <thead>
+            <tr>
+                <!-- Заголовки столбцов таблицы -->
+
+                <!-- Заголовок имени сотрудника -->
+                <th scope="col" style="width: 10%">
+                    <small>
+                        Имя
+                    </small>
+                </th>
+
+                <!-- Заголовок фамилии сотрудника -->
+                <th scope="col" style="width: 10%">
+                    <small>
+                        Фамилия
+                    </small>
+                </th>
+
+                <!-- Заголовок отчество сотрудника -->
+                <th scope="col" style="width: 15%">
+                    <small>
+                        Отчество
+                    </small>
+                </th>
+
+                <!-- Заголовок должности сотрудника -->
+                <th scope="col" style="width: 25%">
+                    <small>
+                        Должность
+                    </small>
+                </th>
+
+                <!-- Заголовок дата приёма на работу -->
+                <th scope="col" style="width: 15%">
+                    <small>
+                        Дата приёма на работу
+                    </small>
+                </th>
+
+                <!-- Заголовок зарплаты сотрудника -->
+                <th scope="col" style="width: 8%">
+                    <small>
+                        Зарплата
+                    </small>
+                </th>
+
+                <!-- Заголовок кнопок действия -->
+                <th scope="col" style="width: 8%">
+                    <small>
+                        Actions
+                    </small>
+                </th>
+
+            </tr>
+            </thead>
+
             <!-- Список сотрудников -->
-            <table>
-                <thead>
-                <tr>
-                    <!-- Заголовки столбцов таблицы -->
+            <tbody id="employees-list">
+            {% for employee in employees %}
+                {% include "structure/employee-detail.html" %}
+            {% endfor %}
+            </tbody>
 
-                    <!-- Заголовок имени сотрудника -->
-                    <th scope="col" style="width: 10%">
-                        <small>
-                            Имя
-                        </small>
-                    </th>
-
-                    <!-- Заголовок фамилии сотрудника -->
-                    <th scope="col" style="width: 10%">
-                        <small>
-                            Фамилия
-                        </small>
-                    </th>
-
-                    <!-- Заголовок отчество сотрудника -->
-                    <th scope="col" style="width: 10%">
-                        <small>
-                            Отчество
-                        </small>
-                    </th>
-
-                    <!-- Заголовок должности сотрудника -->
-                    <th scope="col" style="width: 25%">
-                        <small>
-                            Должность
-                        </small>
-                    </th>
-
-                    <!-- Заголовок дата приёма на работу -->
-                    <th scope="col" style="width: 11%">
-                        <small>
-                            Дата приёма на работу
-                        </small>
-                    </th>
-
-                    <!-- Заголовок зарплаты сотрудника -->
-                    <th scope="col" style="width: 11%">
-                        <small>
-                            Зарплата
-                        </small>
-                    </th>
-
-                    <!-- Заголовок кнопок действия -->
-                    <th scope="col" style="width: 16%">
-                        <small>
-                            Actions
-                        </small>
-                    </th>
-
-                </tr>
-                </thead>
-
-                <!-- Список сотрудников -->
-                <tbody id="employees-list">
-                {% for employee in employees %}
-                    {% include "structure/employee-detail.html" %}
-                {% endfor %}
-                </tbody>
-
-            </table>
+        </table>
+    </div>
+    <div class="main-section__navigation">
         <nav aria-label="Page navigation example">
-              <ul class="pagination">
-                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">Next</a></li>
-              </ul>
-            </nav>
-        </div>
+            <ul class="pagination">
+            <li class="page-item {% if not employees.has_previous %} disabled {% endif %}">
+                <a class="page-link" href="{% if employees.has_previous %} {% url 'structure:employees_list' position_id employees.previous_page_number %} {% else %} # {% endif %}">Предыдущая</a>
+            </li>
+            {% for page in employees.paginator.get_elided_page_range %}
 
+                {% if employees.number == page or page == "…" %}
+                    <li class="page-item disabled"><a class="page-link" href="#">{{page}}</a></li>
+                {% else %}
+                    <li class="page-item"><a class="page-link" href="{% url 'structure:employees_list' position_id page %}">{{page}}</a></li>
+                {% endif %}
+            {% endfor %}
+            <li class="page-item {% if not employees.has_next %} disabled {% endif %}">
+                <a class="page-link" href="{% if employees.has_next %} {% url 'structure:employees_list' position_id employees.next_page_number %} {% else %} # {% endif %}">Следующая</a>
+            </li>
+            </ul>
+        </nav>
     </div>
 </div>
+
 
 {% endblock %}
 

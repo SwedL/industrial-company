@@ -36,15 +36,18 @@ class StructureCompanyTemplateView(TemplateView):
 #         return render(request, 'structure/employees-list.html', context=context)
 
 
-def employees_list(request, position_id, page=1):
-    employees = Employee.objects.all()
+def employees_list(request, position_id=None, page=1):
+    employees = Employee.objects.filter(position=position_id) if position_id else Employee.objects.all()
     per_page = 20
     paginator = Paginator(employees, per_page)
+    paginator.get_elided_page_range(number=10, on_each_side=3, on_ends=2)
     employees_paginator = paginator.page(page)
 
     context = {
         'title': 'Список сотрудников',
         'employees': employees_paginator,
+        'position_id': position_id,
+        'number': page,
     }
 
     return render(request, 'structure/employees-list.html', context)

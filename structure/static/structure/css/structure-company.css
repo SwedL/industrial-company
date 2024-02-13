@@ -1,23 +1,11 @@
+@charset "UTF-8";
+/* line 1, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/structure-company.sass */
 body {
   margin: 0;
   background-color: #8B959B;
 }
 
-main {
-  display: block;
-}
-
-.container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.text {
-  color: #e3e3e3;
-}
-
+/* line 5, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/structure-company.sass */
 .header {
   top: 0;
   height: 50px;
@@ -25,12 +13,16 @@ main {
   padding-top: 25px;
 }
 
+/* line 11, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/structure-company.sass */
 .canv {
   max-width: 1440px;
   margin: 0 auto;
-};
+}
 
+/* line 15, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/structure-company.sass */
 #canvas {
   display: block;
   margin: 0 auto;
-};
+}
+
+/*# sourceMappingURL=structure-company.css.map */

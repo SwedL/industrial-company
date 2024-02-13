@@ -1,28 +1,37 @@
+@charset "UTF-8";
+/* line 1, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/employees-list.sass */
 body {
   margin: 0;
-  background-color: #8B959B;
-  /* background-color: #C6D0D7; */
+  background-color: #C6D0D7;
 }
 
-main {
-  display: block;
-}
-
-.container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.text {
-  color: white;
-}
-
+/* line 6, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/employees-list.sass */
 .header {
   top: 0;
-  height: 50px;
+  height: 80px;
   background: #0F1C23;
   padding-top: 25px;
 }
 
+/* line 12, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/employees-list.sass */
+.main-section {
+  display: block;
+  width: 1440px;
+  margin: 0 auto;
+  margin-top: 30px;
+}
+
+/* line 18, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/employees-list.sass */
+.main-section__table {
+  width: 1300px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+
+/* line 22, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/employees-list.sass */
+.main-section__navigation {
+  width: 500px;
+  margin: 0 auto;
+}
+
+/*# sourceMappingURL=employees-list.css.map */
