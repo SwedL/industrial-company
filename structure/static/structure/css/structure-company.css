@@ -3,10 +3,6 @@ body {
   background-color: #8B959B;
 }
 
-/**
- * Render the `main` element consistently in IE.
- */
-/* line 31, ../../Users/Алексей/PycharmProjects/aquamarine-server/aquamarine/carwash/static/carwash/sass/normalizez.scss */
 main {
   display: block;
 }
@@ -27,8 +23,8 @@ main {
   height: 50px;
   background: #0F1C23;
   padding-top: 25px;
-  z-index: 5;
 }
+
 .canv {
   max-width: 1440px;
   margin: 0 auto;

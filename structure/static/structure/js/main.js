@@ -4,6 +4,8 @@ let context = canvas.getContext("2d");
 canvas.width = 1440;
 canvas.height = 915;
 
+let background_color = "#8B959B"
+
 let canvas_width = canvas.width;
 let canvas_height = canvas.height;
 
@@ -165,7 +167,7 @@ let draw_arrows = function () {
 /* рисуем блоки призраки */
 let draw_ghost_blocks = function (event) {
     context.clearRect(0, 0, canvas_width, canvas_height);
-    context.fillStyle = "#8B959B";
+    context.fillStyle = background_color;
     context.fillRect(0, 0, canvas_width, canvas_height);
     context.textAlign = "center";
     let ghost_block;
@@ -218,7 +220,7 @@ let mouse_down = function(event) {
                     break;    // если блок определился, происходит прерывание цикла поиска блока
                 } else {
                     let num_key = key;
-                    window.location = `/position/` + num_key;
+                    window.location = `/employees-list/` + num_key;
                 }
             };
         }

@@ -1,0 +1,28 @@
+body {
+  margin: 0;
+  background-color: #8B959B;
+  /* background-color: #C6D0D7; */
+}
+
+main {
+  display: block;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.text {
+  color: white;
+}
+
+.header {
+  top: 0;
+  height: 50px;
+  background: #0F1C23;
+  padding-top: 25px;
+}
+
