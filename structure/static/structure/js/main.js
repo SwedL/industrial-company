@@ -216,7 +216,7 @@ let mouse_down = function(event) {
                         ghost_blocks[key][k] = dragging_block[k]
                     }
                     ghost_blocks[key].manager_name = " "
-//                    console.log(ghost_blocks)
+                    console.log(ghost_blocks)
                     break;    // если блок определился, происходит прерывание цикла поиска блока
                 } else {
                     let num_key = key;
@@ -235,8 +235,9 @@ let mouse_up = function(event) {
         let mouseX = event.clientX - rect.left;
         let mouseY = event.clientY - rect.top;
 
-        //        appoint_manager
+        // назначение менеджера
         for (let key in ghost_blocks) {
+            console.log(ghost_blocks)
             if (is_mouse_in_block(mouseX, mouseY, ghost_blocks[key])) {
                 is_dragging = false;
                 text_data = {type_message: "appoint_manager", from_position_id: dragging_block_key, to_position_id: key};
@@ -245,11 +246,12 @@ let mouse_up = function(event) {
                 start_blockY = ghost_blocks[key].y;
                 dragging_block.width = ghost_blocks[key].width
                 dragging_block.height = ghost_blocks[key].height
-                break;
+                delete ghost_blocks[key]
+                return
             }
         }
 
-        //        remove_manager
+        // снятие с должности менеджера
         if (is_mouse_in_block(mouseX, mouseY, dict_blocks[50])) {
             is_dragging = false;
             text_data = {type_message: "remove_manager", from_position_id: dragging_block_key};
@@ -257,9 +259,8 @@ let mouse_up = function(event) {
         } else {
             dragging_block.x = start_blockX;
             dragging_block.y = start_blockY;
+            delete ghost_blocks[dragging_block_key]
         }
-//        dragging_block.x = start_blockX;
-//        dragging_block.y = start_blockY;
     }
     is_dragging = false;
 }
