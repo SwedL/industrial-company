@@ -5,8 +5,8 @@
 		"../sass/employees-list.sass"
 	],
 	"sourcesContent": [
-		"body {\n    margin: 0;\n    // background-color: #8B959B\n    background-color: #C6D0D7; }\n\n.header {\n    top: 0;\n    height: 80px;\n    background: #0F1C23;\n    padding-top: 25px; }\n\n.main-section {\n    display: block;\n    width: 1440px;\n    margin: 0 auto;\n    margin-top: 30px;\n    background: {}\n    &__table {\n        width: 1300px;\n        margin: 0 auto;\n        margin-bottom: 20px; }\n    &__navigation {\n        display: flex;\n        justify-content: center;\n        margin: 0 auto; } }\n\n\n\n\n"
+		"body {\n    margin: 0;\n    // background-color: #8B959B\n    background-color: #C6D0D7; }\n\n.main-section {\n    display: block;\n    width: 1440px;\n    margin: 0 auto;\n    margin-top: 30px;\n    background: {}\n    &__table {\n        width: 1300px;\n        margin: 0 auto;\n        margin-bottom: 20px; }\n    &__navigation {\n        display: flex;\n        justify-content: center;\n        margin: 0 auto; } }\n\n\n\n\n"
 	],
 	"names": [],
-	"mappings": ";;AAAA,AAAA,IAAI,CAAC;EACD,MAAM,EAAE,CAAC;EAET,gBAAgB,EAAE,OAAO;CAAG;;;AAEhC,AAAA,OAAO,CAAC;EACJ,GAAG,EAAE,CAAC;EACN,MAAM,EAAE,IAAI;EACZ,UAAU,EAAE,OAAO;EACnB,WAAW,EAAE,IAAI;CAAG;;;AAExB,AAAA,aAAa,CAAC;EACV,OAAO,EAAE,KAAK;EACd,KAAK,EAAE,MAAM;EACb,MAAM,EAAE,MAAM;EACd,UAAU,EAAE,IAAI;CASO;;;AAPtB,AAAD,oBAAQ,CAAC;EACL,KAAK,EAAE,MAAM;EACb,MAAM,EAAE,MAAM;EACd,aAAa,EAAE,IAAI;CAAG;;;AACzB,AAAD,yBAAa,CAAC;EACV,OAAO,EAAE,IAAI;EACb,eAAe,EAAE,MAAM;EACvB,MAAM,EAAE,MAAM;CAAG"
+	"mappings": ";;AAAA,AAAA,IAAI,CAAC;EACD,MAAM,EAAE,CAAC;EAET,gBAAgB,EAAE,OAAO;CAAG;;;AAEhC,AAAA,aAAa,CAAC;EACV,OAAO,EAAE,KAAK;EACd,KAAK,EAAE,MAAM;EACb,MAAM,EAAE,MAAM;EACd,UAAU,EAAE,IAAI;CASO;;;AAPtB,AAAD,oBAAQ,CAAC;EACL,KAAK,EAAE,MAAM;EACb,MAAM,EAAE,MAAM;EACd,aAAa,EAAE,IAAI;CAAG;;;AACzB,AAAD,yBAAa,CAAC;EACV,OAAO,EAAE,IAAI;EACb,eAAe,EAAE,MAAM;EACvB,MAAM,EAAE,MAAM;CAAG"
 }

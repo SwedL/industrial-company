@@ -5,8 +5,8 @@
 		"../sass/structure-company.sass"
 	],
 	"sourcesContent": [
-		"body {\n    margin: 0;\n    background-color: #C6D0D7;\n }    // background-color: #8B959B\n\n.header {\n    top: 0;\n    height: 50px;\n    background: #0F1C23;\n    padding-top: 25px; }\n\n.canv {\n    max-width: 1440px;\n    margin: 0 auto; }\n\n#canvas {\n    display: block;\n    margin: 0 auto; }\n"
+		".canv {\n    max-width: 1440px;\n    margin: 0 auto; }\n\n#canvas {\n    display: block;\n    margin: 0 auto; }\n"
 	],
 	"names": [],
-	"mappings": ";;AAAA,AAAA,IAAI,CAAC;EACD,MAAM,EAAE,CAAC;EACT,gBAAgB,EAAE,OAAO;CAC3B;;;AAEF,AAAA,OAAO,CAAC;EACJ,GAAG,EAAE,CAAC;EACN,MAAM,EAAE,IAAI;EACZ,UAAU,EAAE,OAAO;EACnB,WAAW,EAAE,IAAI;CAAG;;;AAExB,AAAA,KAAK,CAAC;EACF,SAAS,EAAE,MAAM;EACjB,MAAM,EAAE,MAAM;CAAG;;;AAErB,AAAA,OAAO,CAAC;EACJ,OAAO,EAAE,KAAK;EACd,MAAM,EAAE,MAAM;CAAG"
+	"mappings": ";;AAAA,AAAA,KAAK,CAAC;EACF,SAAS,EAAE,MAAM;EACjB,MAAM,EAAE,MAAM;CAAG;;;AAErB,AAAA,OAAO,CAAC;EACJ,OAAO,EAAE,KAAK;EACd,MAAM,EAAE,MAAM;CAAG"
 }

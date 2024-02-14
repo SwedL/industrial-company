@@ -1,0 +1,12 @@
+{
+	"version": 3,
+	"file": "base.css",
+	"sources": [
+		"../sass/base.sass"
+	],
+	"sourcesContent": [
+		"// @import \"resets.scss\"\n// @import \"normalizez.scss\"\n\n* {\n    box-sizing: border-box; }\n\nbody {\n    margin: 0;\n    background-color: #C6D0D7;\n }    // background-color: #8B959B\n\n.header {\n    top: 0;\n    height: 60px;\n    background: #0F1C23;\n    // padding-top: 25px\n    &__container {\n        width: 1300px;\n        margin: 0 auto; }\n    &__logo {\n        margin-left: 150px;\n        width: 130px; } }\n"
+	],
+	"names": [],
+	"mappings": ";;AAGA,AAAA,CAAC,CAAC;EACE,UAAU,EAAE,UAAU;CAAG;;;AAE7B,AAAA,IAAI,CAAC;EACD,MAAM,EAAE,CAAC;EACT,gBAAgB,EAAE,OAAO;CAC3B;;;AAEF,AAAA,OAAO,CAAC;EACJ,GAAG,EAAE,CAAC;EACN,MAAM,EAAE,IAAI;EACZ,UAAU,EAAE,OAAO;CAOE;;;AALpB,AAAD,kBAAY,CAAC;EACT,KAAK,EAAE,MAAM;EACb,MAAM,EAAE,MAAM;CAAG;;;AACpB,AAAD,aAAO,CAAC;EACJ,WAAW,EAAE,KAAK;EAClB,KAAK,EAAE,KAAK;CAAG"
+}
