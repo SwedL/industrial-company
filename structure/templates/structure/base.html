@@ -11,8 +11,9 @@
         <title>{% block title %} {% endblock title %}</title>
 
         <!-- Base CSS -->
-        <link rel="stylesheet" href="{% static 'structure/css/base.css' %}" xmlns="http://www.w3.org/1999/html">
         {% block css %} {% endblock %}
+        <link rel="stylesheet" href="{% static 'structure/css/base.css' %}" xmlns="http://www.w3.org/1999/html">
+        
     </head>
 
     <body>
@@ -20,13 +21,23 @@
     <!-- Header -->
     <header class="header">
         <div class="header__container">
-            <div>
+            <div class="header__container-logo">
                 <a href="{% url 'structure:structure_company' %}"><img class="header__logo" src="{% static 'structure/icons/logo2.svg' %}" alt="logo"></a>
             </div>
                 <!-- Блок навигации -->
-            <div class="header__nav-box nav-menu">
-
-            </div>
+            <nav class="header__container-nav nav-menu">
+                <ul class="nav-menu__list">
+                    <li class="nav-menu__list-item item-text">
+                        <a class="nav-menu__text" href="{% url 'structure:structure_company' %}">структура компании</a>
+                    </li>
+                    <li class="nav-menu__list-item item-text">
+                        <a class="nav-menu__text" href="#">распределение сотрудников</a>
+                    </li>
+                    <li class="nav-menu__list-item item-text">
+                        <a class="nav-menu__text" href="#">выход</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </header>
 

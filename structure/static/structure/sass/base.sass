@@ -1,5 +1,5 @@
-// @import "resets.scss"
-// @import "normalizez.scss"
+@import "resets.scss"
+@import "normalizez.scss"
     
 *
     box-sizing: border-box
@@ -15,8 +15,29 @@ body
     background: #0F1C23
     // padding-top: 25px
     &__container
+        display: flex
+        flex-direction: row
         width: 1300px
         margin: 0 auto
     &__logo
         margin-left: 150px
+        margin-right: 300px
         width: 130px
+    &__nav-box
+
+.nav-menu
+    display: flex
+    align-items: center
+    &__list
+        display: flex
+        flex-direction: row
+    &__list-item
+        margin-right: 65px
+        font-size: 18px
+        &:last-child
+            margin-right: 0px
+    &__text
+        color: #E67A17
+        text-decoration: none
+    &__text:hover
+        color: #ffaf65
