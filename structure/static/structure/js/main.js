@@ -4,7 +4,8 @@ let context = canvas.getContext("2d");
 canvas.width = 1440;
 canvas.height = 915;
 
-let background_color = "#8B959B"
+let background_color = "#C6D0D7"
+//let background_color = "#8B959B"
 
 let canvas_width = canvas.width;
 let canvas_height = canvas.height;
@@ -220,8 +221,8 @@ let mouse_down = function(event) {
                     break;    // если блок определился, происходит прерывание цикла поиска блока
                 } else {
                     let num_key = key;
-//                    window.location = `/employees-list/`;
-                    window.location = `/employees-list/` + num_key + `/1`;
+                    window.location = `/employees-list/` + num_key;
+//                    window.location = `/employees-list/` + num_key + `/1`;
                 }
             };
         }

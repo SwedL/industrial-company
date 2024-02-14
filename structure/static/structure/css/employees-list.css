@@ -30,7 +30,8 @@ body {
 
 /* line 22, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/employees-list.sass */
 .main-section__navigation {
-  width: 500px;
+  display: flex;
+  justify-content: center;
   margin: 0 auto;
 }
 

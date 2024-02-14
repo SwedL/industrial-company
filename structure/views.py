@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, View
+from django.views.generic import TemplateView, View, ListView
 
 from structure.forms import UserLoginForm
 from structure.models import Position, Employee
@@ -51,4 +51,20 @@ def employees_list(request, position_id=None, page=1):
     }
 
     return render(request, 'structure/employees-list.html', context)
+
+
+class EmployeesListView(ListView):
+    template_name = 'structure/employees-list.html'
+    context_object_name = 'employees'
+    paginate_by = 20
+
+    def get_queryset(self):
+        return Employee.objects.filter(position=self.kwargs['position_id'])
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        page = context['page_obj']
+        context['paginator_range'] = page.paginator.get_elided_page_range(page.number)
+        # context['position_id'] = self.kwargs['position_id']
+        return context
 
