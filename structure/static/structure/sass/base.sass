@@ -1,6 +1,24 @@
 @import "resets.scss"
 @import "normalizez.scss"
     
+
+@font-face 
+    font-family: "MManrope"
+    src: url("../fonts/Manrope-Regular.ttf")
+    font-weight: regular
+    font-style: normal
+
+@font-face 
+    font-family: "MManrope"
+    src: url("../fonts/Manrope-Bold.ttf")
+    font-weight: bold
+    font-style: normal
+
+html
+    font-family: "MManrope"
+    font-weight: regular
+    scroll-behavior: smooth
+
 *
     box-sizing: border-box
     
@@ -33,11 +51,22 @@ body
         flex-direction: row
     &__list-item
         margin-right: 65px
-        font-size: 18px
+        font-size: 16px
         &:last-child
             margin-right: 0px
     &__text
-        color: #E67A17
+        color: #FF881B
+        // color: #E67A17
         text-decoration: none
     &__text:hover
         color: #ffaf65
+
+.page-link
+    color: #000000
+
+.pagination
+    // --bs-pagination-color: #FF881B
+    // --bs-pagination-active-bg: #FF881B
+    --bs-pagination-hover-color: #FF881B
+    --bs-pagination-focus-color: #FF881B
+    --bs-pagination-active-border-color: #FF881B

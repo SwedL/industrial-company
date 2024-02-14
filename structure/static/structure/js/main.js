@@ -2,7 +2,7 @@ let canvas = document.getElementById("canvas");
 let context = canvas.getContext("2d");
 
 canvas.width = 1440;
-canvas.height = 915;
+canvas.height = 900;
 
 let background_color = "#C6D0D7"
 //let background_color = "#8B959B"

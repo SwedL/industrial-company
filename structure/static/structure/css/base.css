@@ -433,25 +433,46 @@ template {
   display: none;
 }
 
-/* line 4, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/base.sass */
+@font-face {
+  font-family: "MManrope";
+  src: url("../fonts/Manrope-Regular.ttf");
+  font-weight: regular;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "MManrope";
+  src: url("../fonts/Manrope-Bold.ttf");
+  font-weight: bold;
+  font-style: normal;
+}
+
+/* line 17, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/base.sass */
+html {
+  font-family: "MManrope";
+  font-weight: regular;
+  scroll-behavior: smooth;
+}
+
+/* line 22, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/base.sass */
 * {
   box-sizing: border-box;
 }
 
-/* line 7, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/base.sass */
+/* line 25, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/base.sass */
 body {
   margin: 0;
   background-color: #C6D0D7;
 }
 
-/* line 12, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/base.sass */
+/* line 30, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/base.sass */
 .header {
   top: 0;
   height: 60px;
   background: #0F1C23;
 }
 
-/* line 17, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/base.sass */
+/* line 35, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/base.sass */
 .header__container {
   display: flex;
   flex-direction: row;
@@ -459,45 +480,57 @@ body {
   margin: 0 auto;
 }
 
-/* line 22, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/base.sass */
+/* line 40, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/base.sass */
 .header__logo {
   margin-left: 150px;
   margin-right: 300px;
   width: 130px;
 }
 
-/* line 28, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/base.sass */
+/* line 46, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/base.sass */
 .nav-menu {
   display: flex;
   align-items: center;
 }
 
-/* line 31, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/base.sass */
+/* line 49, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/base.sass */
 .nav-menu__list {
   display: flex;
   flex-direction: row;
 }
 
-/* line 34, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/base.sass */
+/* line 52, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/base.sass */
 .nav-menu__list-item {
   margin-right: 65px;
-  font-size: 18px;
+  font-size: 16px;
 }
 
-/* line 37, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/base.sass */
+/* line 55, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/base.sass */
 .nav-menu__list-item:last-child {
   margin-right: 0px;
 }
 
-/* line 39, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/base.sass */
+/* line 57, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/base.sass */
 .nav-menu__text {
-  color: #E67A17;
+  color: #FF881B;
   text-decoration: none;
 }
 
-/* line 42, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/base.sass */
+/* line 61, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/base.sass */
 .nav-menu__text:hover {
   color: #ffaf65;
+}
+
+/* line 64, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/base.sass */
+.page-link {
+  color: #000000;
+}
+
+/* line 67, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/base.sass */
+.pagination {
+  --bs-pagination-hover-color: #FF881B;
+  --bs-pagination-focus-color: #FF881B;
+  --bs-pagination-active-border-color: #FF881B;
 }
 
 /*# sourceMappingURL=base.css.map */
