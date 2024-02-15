@@ -11,9 +11,10 @@
         <title>{% block title %} {% endblock title %}</title>
 
         <!-- Base CSS -->
+        <link rel="stylesheet" href="{% static 'structure/css/base0.css' %}" xmlns="http://www.w3.org/1999/html">
         {% block css %} {% endblock %}
         <link rel="stylesheet" href="{% static 'structure/css/base.css' %}" xmlns="http://www.w3.org/1999/html">
-        
+
     </head>
 
     <body>
@@ -34,7 +35,7 @@
                         <a class="nav-menu__text" href="#">распределение сотрудников</a>
                     </li>
                     <li class="nav-menu__list-item item-text">
-                        <a class="nav-menu__text" href="#">выход</a>
+                        <a class="nav-menu__text" href="{% url 'structure:login' %}">выход</a>
                     </li>
                 </ul>
             </nav>

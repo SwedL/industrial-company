@@ -1,23 +1,20 @@
-@import "resets.scss"
-@import "normalizez.scss"
-    
-
 @font-face 
-    font-family: "MManrope"
-    src: url("../fonts/Manrope-Regular.ttf")
+    font-family: "PPTSans"
+    src: url("../fonts/PTSans-Regular.ttf")
     font-weight: regular
     font-style: normal
 
 @font-face 
-    font-family: "MManrope"
-    src: url("../fonts/Manrope-Bold.ttf")
+    font-family: "PPTSans"
+    src: url("../fonts/PTSans-Bold.ttf")
     font-weight: bold
     font-style: normal
 
 html
-    font-family: "MManrope"
+    font-family: "PPTSans"
     font-weight: regular
     scroll-behavior: smooth
+
 
 *
     box-sizing: border-box
@@ -33,6 +30,7 @@ body
     background: #0F1C23
     // padding-top: 25px
     &__container
+        height: 60px
         display: flex
         flex-direction: row
         width: 1300px
@@ -49,6 +47,8 @@ body
     &__list
         display: flex
         flex-direction: row
+        margin: 0
+        padding: 0
     &__list-item
         margin-right: 65px
         font-size: 16px
@@ -56,11 +56,17 @@ body
             margin-right: 0px
     &__text
         color: #FF881B
+        font-family: "PPTSans"
         // color: #E67A17
         text-decoration: none
     &__text:hover
         color: #ffaf65
 
+.form-control
+    margin-bottom: 10px
+    background: #C6D0D7
+    // background: rgba(0,0,0,0.3);
+    
 .page-link
     color: #000000
 
