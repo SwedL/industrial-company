@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, View, ListView
+from django.views.generic import TemplateView, View, ListView, CreateView
 
 from structure.forms import UserLoginForm
 from structure.models import Position, Employee
@@ -9,6 +9,9 @@ from django.contrib.auth.views import (LoginView, PasswordChangeView,
                                        PasswordResetConfirmView,
                                        PasswordResetView)
 from django.core.paginator import Paginator
+from django.urls import reverse
+
+from .forms import AddEmployeeForm
 
 
 class UserLoginView(LoginView):
@@ -68,3 +71,13 @@ class EmployeesListView(ListView):
         # context['position_id'] = self.kwargs['position_id']
         return context
 
+
+class AddEmployee(CreateView):
+    form_class = AddEmployeeForm
+    template_name = 'structure/add-employee.html'
+    success_url = reverse_lazy('structure:add_employee')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['employees'] = Employee.objects.filter(position=None)
+        return context

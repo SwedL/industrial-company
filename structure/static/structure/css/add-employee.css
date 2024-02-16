@@ -1,0 +1,66 @@
+@charset "UTF-8";
+/* line 1, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/add-employee.sass */
+.form-input {
+  width: 300px;
+  font-size: 16px;
+}
+
+/* line 5, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/add-employee.sass */
+.form-label {
+  display: inline-block;
+  min-width: 180px;
+  vertical-align: top;
+}
+
+/* line 10, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/add-employee.sass */
+.form-error ul {
+  list-style: none;
+  padding: 0;
+  color: #CC0000;
+}
+
+/* line 15, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/add-employee.sass */
+.form-button {
+  min-width: 200px;
+  font-size: 16px;
+}
+
+/* line 19, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/add-employee.sass */
+p {
+  margin-bottom: 5px;
+}
+
+/* line 21, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/add-employee.sass */
+p:last-child {
+  margin-bottom: 10px;
+}
+
+/* line 24, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/add-employee.sass */
+.main-section {
+  display: block;
+  width: 1440px;
+  margin: 0 auto;
+  margin-top: 30px;
+}
+
+/* line 30, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/add-employee.sass */
+.main-section__form {
+  margin-left: 70px;
+  margin-bottom: 50px;
+}
+
+/* line 33, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/add-employee.sass */
+.main-section__table {
+  width: 1300px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+
+/* line 37, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/add-employee.sass */
+.main-section__navigation {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+/*# sourceMappingURL=add-employee.css.map */
