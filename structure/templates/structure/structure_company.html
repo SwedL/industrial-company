@@ -1,0 +1,18 @@
+{% extends 'structure/base.html' %}
+
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'structure/css/structure_company.css' %}" xmlns="http://www.w3.org/1999/html">
+{% endblock %}
+
+{% block content %}
+    <div class="canv">
+        <canvas id="canvas"></canvas>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'structure/js/figures.js' %}"></script>
+    <script src="{% static 'structure/js/main.js' %}"></script>
+{% endblock %}

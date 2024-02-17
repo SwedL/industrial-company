@@ -1,0 +1,12 @@
+{
+	"version": 3,
+	"file": "structure_company.css",
+	"sources": [
+		"../sass/structure_company.sass"
+	],
+	"sourcesContent": [
+		".canv {\n    max-width: 1440px;\n    margin: 0 auto; }\n\n#canvas {\n    display: block;\n    margin: 0 auto; }\n"
+	],
+	"names": [],
+	"mappings": ";;AAAA,AAAA,KAAK,CAAC;EACF,SAAS,EAAE,MAAM;EACjB,MAAM,EAAE,MAAM;CAAG;;;AAErB,AAAA,OAAO,CAAC;EACJ,OAAO,EAAE,KAAK;EACd,MAAM,EAAE,MAAM;CAAG"
+}

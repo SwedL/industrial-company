@@ -1,0 +1,85 @@
+@charset "UTF-8";
+/* line 3, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/add_employee.sass */
+.form-input {
+  width: 300px;
+  font-size: 16px;
+}
+
+/* line 6, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/add_employee.sass */
+.form-label {
+  display: inline-block;
+  min-width: 180px;
+  vertical-align: top;
+}
+
+/* line 10, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/add_employee.sass */
+.form-error ul {
+  list-style: none;
+  padding: 0;
+  color: #CC0000;
+}
+
+/* line 14, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/add_employee.sass */
+.form-button {
+  min-width: 200px;
+  font-size: 16px;
+}
+
+/* line 18, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/add_employee.sass */
+p {
+  margin-bottom: 5px;
+}
+
+/* line 20, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/add_employee.sass */
+p:last-child {
+  margin-bottom: 10px;
+}
+
+/* line 23, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/add_employee.sass */
+.main-section {
+  display: block;
+  width: 1440px;
+  margin: 0 auto;
+  margin-top: 30px;
+}
+
+/* line 29, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/add_employee.sass */
+.main-section__form {
+  margin-left: 70px;
+  margin-bottom: 50px;
+  margin-bottom: 30px;
+}
+
+/* line 33, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/add_employee.sass */
+.main-section__table {
+  width: 1300px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+
+/* line 37, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/add_employee.sass */
+.main-section__navigation {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+/* line 42, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/add_employee.sass */
+small {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+/* line 46, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/add_employee.sass */
+th {
+  text-justify: center;
+  height: 30px;
+  background-color: #b1bac0;
+}
+
+/* line 51, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/add_employee.sass */
+tr:nth-child(even) {
+  background-color: #b1bac0;
+}
+
+/*# sourceMappingURL=add_employee.css.map */

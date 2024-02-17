@@ -1,0 +1,14 @@
+@charset "UTF-8";
+/* line 1, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/structure_company.sass */
+.canv {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+/* line 5, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/structure_company.sass */
+#canvas {
+  display: block;
+  margin: 0 auto;
+}
+
+/*# sourceMappingURL=structure_company.css.map */

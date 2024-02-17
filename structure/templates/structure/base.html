@@ -23,7 +23,7 @@
     <header class="header">
         <div class="header__container">
             <div class="header__container-logo">
-                <a href="{% url 'structure:structure_company' %}"><img class="header__logo" src="{% static 'structure/icons/logo2.svg' %}" alt="logo"></a>
+                <a href="{% url 'structure:login' %}"><img class="header__logo" src="{% static 'structure/icons/logo2.svg' %}" alt="logo"></a>
             </div>
                 <!-- Блок навигации -->
             <nav class="header__container-nav nav-menu">
@@ -44,7 +44,7 @@
 
         <!-- Контент страницы -->
     {% block content %} {% endblock %}
-
+        <script src="https://unpkg.com/htmx.org@1.9.4"></script>
     </body>
     {% block script %} {% endblock script %}
 
