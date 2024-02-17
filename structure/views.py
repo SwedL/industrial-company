@@ -1,5 +1,6 @@
 from django.contrib.auth.forms import AuthenticationForm
-from django.shortcuts import render
+from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.decorators.http import require_http_methods
 from django.views.generic import TemplateView, View, ListView, CreateView
@@ -39,7 +40,7 @@ class EmployeesListView(ListView):
         return context
 
 
-class AddEmployee(CreateView):
+class EmployeeCreateView(CreateView):
     form_class = AddEmployeeForm
     template_name = 'structure/add_employee.html'
     success_url = reverse_lazy('structure:add_employee')
@@ -49,11 +50,9 @@ class AddEmployee(CreateView):
         context['employees'] = Employee.objects.filter(position=None)
         return context
 
-    # def post(self, request, *args, **kwargs):
-    #     form = self.form_class(request.POST)
-    #     if form.is_valid:
-    #         employee = form.save()
-    #     else:
-    #         return self.render_to_response(self.get_context_data(form=form))
-    #     return render(request, 'structure/employee_detail.html', {'employee': employee})
 
+@require_http_methods(['DELETE'])
+def delete_employee(request, pk):
+    employee = get_object_or_404(Employee, pk=pk)
+    employee.delete()
+    return HttpResponse()

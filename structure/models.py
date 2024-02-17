@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 
 class Position(models.Model):
@@ -26,7 +27,7 @@ class Employee(models.Model):
     patronymic = models.CharField(max_length=50, verbose_name='отчество')
     position = models.ForeignKey(Position, on_delete=models.SET_NULL,
                                  blank=False, null=True, verbose_name='должность')
-    employment_date = models.DateField(null=True, blank=True, verbose_name='дата приёма на работу')
+    employment_date = models.DateField(default=timezone.now, verbose_name='дата приёма на работу')
     salary = models.IntegerField(default=0, verbose_name='зарплата')
 
     class Meta:

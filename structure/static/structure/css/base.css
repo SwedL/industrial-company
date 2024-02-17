@@ -109,4 +109,9 @@ body {
   --bs-pagination-active-border-color: #FF881B;
 }
 
+/* line 80, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/base.sass */
+footer {
+  height: 50px;
+}
+
 /*# sourceMappingURL=base.css.map */

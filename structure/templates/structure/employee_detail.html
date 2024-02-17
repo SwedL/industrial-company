@@ -29,31 +29,15 @@
         {{ employee.salary }}
     </td>
 
-<!--    &lt;!&ndash; Ячейка состояния &ndash;&gt;-->
-<!--    <td>-->
-<!--        {% if not book.read %}-->
-<!--            &lt;!&ndash; Кнопка "Unread" &ndash;&gt;-->
-<!--            <button class="disbtn">-->
-<!--                Unread-->
-<!--            </button>-->
-<!--        {% else %}-->
-<!--            &lt;!&ndash; Кнопка "Read" &ndash;&gt;-->
-<!--            <button class="disbtn">-->
-<!--                Read-->
-<!--            </button>-->
-<!--        {% endif %}-->
-<!--    </td>-->
-
     <!--  Ячейка кнопок действия -->
     <td>
-        <!-- Кнопка "Edit" -->
-        <button class="disbtn">
-            Edit
-        </button>
-
-        <!-- Кнопка "Delete" -->
-        <button class="disbtn">
-            Delete
+        <!-- Кнопка "Dismiss" -->
+        <button class="dismiss"
+            hx-delete="{% url 'structure:delete_employee' employee.id %}"
+            hx-target="closest tr"
+            hx-swap="outerHTML"
+            hx-confirm="Вы уверенны что хотите уволить сотрудника?" >
+            Уволить
         </button>
     </td>
 </tr>

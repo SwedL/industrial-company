@@ -16,7 +16,7 @@
 .form-error ul {
   list-style: none;
   padding: 0;
-  color: #CC0000;
+  color: #cd6300;
 }
 
 /* line 14, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/add_employee.sass */
@@ -32,54 +32,14 @@ p {
 
 /* line 20, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/add_employee.sass */
 p:last-child {
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
-/* line 23, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/add_employee.sass */
-.main-section {
-  display: block;
-  width: 1440px;
-  margin: 0 auto;
-  margin-top: 30px;
-}
-
-/* line 29, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/add_employee.sass */
+/* line 24, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/add_employee.sass */
 .main-section__form {
   margin-left: 70px;
   margin-bottom: 50px;
   margin-bottom: 30px;
-}
-
-/* line 33, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/add_employee.sass */
-.main-section__table {
-  width: 1300px;
-  margin: 0 auto;
-  margin-bottom: 20px;
-}
-
-/* line 37, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/add_employee.sass */
-.main-section__navigation {
-  display: flex;
-  justify-content: center;
-  margin: 0 auto;
-}
-
-/* line 42, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/add_employee.sass */
-small {
-  font-size: 15px;
-  font-weight: bold;
-}
-
-/* line 46, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/add_employee.sass */
-th {
-  text-justify: center;
-  height: 30px;
-  background-color: #b1bac0;
-}
-
-/* line 51, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/add_employee.sass */
-tr:nth-child(even) {
-  background-color: #b1bac0;
 }
 
 /*# sourceMappingURL=add_employee.css.map */

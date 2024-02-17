@@ -3,40 +3,52 @@
 .main-section {
   display: block;
   width: 1440px;
+  height: auto;
   margin: 0 auto;
   margin-top: 30px;
 }
 
-/* line 7, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/employees_list.sass */
+/* line 8, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/employees_list.sass */
 .main-section__table {
   width: 1300px;
   margin: 0 auto;
   margin-bottom: 20px;
 }
 
-/* line 11, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/employees_list.sass */
+/* line 12, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/employees_list.sass */
 .main-section__navigation {
   display: flex;
   justify-content: center;
   margin: 0 auto;
 }
 
-/* line 16, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/employees_list.sass */
+/* line 17, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/employees_list.sass */
+table {
+  width: 1300px;
+  margin: 0 auto;
+}
+
+/* line 21, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/employees_list.sass */
 small {
   font-size: 15px;
   font-weight: bold;
 }
 
-/* line 20, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/employees_list.sass */
+/* line 25, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/employees_list.sass */
 th {
   text-justify: center;
   height: 30px;
   background-color: #b1bac0;
 }
 
-/* line 25, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/employees_list.sass */
+/* line 30, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/employees_list.sass */
 tr:nth-child(even) {
   background-color: #b1bac0;
+}
+
+/* line 33, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/employees_list.sass */
+.dismiss {
+  font-size: 16px;
 }
 
 /*# sourceMappingURL=employees_list.css.map */
