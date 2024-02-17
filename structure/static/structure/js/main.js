@@ -221,7 +221,7 @@ let mouse_down = function(event) {
                     break;    // если блок определился, происходит прерывание цикла поиска блока
                 } else {
                     let num_key = key;
-                    window.location = `/employees-list/` + num_key;
+                    window.location = `/department/` + num_key;
 //                    window.location = `/employees-list/` + num_key + `/1`;
                 }
             };

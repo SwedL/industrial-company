@@ -10,9 +10,10 @@ app_name = 'structure'
 urlpatterns = [
     path('', UserLoginView.as_view(), name='login'),
     path('structure-company/', StructureCompanyTemplateView.as_view(), name='structure_company'),
-    path('employees-list/<int:position_id>/', EmployeesListView.as_view(), name='employees_list'),
+    path('department/<int:position_id>/', EmployeesListView.as_view(), name='department'),
     path('add-employee/', EmployeeCreateView.as_view(), name='add_employee'),
     # path('create-employee/', AddEmployee.as_view(), name='create_employee'),
     path('delete-employee/<int:pk>/', delete_employee, name='delete_employee'),
+    path("employees_list_sort/<filter>/<direction>/", employees_list_sort, name="employees_list_sort"),
     # path('employees-list/<int:position_id>/<int:page>/', employees_list, name='employees_list'),
 ]

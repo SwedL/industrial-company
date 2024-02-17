@@ -26,7 +26,7 @@ class StructureCompanyTemplateView(TemplateView):
 
 
 class EmployeesListView(ListView):
-    template_name = 'structure/employees_list.html'
+    template_name = 'structure/department.html'
     context_object_name = 'employees'
     paginate_by = 20
 
@@ -56,3 +56,19 @@ def delete_employee(request, pk):
     employee = get_object_or_404(Employee, pk=pk)
     employee.delete()
     return HttpResponse()
+
+
+@require_http_methods(['GET'])
+def employees_list_sort(request, filter, direction):
+    print('sfdsfsf')
+    if filter == "id":
+        if direction == 'ascend':
+            employees_list = Employee.objects.filter(position=None).order_by('pk')
+        else:
+            employees_list = Employee.objects.filter(position=None).order_by('-pk')
+    else:
+        if direction == 'ascend':
+            employees_list = Employee.objects.filter(position=None).order_by(filter)
+        else:
+            employees_list = Employee.objects.filter(position=None).order_by('-' + filter)
+    return render(request, 'structure/employees_list.html', {'employees': employees_list})
