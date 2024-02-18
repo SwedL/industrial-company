@@ -11,6 +11,7 @@ urlpatterns = [
     path('', UserLoginView.as_view(), name='login'),
     path('structure-company/', StructureCompanyTemplateView.as_view(), name='structure_company'),
     path('department/<int:position_id>/<filter>/<direction>/', EmployeesListView.as_view(), name='department'),
+    path('add-employee/<filter>/<direction>/', EmployeeCreateView.as_view(), name='add_employee'),
     path('add-employee/', EmployeeCreateView.as_view(), name='add_employee'),
     # path('create-employee/', AddEmployee.as_view(), name='create_employee'),
     path('delete-employee/<int:pk>/', delete_employee, name='delete_employee'),

@@ -17,7 +17,7 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     </head>
 
-    <body>
+    <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
 
     <!-- Header -->
     <header class="header">
@@ -32,7 +32,7 @@
                         <a class="nav-menu__text" href="{% url 'structure:structure_company' %}">структура компании</a>
                     </li>
                     <li class="nav-menu__list-item item-text">
-                        <a class="nav-menu__text" href="{% url 'structure:add_employee' %}">найм и распределение сотрудников</a>
+                        <a class="nav-menu__text" href="{% url 'structure:add_employee' filter='id' direction='ascend' %}">найм и распределение сотрудников</a>
                     </li>
                     <li class="nav-menu__list-item item-text">
                         <a class="nav-menu__text" href="{% url 'structure:login' %}">выход</a>

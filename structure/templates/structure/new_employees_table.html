@@ -1,0 +1,136 @@
+<div class="main-section__table">
+    <!-- Список сотрудников -->
+    <table>
+        <thead>
+        <tr>
+            <!-- Заголовки столбцов таблицы -->
+            <!-- Заголовок id сотрудника -->
+            <th scope="col" style="width: 5%">
+                <small>
+                    №
+                    <a href="{% url 'structure:add_employee' filter='id' direction='ascend' %}">
+                       <i class="table-icon bi bi-arrow-down-square ms-1"></i>
+                    </a>
+                    <a href="{% url 'structure:add_employee' filter='id' direction='descend' %}">
+                       <i class="table-icon bi bi-arrow-up-square"></i>
+                    </a>
+                </small>
+            </th>
+
+            <!-- Заголовок фамилия сотрудника -->
+            <th scope="col" style="width: 10%">
+                <small>
+                    Фамилия
+                    <a href="{% url 'structure:add_employee' filter='last_name' direction='ascend' %}">
+                        <i class="table-icon bi bi-arrow-down-square ms-1"></i>
+                    </a>
+                    <a href="{% url 'structure:add_employee' filter='last_name' direction='descend' %}">
+                        <i class="table-icon bi bi-arrow-up-square"></i>
+                    </a>
+                </small>
+            </th>
+
+            <!-- Заголовок имени сотрудника -->
+            <th scope="col" style="width: 10%">
+                <small>
+                    Имя
+                    <a href="{% url 'structure:add_employee' filter='first_name' direction='ascend' %}">
+                        <i class="table-icon bi bi-arrow-down-square ms-1"></i>
+                    </a>
+                    <a href="{% url 'structure:add_employee' filter='first_name' direction='descend' %}">
+                        <i class="table-icon bi bi-arrow-up-square"></i>
+                    </a>
+                </small>
+            </th>
+
+            <!-- Заголовок отчество сотрудника -->
+            <th scope="col" style="width: 15%">
+                <small>
+                    Отчество
+                    <a href="{% url 'structure:add_employee' filter='patronymic' direction='ascend' %}">
+                        <i class="table-icon bi bi-arrow-down-square ms-1"></i>
+                    </a>
+                    <a href="{% url 'structure:add_employee' filter='patronymic' direction='descend' %}">
+                        <i class="table-icon bi bi-arrow-up-square"></i>
+                    </a>
+                </small>
+            </th>
+
+            <!-- Заголовок должности сотрудника -->
+            <th scope="col" style="width: 20%">
+                <small>
+                    Должность
+                    <a href="{% url 'structure:add_employee' filter='position' direction='ascend' %}">
+                        <i class="table-icon bi bi-arrow-down-square ms-1"></i>
+                    </a>
+                    <a href="{% url 'structure:add_employee' filter='position' direction='descend' %}">
+                        <i class="table-icon bi bi-arrow-up-square"></i>
+                    </a>
+                </small>
+            </th>
+
+            <!-- Заголовок дата приёма на работу -->
+            <th scope="col" style="width: 25%">
+                <small>
+                    Дата приёма на работу
+                    <a href="{% url 'structure:add_employee' filter='employment_date' direction='ascend' %}">
+                        <i class="table-icon bi bi-arrow-down-square ms-1"></i>
+                    </a>
+                    <a href="{% url 'structure:add_employee' filter='employment_date' direction='descend' %}">
+                        <i class="table-icon bi bi-arrow-up-square"></i>
+                    </a>
+                </small>
+            </th>
+
+            <!-- Заголовок зарплаты сотрудника -->
+            <th scope="col" style="width: 12%">
+                <small>
+                    Зарплата
+                    <a href="{% url 'structure:add_employee' filter='salary' direction='ascend' %}">
+                        <i class="table-icon bi bi-arrow-down-square ms-1"></i>
+                    </a>
+                    <a href="{% url 'structure:add_employee' filter='salary' direction='descend' %}">
+                        <i class="table-icon bi bi-arrow-up-square"></i>
+                    </a>
+                </small>
+            </th>
+
+            <!-- Заголовок кнопок действия -->
+            <th scope="col" style="width: 3%">
+                <small>
+                    Действия
+                </small>
+            </th>
+
+        </tr>
+        </thead>
+
+        <!-- Список сотрудников -->
+        <tbody id="employees-list">
+        {% include "structure/employees_list.html" %}
+        </tbody>
+
+    </table>
+</div>
+{% if paginator_range %}
+<div class="main-section__navigation">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+        <li class="page-item {% if not page_obj.has_previous %} disabled {% endif %}">
+            <a class="page-link" href="{% if page_obj.has_previous %} ?page={{page_obj.previous_page_number }} {% else %} # {% endif %}">Предыдущая</a>
+        </li>
+        {% for page in paginator_range %}
+
+            {% if page == page_obj.number or page == paginator.ELLIPSIS %}
+                <li class="page-item disabled"><a class="page-link" href="#">{{page}}</a></li>
+            {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{page}}">{{page}}</a></li>
+            {% endif %}
+        {% endfor %}
+        <li class="page-item {% if not page_obj.has_next %} disabled {% endif %}">
+            <a class="page-link" href="{% if page_obj.has_next %} ?page={{page_obj.next_page_number}} {% else %} # {% endif %}">Следующая</a>
+        </li>
+        </ul>
+    </nav>
+</div>
+{% endif %}
