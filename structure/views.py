@@ -32,7 +32,26 @@ class EmployeesListView(ListView):
     paginate_by = 20
 
     def get_queryset(self):
-        return Employee.objects.filter(position=self.kwargs['position_id'])
+        filter = self.kwargs['filter']
+        direction = self.kwargs['direction']
+        position_id = self.kwargs['position_id']
+
+        if filter != '0':
+            if filter == "id":
+                if direction == 'ascend':
+                    employees_list = Employee.objects.filter(position=position_id).order_by('pk')
+                else:
+                    employees_list = Employee.objects.filter(position=position_id).order_by('-pk')
+            else:
+                if direction == 'ascend':
+                    employees_list = Employee.objects.filter(position=position_id).order_by(filter)
+                else:
+                    employees_list = Employee.objects.filter(position=position_id).order_by('-' + filter)
+
+        else:
+            employees_list = Employee.objects.filter(position=self.kwargs['position_id'])
+
+        return employees_list
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
