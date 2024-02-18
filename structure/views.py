@@ -29,27 +29,23 @@ class StructureCompanyTemplateView(TemplateView):
 class EmployeesListView(ListView):
     template_name = 'structure/department.html'
     context_object_name = 'employees'
-    paginate_by = 20
+    paginate_by = 25
 
     def get_queryset(self):
         filter = self.kwargs['filter']
         direction = self.kwargs['direction']
         position_id = self.kwargs['position_id']
 
-        if filter != '0':
-            if filter == "id":
-                if direction == 'ascend':
-                    employees_list = Employee.objects.filter(position=position_id).order_by('pk')
-                else:
-                    employees_list = Employee.objects.filter(position=position_id).order_by('-pk')
+        if filter == "id":
+            if direction == 'ascend':
+                employees_list = Employee.objects.filter(position=position_id).order_by('pk')
             else:
-                if direction == 'ascend':
-                    employees_list = Employee.objects.filter(position=position_id).order_by(filter)
-                else:
-                    employees_list = Employee.objects.filter(position=position_id).order_by('-' + filter)
-
+                employees_list = Employee.objects.filter(position=position_id).order_by('-pk')
         else:
-            employees_list = Employee.objects.filter(position=self.kwargs['position_id'])
+            if direction == 'ascend':
+                employees_list = Employee.objects.filter(position=position_id).order_by(filter)
+            else:
+                employees_list = Employee.objects.filter(position=position_id).order_by('-' + filter)
 
         return employees_list
 
@@ -71,11 +67,11 @@ class EmployeeCreateView(CreateView):
         position_id = None
         filter = None
 
-        if kwargs:
+        if self.kwargs:
             filter = self.kwargs['filter']
             direction = self.kwargs['direction']
 
-        if filter and filter != '0':
+        if filter:
             if filter == "id":
                 if direction == 'ascend':
                     employees_list = Employee.objects.filter(position=position_id).order_by('pk')
