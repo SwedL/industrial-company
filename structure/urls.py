@@ -14,6 +14,6 @@ urlpatterns = [
     path('add-employee/', EmployeeCreateView.as_view(), name='add_employee'),
     # path('create-employee/', AddEmployee.as_view(), name='create_employee'),
     path('delete-employee/<int:pk>/', delete_employee, name='delete_employee'),
-    path("employees_list_sort/<filter>/<direction>/", employees_list_sort, name="employees_list_sort"),
+    path("employees_list_sort/<filter>/<direction>/<int:position_id>/", employees_list_sort, name="employees_list_sort"),
     # path('employees-list/<int:position_id>/<int:page>/', employees_list, name='employees_list'),
 ]

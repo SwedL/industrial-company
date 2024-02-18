@@ -9,13 +9,13 @@
                 <small>
                     №
                     <a href=""
-                       hx-get="{% url 'structure:employees_list_sort' filter='id' direction='ascend' %}"
+                       hx-get="{% url 'structure:employees_list_sort' position_id=department filter='id' direction='ascend' %}"
                        hx-target="#employees-list"
                        hx-swap="innerHTML">
                         <i class="table-icon bi bi-arrow-down-square ms-1"></i>
                     </a>
                     <a href=""
-                       hx-get="{% url 'structure:employees_list_sort' filter='id' direction='descend' %}"
+                       hx-get="{% url 'structure:employees_list_sort' position_id=department filter='id' direction='descend' %}"
                        hx-target="#employees-list"
                        hx-swap="innerHTML">
                         <i class="table-icon bi bi-arrow-up-square"></i>
@@ -28,13 +28,13 @@
                 <small>
                     Фамилия
                     <a href=""
-                       hx-get="{% url 'structure:employees_list_sort' filter='last_name' direction='ascend' %}"
+                       hx-get="{% url 'structure:employees_list_sort' position_id=department filter='last_name' direction='ascend' %}"
                        hx-target="#employees-list"
                        hx-swap="innerHTML">
                         <i class="table-icon bi bi-arrow-down-square ms-1"></i>
                     </a>
                     <a href=""
-                       hx-get="{% url 'structure:employees_list_sort' filter='last_name' direction='descend' %}"
+                       hx-get="{% url 'structure:employees_list_sort' position_id=department filter='last_name' direction='descend' %}"
                        hx-target="#employees-list"
                        hx-swap="innerHTML">
                         <i class="table-icon bi bi-arrow-up-square"></i>
@@ -47,13 +47,13 @@
                 <small>
                     Имя
                     <a href=""
-                       hx-get="{% url 'structure:employees_list_sort' filter='first_name' direction='ascend' %}"
+                       hx-get="{% url 'structure:employees_list_sort' position_id=department filter='first_name' direction='ascend' %}"
                        hx-target="#employees-list"
                        hx-swap="innerHTML">
                         <i class="table-icon bi bi-arrow-down-square ms-1"></i>
                     </a>
                     <a href=""
-                       hx-get="{% url 'structure:employees_list_sort' filter='first_name' direction='descend' %}"
+                       hx-get="{% url 'structure:employees_list_sort' position_id=department filter='first_name' direction='descend' %}"
                        hx-target="#employees-list"
                        hx-swap="innerHTML">
                         <i class="table-icon bi bi-arrow-up-square"></i>
@@ -66,13 +66,13 @@
                 <small>
                     Отчество
                     <a href=""
-                       hx-get="{% url 'structure:employees_list_sort' filter='patronymic' direction='ascend' %}"
+                       hx-get="{% url 'structure:employees_list_sort' position_id=department filter='patronymic' direction='ascend' %}"
                        hx-target="#employees-list"
                        hx-swap="innerHTML">
                         <i class="table-icon bi bi-arrow-down-square ms-1"></i>
                     </a>
                     <a href=""
-                       hx-get="{% url 'structure:employees_list_sort' filter='patronymic' direction='descend' %}"
+                       hx-get="{% url 'structure:employees_list_sort' position_id=department filter='patronymic' direction='descend' %}"
                        hx-target="#employees-list"
                        hx-swap="innerHTML">
                         <i class="table-icon bi bi-arrow-up-square"></i>
@@ -85,13 +85,13 @@
                 <small>
                     Должность
                     <a href=""
-                       hx-get="{% url 'structure:employees_list_sort' filter='position' direction='ascend' %}"
+                       hx-get="{% url 'structure:employees_list_sort' position_id=department filter='position' direction='ascend' %}"
                        hx-target="#employees-list"
                        hx-swap="innerHTML">
                         <i class="table-icon bi bi-arrow-down-square ms-1"></i>
                     </a>
                     <a href=""
-                       hx-get="{% url 'structure:employees_list_sort' filter='position' direction='descend' %}"
+                       hx-get="{% url 'structure:employees_list_sort' position_id=department filter='position' direction='descend' %}"
                        hx-target="#employees-list"
                        hx-swap="innerHTML">
                         <i class="table-icon bi bi-arrow-up-square"></i>
@@ -104,13 +104,13 @@
                 <small>
                     Дата приёма на работу
                     <a href=""
-                       hx-get="{% url 'structure:employees_list_sort' filter='employment_date' direction='ascend' %}"
+                       hx-get="{% url 'structure:employees_list_sort' position_id=department filter='employment_date' direction='ascend' %}"
                        hx-target="#employees-list"
                        hx-swap="innerHTML">
                         <i class="table-icon bi bi-arrow-down-square ms-1"></i>
                     </a>
                     <a href=""
-                       hx-get="{% url 'structure:employees_list_sort' filter='employment_date' direction='descend' %}"
+                       hx-get="{% url 'structure:employees_list_sort' position_id=department filter='employment_date' direction='descend' %}"
                        hx-target="#employees-list"
                        hx-swap="innerHTML">
                         <i class="table-icon bi bi-arrow-up-square"></i>
@@ -123,13 +123,13 @@
                 <small>
                     Зарплата
                     <a href=""
-                       hx-get="{% url 'structure:employees_list_sort' filter='salary' direction='ascend' %}"
+                       hx-get="{% url 'structure:employees_list_sort' position_id=department filter='salary' direction='ascend' %}"
                        hx-target="#employees-list"
                        hx-swap="innerHTML">
                         <i class="table-icon bi bi-arrow-down-square ms-1"></i>
                     </a>
                     <a href=""
-                       hx-get="{% url 'structure:employees_list_sort' filter='salary' direction='descend' %}"
+                       hx-get="{% url 'structure:employees_list_sort' position_id=department filter='salary' direction='descend' %}"
                        hx-target="#employees-list"
                        hx-swap="innerHTML">
                         <i class="table-icon bi bi-arrow-up-square"></i>

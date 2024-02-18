@@ -222,7 +222,6 @@ let mouse_down = function(event) {
                 } else {
                     let num_key = key;
                     window.location = `/department/` + num_key;
-//                    window.location = `/employees-list/` + num_key + `/1`;
                 }
             };
         }
