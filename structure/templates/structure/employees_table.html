@@ -12,7 +12,7 @@
             </th>
 
             <!-- Заголовок фамилия сотрудника -->
-            <th scope="col" style="width: 10%">
+            <th scope="col" style="width: 12%">
                 <small>
                     Фамилия
                     <a href="{% url 'structure:department' position_id=department order_by='last_name' direction='ascend' %}">
@@ -25,7 +25,7 @@
             </th>
 
             <!-- Заголовок имени сотрудника -->
-            <th scope="col" style="width: 10%">
+            <th scope="col" style="width: 12%">
                 <small>
                     Имя
                     <a href="{% url 'structure:department' position_id=department order_by='first_name' direction='ascend' %}">
@@ -38,7 +38,7 @@
             </th>
 
             <!-- Заголовок отчество сотрудника -->
-            <th scope="col" style="width: 15%">
+            <th scope="col" style="width: 17%">
                 <small>
                     Отчество
                     <a href="{% url 'structure:department' position_id=department order_by='patronymic' direction='ascend' %}">
@@ -64,7 +64,7 @@
             </th>
 
             <!-- Заголовок дата приёма на работу -->
-            <th scope="col" style="width: 25%">
+            <th scope="col" style="width: 20%">
                 <small>
                     Дата приёма на работу
                     <a href="{% url 'structure:department' position_id=department order_by='employment_date' direction='ascend' %}">

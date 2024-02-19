@@ -6,7 +6,7 @@ from django.views.decorators.http import require_http_methods
 from django.views.generic import TemplateView, View, ListView, CreateView
 from django.core.paginator import Paginator
 
-from structure.forms import UserLoginForm
+from structure.forms import UserLoginForm, SearchEmployeeForm
 from structure.models import Position, Employee
 from django.contrib.auth.views import (LoginView, PasswordChangeView,
                                        PasswordResetConfirmView,
@@ -30,12 +30,13 @@ class EmployeesView(View):
     paginate_by = 25
 
     def get(self, request, position_id, order_by, direction):
+        form = SearchEmployeeForm()
 
         if direction == 'descend':
             order_by += ' DESC'
 
-        s = f'SELECT ROW_NUMBER() OVER(ORDER BY {order_by}) AS num, * FROM structure_employee WHERE position_id = {position_id} ORDER BY {order_by}'
-        employees_list = Employee.objects.raw(s)
+        sql = f'SELECT ROW_NUMBER() OVER(ORDER BY {order_by}) AS num, * FROM structure_employee WHERE position_id = {position_id} ORDER BY {order_by}'
+        employees_list = Employee.objects.raw(sql)
 
         paginator = Paginator(employees_list, 20)
         page_number = request.GET.get("page")
@@ -44,12 +45,38 @@ class EmployeesView(View):
         context = {
             'employees': page_obj,
             'department': position_id,
-            'paginator_range': page_obj.paginator.get_elided_page_range(page_obj.number)
+            'paginator_range': page_obj.paginator.get_elided_page_range(page_obj.number),
+            'form': form,
         }
         return render(request, 'structure/department.html', context=context)
 
-    def post(self, request):
-        pass
+    def post(self, request, position_id, order_by, direction):
+        form = SearchEmployeeForm()
+        where_list = ['last_name', 'first_name', 'patronymic', 'employment_date', 'salary']
+        where_dict = {i: request.POST[i] for i in where_list}
+
+        normal_list = [f'{k} LIKE "%{v}%"' for k, v in where_dict.items() if v]
+        normal_list.insert(0, f'WHERE position_id = {position_id}')
+
+        sql_where = ' AND '.join(normal_list)
+
+        if direction == 'descend':
+            order_by += ' DESC'
+
+        sql = f'SELECT ROW_NUMBER() OVER(ORDER BY {order_by}) AS num, * FROM structure_employee {sql_where} ORDER BY {order_by}'
+        employees_list = Employee.objects.raw(sql)
+
+        paginator = Paginator(employees_list, 20)
+        page_number = request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+
+        context = {
+            'employees': page_obj,
+            'department': position_id,
+            'paginator_range': page_obj.paginator.get_elided_page_range(page_obj.number),
+            'form': form,
+        }
+        return render(request, 'structure/department.html', context=context)
 
 
 class EmployeeCreateView(CreateView):
