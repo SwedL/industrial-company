@@ -26,35 +26,30 @@ class StructureCompanyTemplateView(TemplateView):
     template_name = 'structure/structure_company.html'
 
 
-class EmployeesListView(ListView):
-    template_name = 'structure/department.html'
-    context_object_name = 'employees'
+class EmployeesView(View):
     paginate_by = 25
 
-    def get_queryset(self):
-        filter = self.kwargs['filter']
-        direction = self.kwargs['direction']
-        position_id = self.kwargs['position_id']
+    def get(self, request, position_id, order_by, direction):
 
-        if filter == "id":
-            if direction == 'ascend':
-                employees_list = Employee.objects.filter(position=position_id).order_by('pk')
-            else:
-                employees_list = Employee.objects.filter(position=position_id).order_by('-pk')
-        else:
-            if direction == 'ascend':
-                employees_list = Employee.objects.filter(position=position_id).order_by(filter)
-            else:
-                employees_list = Employee.objects.filter(position=position_id).order_by('-' + filter)
+        if direction == 'descend':
+            order_by += ' DESC'
 
-        return employees_list
+        s = f'SELECT ROW_NUMBER() OVER(ORDER BY {order_by}) AS num, * FROM structure_employee WHERE position_id = {position_id} ORDER BY {order_by}'
+        employees_list = Employee.objects.raw(s)
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        page = context['page_obj']
-        context['department'] = self.kwargs['position_id']
-        context['paginator_range'] = page.paginator.get_elided_page_range(page.number)
-        return context
+        paginator = Paginator(employees_list, 20)
+        page_number = request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+
+        context = {
+            'employees': page_obj,
+            'department': position_id,
+            'paginator_range': page_obj.paginator.get_elided_page_range(page_obj.number)
+        }
+        return render(request, 'structure/department.html', context=context)
+
+    def post(self, request):
+        pass
 
 
 class EmployeeCreateView(CreateView):

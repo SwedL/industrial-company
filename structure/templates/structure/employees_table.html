@@ -8,12 +8,6 @@
             <th scope="col" style="width: 5%">
                 <small>
                     №
-                    <a href="{% url 'structure:department' position_id=department filter='id' direction='ascend' %}">
-                       <i class="table-icon bi bi-arrow-down-square ms-1"></i>
-                    </a>
-                    <a href="{% url 'structure:department' position_id=department filter='id' direction='descend' %}">
-                       <i class="table-icon bi bi-arrow-up-square"></i>
-                    </a>
                 </small>
             </th>
 
@@ -21,10 +15,10 @@
             <th scope="col" style="width: 10%">
                 <small>
                     Фамилия
-                    <a href="{% url 'structure:department' position_id=department filter='last_name' direction='ascend' %}">
+                    <a href="{% url 'structure:department' position_id=department order_by='last_name' direction='ascend' %}">
                         <i class="table-icon bi bi-arrow-down-square ms-1"></i>
                     </a>
-                    <a href="{% url 'structure:department' position_id=department filter='last_name' direction='descend' %}">
+                    <a href="{% url 'structure:department' position_id=department order_by='last_name' direction='descend' %}">
                         <i class="table-icon bi bi-arrow-up-square"></i>
                     </a>
                 </small>
@@ -34,10 +28,10 @@
             <th scope="col" style="width: 10%">
                 <small>
                     Имя
-                    <a href="{% url 'structure:department' position_id=department filter='first_name' direction='ascend' %}">
+                    <a href="{% url 'structure:department' position_id=department order_by='first_name' direction='ascend' %}">
                         <i class="table-icon bi bi-arrow-down-square ms-1"></i>
                     </a>
-                    <a href="{% url 'structure:department' position_id=department filter='first_name' direction='descend' %}">
+                    <a href="{% url 'structure:department' position_id=department order_by='first_name' direction='descend' %}">
                         <i class="table-icon bi bi-arrow-up-square"></i>
                     </a>
                 </small>
@@ -47,10 +41,10 @@
             <th scope="col" style="width: 15%">
                 <small>
                     Отчество
-                    <a href="{% url 'structure:department' position_id=department filter='patronymic' direction='ascend' %}">
+                    <a href="{% url 'structure:department' position_id=department order_by='patronymic' direction='ascend' %}">
                         <i class="table-icon bi bi-arrow-down-square ms-1"></i>
                     </a>
-                    <a href="{% url 'structure:department' position_id=department filter='patronymic' direction='descend' %}">
+                    <a href="{% url 'structure:department' position_id=department order_by='patronymic' direction='descend' %}">
                         <i class="table-icon bi bi-arrow-up-square"></i>
                     </a>
                 </small>
@@ -60,10 +54,10 @@
             <th scope="col" style="width: 20%">
                 <small>
                     Должность
-                    <a href="{% url 'structure:department' position_id=department filter='position' direction='ascend' %}">
+                    <a href="{% url 'structure:department' position_id=department order_by='position' direction='ascend' %}">
                         <i class="table-icon bi bi-arrow-down-square ms-1"></i>
                     </a>
-                    <a href="{% url 'structure:department' position_id=department filter='position' direction='descend' %}">
+                    <a href="{% url 'structure:department' position_id=department order_by='position' direction='descend' %}">
                         <i class="table-icon bi bi-arrow-up-square"></i>
                     </a>
                 </small>
@@ -73,10 +67,10 @@
             <th scope="col" style="width: 25%">
                 <small>
                     Дата приёма на работу
-                    <a href="{% url 'structure:department' position_id=department filter='employment_date' direction='ascend' %}">
+                    <a href="{% url 'structure:department' position_id=department order_by='employment_date' direction='ascend' %}">
                         <i class="table-icon bi bi-arrow-down-square ms-1"></i>
                     </a>
-                    <a href="{% url 'structure:department' position_id=department filter='employment_date' direction='descend' %}">
+                    <a href="{% url 'structure:department' position_id=department order_by='employment_date' direction='descend' %}">
                         <i class="table-icon bi bi-arrow-up-square"></i>
                     </a>
                 </small>
@@ -86,10 +80,10 @@
             <th scope="col" style="width: 12%">
                 <small>
                     Зарплата
-                    <a href="{% url 'structure:department' position_id=department filter='salary' direction='ascend' %}">
+                    <a href="{% url 'structure:department' position_id=department order_by='salary' direction='ascend' %}">
                         <i class="table-icon bi bi-arrow-down-square ms-1"></i>
                     </a>
-                    <a href="{% url 'structure:department' position_id=department filter='salary' direction='descend' %}">
+                    <a href="{% url 'structure:department' position_id=department order_by='salary' direction='descend' %}">
                         <i class="table-icon bi bi-arrow-up-square"></i>
                     </a>
                 </small>
