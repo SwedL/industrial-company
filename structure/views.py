@@ -38,10 +38,16 @@ class StructureCompanyTemplateView(TemplateView):
 class EmployeesView(View):
     paginate_by = 25
 
-    def get(self, request, position_id: int, order_by: str, direction: str):
+    def get(self, request, order_by: str, direction: str, position_id: int = None):
+
         # получаем данные из формы поиска и фильтры поиска для sql запроса если они есть
-        form = SearchEmployeeForm(common_where_and_request_data.get('request_data', None))
-        where_for_sql = common_where_and_request_data.get('where_for_sql', f'WHERE position_id = {position_id}')
+        form = SearchEmployeeForm(common_where_and_request_data.get('request_data', {'position': position_id}))
+        where_for_sql = common_where_and_request_data.get('where_for_sql', '')
+
+        # если нет фильтров sql запроса, но есть параметр position_id, то фильтруем только по должности и сохраняем фильтр
+        if not where_for_sql and position_id:
+            where_for_sql = f'WHERE position_id = {position_id}'
+            common_where_and_request_data['where_for_sql'] = where_for_sql
 
         if direction == 'descend':
             order_by += ' DESC'
@@ -56,13 +62,12 @@ class EmployeesView(View):
 
         context = {
             'employees': page_obj,
-            'department': position_id,
             'paginator_range': page_obj.paginator.get_elided_page_range(page_obj.number),
             'form': form,
         }
         return render(request, 'structure/department.html', context=context)
 
-    def post(self, request, position_id: int, order_by: str, direction: str):
+    def post(self, request, order_by: str, direction: str, position_id: int = None):
 
         # получаем фильтры для sql запроса из request.POST и создаём словарь
         search_key_list = ['last_name', 'first_name', 'patronymic', 'employment_date', 'salary']
@@ -70,8 +75,8 @@ class EmployeesView(View):
 
         # создаём часть список частей фильтров запроса
         list_filters_for_sql = [f'{k} LIKE "%{v}%"' for k, v in request_dict_from_the_search_key_list.items() if v]
-        list_filters_for_sql.insert(0, f'WHERE position_id = {position_id}')  # добавляем в начало списка ключевое слово и фильтр
-        where_for_sql = ' AND '.join(list_filters_for_sql)  # создаём строку фильтра WHERE из списка фильтров
+        # list_filters_for_sql.insert(0, f'WHERE ')  # добавляем в начало списка ключевое слово и фильтр
+        where_for_sql = 'WHERE ' + ' AND '.join(list_filters_for_sql)  # создаём строку фильтра WHERE из списка фильтров
 
         """ 
         если фильтров поиска не поступало, то словарь common_where_and_request_data очищается
@@ -98,7 +103,6 @@ class EmployeesView(View):
 
         context = {
             'employees': page_obj,
-            'department': position_id,
             'paginator_range': page_obj.paginator.get_elided_page_range(page_obj.number),
             'form': form,
         }
