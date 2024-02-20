@@ -47,9 +47,10 @@ class EmployeesView(View):
             order_by += ' DESC'
 
         if common_sql:
-            sql = common_sql[0]
+            where_for_sql = common_sql[0]
         else:
-            sql = f'SELECT ROW_NUMBER() OVER(ORDER BY {order_by}) AS num, * FROM structure_employee WHERE position_id = {position_id} ORDER BY {order_by}'
+            where_for_sql = f'WHERE position_id = {position_id}'
+        sql = f'SELECT ROW_NUMBER() OVER(ORDER BY {order_by}) AS num, * FROM structure_employee {where_for_sql} ORDER BY {order_by}'
 
         employees_list = Employee.objects.raw(sql)
 
@@ -71,10 +72,11 @@ class EmployeesView(View):
         request_dict_from_the_search_key_list = {i: request.POST[i] for i in search_key_list}
 
         list_filters_for_sql = [f'{k} LIKE "%{v}%"' for k, v in request_dict_from_the_search_key_list.items() if v]
+
+        # если фильтров поиска не поступало, то common_sql очищается
         if not list_filters_for_sql:
             common_sql.clear()
 
-        # TODO replace sql in common_sql on WHERE
         list_filters_for_sql.insert(0, f'WHERE position_id = {position_id}')
         where_for_sql = ' AND '.join(list_filters_for_sql)
 
@@ -82,7 +84,7 @@ class EmployeesView(View):
             order_by += ' DESC'
 
         sql = f'SELECT ROW_NUMBER() OVER(ORDER BY {order_by}) AS num, * FROM structure_employee {where_for_sql} ORDER BY {order_by}'
-        common_sql.insert(0, sql)
+        common_sql.insert(0, where_for_sql)
         common_sql.insert(1, request.POST)
 
         employees_list = Employee.objects.raw(sql)
