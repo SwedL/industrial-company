@@ -17,6 +17,7 @@ from django.urls import reverse
 from .forms import AddEmployeeForm
 
 
+# словарь для хранения фильтров cql запросов и данных формы поиска по полям
 common_where_and_request_data = {}
 
 
@@ -38,7 +39,7 @@ class EmployeesView(View):
     paginate_by = 25
 
     def get(self, request, position_id: int, order_by: str, direction: str):
-
+        # получаем данные из формы поиска и фильтры поиска для sql запроса если они есть
         form = SearchEmployeeForm(common_where_and_request_data.get('request_data', None))
         where_for_sql = common_where_and_request_data.get('where_for_sql', f'WHERE position_id = {position_id}')
 
