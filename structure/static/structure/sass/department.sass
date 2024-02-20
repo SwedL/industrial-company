@@ -7,14 +7,10 @@
     margin-top: 30px
     background:
     &__search
-        display: flex
-        flex-direction: row
-        width: 1300px
         margin: 0 auto
         margin-bottom: 20px
-        font-size: 15px
     &__table
-        width: 1300px
+        width: 1400px
         margin: 0 auto
         margin-bottom: 20px
     &__navigation
@@ -23,14 +19,19 @@
         margin: 0 auto
 
 .form-search
-    width: 1300px
+    width: 1400px
     height: 35px
     display: flex
     flex-direction: row
+    align-items: center
+    &__button-box
+        display: flex
+        flex-direction: row
+        justify-content: space-around
+        align-items: center
 
-input
-    width: 90%
-    margin-right: 10px
+input, select
+    width: calc( 100% - 10px )
     background: rgba(44, 44, 44, 0.3)
     border: none
     outline: none
@@ -40,7 +41,7 @@ input
     text-shadow: 1px 1px 1px rgba(0,0,0,0.3)
     border: 1px solid rgba(0,0,0,0.3)
     border-radius: 4px
-    box-shadow: inset 0 -5px 45px rgba(192, 192, 192, 0.2), 0 1px 1px rgba(255, 255, 255, 0.471)
+    box-shadow: inset 0 -5px 45px rgba(192, 192, 192, 0.2), 0 1px 1px rgba(183, 183, 183, 0.471)
     -webkit-transition: box-shadow .5s ease
     -moz-transition: box-shadow .5s ease
     -o-transition: box-shadow .5s ease
@@ -54,8 +55,11 @@ a
     color: #b55800
     text-decoration: underline
 
+p
+    margin: 0
+
 table
-    width: 1300px
+    width: 1400px
     margin: 0 auto
 
 small
@@ -63,43 +67,55 @@ small
     font-weight: bold
 
 th
-    text-justify: center
+    vertical-align: middle
+    text-align: center
     height: 30px
     background-color: #b1bac0
+    padding-left: 5px
+    padding-right: 5px
+    
+td
+    padding: 5px
+    // padding-left: 5px
+    // padding-right: 5px
+    &:nth-child(1)
+        text-align: end
+    &:nth-child(7)
+        text-align: end
+
 tr
     &:nth-child(even)
         background-color: #b1bac0
 
-.btn-primary
-    --bs-btn-color: #fff
-    --bs-btn-bg: #d86900
-    --bs-btn-border-color: #d86900
-    --bs-btn-hover-color: #fff
-    --bs-btn-hover-bg: #af5c0e
-    --bs-btn-hover-border-color: #c76000
-    --bs-btn-focus-shadow-rgb: 49,132,253
-    --bs-btn-active-color: #fff
-    --bs-btn-active-bg: #c76000
-    --bs-btn-active-border-color: #c76000
-    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125)
-    --bs-btn-disabled-color: #fff
-    --bs-btn-disabled-bg: #a3652b
-    --bs-btn-disabled-border-color: #8a5e34
+.btn-x
+    width: 35px
+    height: 30px
+    border-color: #9a9a9a
+    border-radius: 3px
+    background: #838383
+    color: white
+    font-size: 12px
+    line-height: 8px
+
+.btn-search
+    width: 100px
+    height: 35px
+    border-color: #ff7b00
+    border-radius: 5px
+    background: #d88436
+    color: white
 
 .btn
     text-align: center
-    // --bs-btn-font-size: 15px
+    line-height: 8px
 
 .dismiss
     background-color: #d83600
     border-color: #af2d02
-    border: none
     border-radius: 5px
     color: white
-    // padding: 15px 32px
     text-align: center
-    text-decoration: none
-    display: inline-block
-    margin: 4px 2px
-    // cursor: pointer
-    font-size: 15px
+    // text-decoration: none
+    // display: inline-block
+    // margin: 4px 2px
+    font-size: 12px

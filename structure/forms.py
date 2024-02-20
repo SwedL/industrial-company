@@ -3,7 +3,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.urls import reverse
 from django.utils import timezone
 
-from .models import Employee
+from .models import Employee, Position
 
 
 class UserLoginForm(AuthenticationForm):
@@ -19,9 +19,12 @@ class UserLoginForm(AuthenticationForm):
 
 
 class SearchEmployeeForm(forms.Form):
+    DEPARTMENT_CHOICES = [(None, '---')] + [(num, p.name) for num, p in enumerate(Position.objects.all(), 1)]
+
     last_name = forms.CharField(max_length=50, required=False)
     first_name = forms.CharField(max_length=50, required=False)
     patronymic = forms.CharField(max_length=50, required=False)
+    position = forms.ChoiceField(choices=DEPARTMENT_CHOICES)
     employment_date = forms.DateField(required=False)
     salary = forms.IntegerField(required=False)
 
