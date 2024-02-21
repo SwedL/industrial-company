@@ -36,13 +36,23 @@
 
     <!--  Ячейка кнопок действия -->
     <td>
-        <!-- Кнопка "Dismiss" -->
-        <button class="dismiss"
-            hx-delete="{% url 'structure:delete_employee' employee.id %}"
-            hx-target="closest tr"
-            hx-swap="outerHTML"
-            hx-confirm="Вы уверенны что хотите уволить сотрудника?" >
-            Уволить
-        </button>
+        <div class="table__button-box">
+            <!-- Кнопка "изменить" -->
+            <button class="table__button-box_edit"
+                hx-put="{% url 'structure:update_employee_details' employee.id %}"
+                hx-target="closest tr"
+                hx-swap="outerHTML" >
+                изменить
+            </button>
+
+            <!-- Кнопка "уволить" -->
+            <button class="table__button-box_dismiss"
+                hx-delete="{% url 'structure:delete_employee' employee.id %}"
+                hx-target="closest tr"
+                hx-swap="outerHTML"
+                hx-confirm="Вы уверенны что хотите уволить сотрудника?" >
+                уволить
+            </button>
+        </div>
     </td>
 </tr>

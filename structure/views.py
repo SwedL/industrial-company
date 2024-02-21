@@ -9,7 +9,7 @@ from django.views.generic import TemplateView, View, CreateView
 
 from structure.forms import UserLoginForm, SearchEmployeeForm
 from structure.models import Employee
-from .forms import AddEmployeeForm
+from .forms import AddEmployeeForm, UpdateEmployeeDetailForm
 
 # словарь для хранения фильтров cql запросов и данных формы поиска по полям
 common_where_and_request_data = {}
@@ -146,14 +146,32 @@ class EmployeeCreateView(CreateView):
         return context
 
 
+@require_http_methods(['GET'])
+def clear_search(request):
+    form = SearchEmployeeForm()
+    return render(request, 'structure/search_form.html', context={'form': form})
+
+
+def update_employee_details(request, pk):
+    employee = Employee.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = UpdateEmployeeDetailForm(request.POST, instance=employee)
+        if form.is_valid():
+            employee = form.save()
+            return render(request, 'structure/employee_detail.html', {'employee': employee})
+    else:
+        form = UpdateEmployeeDetailForm(instance=employee)
+    return render(request, 'structure/partial_employee_update_form.html', {'employee': employee, 'form': form})
+
+
+@require_http_methods(['GET'])
+def employee_detail(request, pk):
+    employee = get_object_or_404(Employee, pk=pk)
+    return render(request, 'structure/employee_detail.html', {'employee': employee})
+
+
 @require_http_methods(['DELETE'])
 def delete_employee(request, pk):
     employee = get_object_or_404(Employee, pk=pk)
     employee.delete()
     return HttpResponse()
-
-
-@require_http_methods(['GET'])
-def clear_search(request):
-    form = SearchEmployeeForm()
-    return render(request, 'structure/search_form.html', context={'form': form})

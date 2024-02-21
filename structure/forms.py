@@ -33,6 +33,15 @@ class AddEmployeeForm(forms.ModelForm):
 
     class Meta:
         model = Employee
-        fields = ['last_name', 'first_name', 'patronymic', 'employment_date', 'salary']
+        fields = ['last_name', 'first_name', 'patronymic', 'position', 'employment_date', 'salary']
 
 
+class UpdateEmployeeDetailForm(AddEmployeeForm):
+    # DEPARTMENT_CHOICES = [(None, '---')] + [(num, p.name) for num, p in enumerate(Position.objects.all(), 1)]
+    #
+    # position = forms.ChoiceField(choices=DEPARTMENT_CHOICES, required=False)
+    # salary = forms.IntegerField(required=False)
+    # class Meta:
+    #     model = Employee
+    #     fields = ['position', 'salary']
+    pass

@@ -2,7 +2,7 @@
     display: flex
     flex-direction: column
     width: 1440px
-    height: 705px
+    // height: 705px
     margin: 0 auto
     margin-top: 30px
     background:
@@ -30,63 +30,6 @@
         justify-content: space-around
         align-items: center
 
-input, select
-    width: calc( 100% - 10px )
-    background: rgba(255, 255, 255, 0.77)
-    border: none
-    outline: none
-    padding: 7px
-    font-size: 13px
-    // color: #fff
-    // text-shadow: 1px 1px 1px rgba(0,0,0,0.3)
-    border: 1px solid rgba(0, 0, 0, 0.3)
-    border-radius: 4px
-    box-shadow: inset 0 -5px 45px rgba(192, 192, 192, 0.2), 0 1px 1px rgba(183, 183, 183, 0.471)
-    -webkit-transition: box-shadow .5s ease
-    -moz-transition: box-shadow .5s ease
-    -o-transition: box-shadow .5s ease
-    -ms-transition: box-shadow .5s ease
-    transition: box-shadow .5s ease
-
-// input:focus
-//     box-shadow: inset 0 -5px 45px rgba(100,100,100,0.4), 0 1px 1px rgba(255,255,255,0.2)
-
-a
-    color: #b55800
-    text-decoration: underline
-
-p
-    margin: 0
-
-table
-    width: 1400px
-    margin: 0 auto
-
-small
-    font-size: 15px
-    font-weight: bold
-
-th
-    vertical-align: middle
-    text-align: center
-    height: 30px
-    background-color: #b1bac0
-    padding-left: 5px
-    padding-right: 5px
-    
-td
-    padding: 5px
-    // padding-left: 5px
-    // padding-right: 5px
-    &:nth-child(1)
-        text-align: end
-    &:nth-child(7)
-        text-align: end
-
-tr
-    &:nth-child(even)
-        background-color: #b1bac0
-
 .btn-x
     width: 35px
     height: 30px
@@ -109,13 +52,75 @@ tr
     text-align: center
     line-height: 8px
 
-.dismiss
-    background-color: #d83600
-    border-color: #af2d02
-    border-radius: 5px
-    color: white
+input, select
+    width: calc( 100% - 10px )
+    background: rgba(255, 255, 255, 0.77)
+    border: none
+    outline: none
+    padding: 7px
+    font-size: 13px
+    border: 1px solid rgba(0, 0, 0, 0.3)
+    border-radius: 4px
+    box-shadow: inset 0 -5px 45px rgba(192, 192, 192, 0.2), 0 1px 1px rgba(183, 183, 183, 0.471)
+    -webkit-transition: box-shadow .5s ease
+    -moz-transition: box-shadow .5s ease
+    -o-transition: box-shadow .5s ease
+    -ms-transition: box-shadow .5s ease
+    transition: box-shadow .5s ease
+
+a
+    color: #b55800
+    text-decoration: underline
+
+p
+    margin: 0
+
+table
+    width: 1400px
+    margin: 0 auto
+    margin-bottom: 20px
+
+small
+    font-size: 15px
+    font-weight: bold
+
+th
+    vertical-align: middle
     text-align: center
-    // text-decoration: none
-    // display: inline-block
-    // margin: 4px 2px
-    font-size: 12px
+    height: 30px
+    background-color: #b1bac0
+    padding-left: 5px
+    padding-right: 5px
+    
+td
+    padding: 5px
+    &:nth-child(1)
+        text-align: end
+    &:nth-child(7)
+        text-align: end
+
+tr
+    &:nth-child(even)
+        background-color: #b1bac0
+
+
+.table__button-box
+    display: flex
+    flex-direction: row
+    justify-content: space-around
+    &_edit
+        height: 24px
+        background-color: #0069af
+        border-color: #0078c8
+        border-radius: 5px
+        color: white
+        text-align: center
+        font-size: 12px
+        line-height: 12px
+    &_dismiss
+        background-color: #d83600
+        border-color: #af2d02
+        border-radius: 5px
+        color: white
+        text-align: center
+        font-size: 12px

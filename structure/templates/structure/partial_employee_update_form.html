@@ -1,0 +1,57 @@
+<tr>
+    <!-- Ячейка id сотрудника -->
+    <td>
+<!--        {{ form.id }}-->
+    </td>
+
+    <!-- Ячейка фамилии сотрудника -->
+    <td>
+        {{ form.last_name }}
+    </td>
+
+    <!-- Ячейка имени сотрудника -->
+    <td>
+        {{ form.first_name }}
+    </td>
+
+    <!-- Ячейка отчества сотрудника -->
+    <td>
+        {{ form.patronymic }}
+    </td>
+
+    <!-- Ячейка должности сотрудника -->
+    <td>
+        {{ form.position }}
+    </td>
+
+    <!-- Ячейка даты приёма на работу сотрудника -->
+    <td>
+        {{ form.employment_date }}
+    </td>
+
+    <!-- Ячейка зарплаты сотрудника -->
+    <td>
+        {{ form.salary }}
+    </td>
+
+    <!--  Ячейка кнопок действия -->
+    <td>
+        <div class="table__button-box">
+            <!-- Кнопка "Сохранить" -->
+            <button type="submit" name="edit_employee"
+                hx-post="{% url 'structure:update_employee_details' employee.id %}"
+                hx-target="closest tr"
+                hx-swap="outerHTML"
+                hx-include="closest tr" >
+                сохранить
+            </button>
+            <!-- Кнопка "Отменить" -->
+            <button class="table__button-box_dismiss"
+                hx-get="{% url 'structure:employee_detail' employee.id %}"
+                hx-target="closest tr"
+                hx-swap="outerHTML" >
+                отменить
+            </button>
+        </div>
+    </td>
+</tr>
