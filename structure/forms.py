@@ -24,7 +24,7 @@ class SearchEmployeeForm(forms.Form):
     last_name = forms.CharField(max_length=50, required=False)
     first_name = forms.CharField(max_length=50, required=False)
     patronymic = forms.CharField(max_length=50, required=False)
-    position = forms.ChoiceField(choices=DEPARTMENT_CHOICES)
+    position = forms.ChoiceField(choices=DEPARTMENT_CHOICES, required=False)
     employment_date = forms.DateField(required=False)
     salary = forms.IntegerField(required=False)
 
