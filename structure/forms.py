@@ -25,12 +25,8 @@ class SearchEmployeeForm(forms.Form):
     first_name = forms.CharField(max_length=50, required=False)
     patronymic = forms.CharField(max_length=50, required=False)
     position = forms.ChoiceField(choices=DEPARTMENT_CHOICES, required=False)
-    employment_date = forms.DateField(required=False)
+    employment_date = forms.DateField(required=False, widget=forms.TextInput(attrs={'placeholder': 'гггг-мм-дд'}))
     salary = forms.IntegerField(required=False)
-
-    # class Meta:
-    #     model = Employee
-    #     fields = ['last_name', 'first_name', 'patronymic', 'employment_date', 'salary']
 
 
 class AddEmployeeForm(forms.ModelForm):

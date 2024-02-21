@@ -12,11 +12,8 @@ urlpatterns = [
     path('structure-company/', StructureCompanyTemplateView.as_view(), name='structure_company'),
     path('department/<order_by>/<direction>/', EmployeesView.as_view(), name='department'),
     path('department/<int:position_id>/<order_by>/<direction>/', EmployeesView.as_view(), name='department'),
+    path('clear-search/', clear_search, name='clear_search'),
+    path('delete-employee/<int:pk>/', delete_employee, name='delete_employee'),
     path('add-employee/<filter>/<direction>/', EmployeeCreateView.as_view(), name='add_employee'),
     path('add-employee/', EmployeeCreateView.as_view(), name='add_employee'),
-    # path('create-employee/', AddEmployee.as_view(), name='create_employee'),
-    path('delete-employee/<int:pk>/', delete_employee, name='delete_employee'),
-    path('clear-search/', clear_search, name='clear_search'),
-    path("employees_list_sort/<filter>/<direction>/<int:position_id>/", employees_list_sort, name="employees_list_sort"),
-    # path('employees-list/<int:position_id>/<int:page>/', employees_list, name='employees_list'),
 ]
