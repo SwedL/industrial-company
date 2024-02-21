@@ -16,7 +16,6 @@ from django.urls import reverse
 
 from .forms import AddEmployeeForm
 
-
 # словарь для хранения фильтров cql запросов и данных формы поиска по полям
 common_where_and_request_data = {}
 
@@ -44,7 +43,8 @@ class EmployeesView(View):
         form = SearchEmployeeForm(common_where_and_request_data.get('request_data', {'position': position_id}))
         where_for_sql = common_where_and_request_data.get('where_for_sql', '')
 
-        # если нет фильтров sql запроса, но есть параметр position_id, то фильтруем только по должности и сохраняем фильтр
+        # если нет фильтров sql запроса, но есть параметр position_id, то фильтруем только по должности и сохраняем
+        # фильтр
         if not where_for_sql and position_id:
             where_for_sql = f'WHERE position_id = {position_id}'
             common_where_and_request_data['where_for_sql'] = where_for_sql
@@ -66,6 +66,7 @@ class EmployeesView(View):
             'paginator_range': page_obj.paginator.get_elided_page_range(page_obj.number),
             'form': form,
         }
+
         return render(request, 'structure/department.html', context=context)
 
     def post(self, request, order_by: str, direction: str, position_id: int = None):
@@ -101,9 +102,7 @@ class EmployeesView(View):
             order_by += ' DESC'
 
         sql = f'SELECT ROW_NUMBER() OVER(ORDER BY {order_by}) AS num, * FROM structure_employee {where_for_sql} ORDER BY {order_by}'
-
         employees_list = Employee.objects.raw(sql)
-
         paginator = Paginator(employees_list, 20)
         page_number = request.GET.get("page")
         page_obj = paginator.get_page(page_number)
@@ -113,6 +112,7 @@ class EmployeesView(View):
             'paginator_range': page_obj.paginator.get_elided_page_range(page_obj.number),
             'form': form,
         }
+
         return render(request, 'structure/department.html', context=context)
 
 
