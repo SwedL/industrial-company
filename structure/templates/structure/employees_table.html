@@ -55,12 +55,14 @@
         <th scope="col" style="width: 350px">
             <small>
                 Должность
+                {% if not position_id %}
                 <a href="{% url 'structure:department' order_by='position_id' direction='ascend' %}">
                     <i class="table-icon bi bi-arrow-down-square ms-1"></i>
                 </a>
                 <a href="{% url 'structure:department' order_by='position_id' direction='descend' %}">
                     <i class="table-icon bi bi-arrow-up-square"></i>
                 </a>
+                {% endif %}
             </small>
         </th>
 

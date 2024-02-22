@@ -73,6 +73,7 @@ class EmployeesView(View):
 
         context = {
             'employees': page_obj,
+            'position_id': position_id,
             'paginator_range': page_obj.paginator.get_elided_page_range(page_obj.number),
             'form': form,
         }
@@ -117,6 +118,7 @@ class EmployeesView(View):
 
         context = {
             'employees': page_obj,
+            'position_id': position_id,
             'paginator_range': page_obj.paginator.get_elided_page_range(page_obj.number),
             'form': form,
         }
