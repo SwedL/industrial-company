@@ -18,6 +18,22 @@
         justify-content: center
         margin: 0 auto
 
+input, select
+    width: calc( 100% - 10px )
+    background: rgba(255, 255, 255, 0.77)
+    border: none
+    outline: none
+    padding: 7px
+    font-size: 13px
+    border: 1px solid rgba(0, 0, 0, 0.3)
+    border-radius: 4px
+    box-shadow: inset 0 -5px 45px rgba(192, 192, 192, 0.2), 0 1px 1px rgba(183, 183, 183, 0.471)
+    -webkit-transition: box-shadow .5s ease
+    -moz-transition: box-shadow .5s ease
+    -o-transition: box-shadow .5s ease
+    -ms-transition: box-shadow .5s ease
+    transition: box-shadow .5s ease
+
 .form-search
     width: 1400px
     height: 35px
@@ -29,7 +45,7 @@
         flex-direction: row
         justify-content: space-around
         align-items: center
-
+    
 .btn-x
     width: 35px
     height: 30px
@@ -51,22 +67,6 @@
 .btn
     text-align: center
     line-height: 8px
-
-input, select
-    width: calc( 100% - 10px )
-    background: rgba(255, 255, 255, 0.77)
-    border: none
-    outline: none
-    padding: 7px
-    font-size: 13px
-    border: 1px solid rgba(0, 0, 0, 0.3)
-    border-radius: 4px
-    box-shadow: inset 0 -5px 45px rgba(192, 192, 192, 0.2), 0 1px 1px rgba(183, 183, 183, 0.471)
-    -webkit-transition: box-shadow .5s ease
-    -moz-transition: box-shadow .5s ease
-    -o-transition: box-shadow .5s ease
-    -ms-transition: box-shadow .5s ease
-    transition: box-shadow .5s ease
 
 a
     color: #b55800
@@ -101,37 +101,46 @@ td
         text-align: end
     &:nth-child(7)
         text-align: end
+    > input, select
+        padding: 3px
+        padding-left: 7px
+        font-size: 16px
+td:has( input, select)
+    padding: 1px
+
 
 tr
     &:nth-child(even)
         background-color: #b1bac0
 
+.table_buttons
+    height: 24px
+    border-radius: 5px
+    color: white
+    text-align: center
+    font-size: 12px
 
 .table__button-box
     display: flex
     flex-direction: row
     justify-content: space-around
     &_edit
-        height: 24px
         background-color: #0069af
-        border-color: #0078c8
-        border-radius: 5px
-        color: white
-        text-align: center
-        font-size: 12px
+        border-color: #0078c8        
     &_edit:disabled
         background-color: #4c84aa99
         border-color: #61abdd99
         color: #f3f3f3f8
-
     &_dismiss
         background-color: #d83600
         border-color: #af2d02
-        border-radius: 5px
-        color: white
-        text-align: center
-        font-size: 12px
     &_dismiss:disabled
         background-color: #dd663fab
         border-color: #ff774a9b
         color: #f3f3f3f8
+    &_save
+        background-color: #9baf00
+        border-color: #c3dc03
+    &_cancel
+        background-color: #7b7b7b
+        border-color: #a1a1a1

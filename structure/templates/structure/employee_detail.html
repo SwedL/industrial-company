@@ -38,7 +38,7 @@
     <td>
         <div class="table__button-box">
             <!-- Кнопка "изменить" -->
-            <button class="table__button-box_edit disbtn"
+            <button class="table__button-box_edit table_buttons disbtn"
                 hx-put="{% url 'structure:update_employee_detail' employee.id employee.num %}"
                 hx-target="closest tr"
                 hx-swap="outerHTML" >
@@ -46,7 +46,7 @@
             </button>
 
             <!-- Кнопка "уволить" -->
-            <button class="table__button-box_dismiss disbtn"
+            <button class="table__button-box_dismiss table_buttons disbtn"
                 hx-delete="{% url 'structure:delete_employee' employee.id %}"
                 hx-target="closest tr"
                 hx-swap="outerHTML"
