@@ -39,7 +39,7 @@
         <div class="table__button-box">
             <!-- Кнопка "изменить" -->
             <button class="table__button-box_edit"
-                hx-put="{% url 'structure:update_employee_details' employee.id %}"
+                hx-put="{% url 'structure:update_employee_detail' employee.id employee.num %}"
                 hx-target="closest tr"
                 hx-swap="outerHTML" >
                 изменить

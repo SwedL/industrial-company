@@ -5,7 +5,6 @@ canvas.width = 1440;
 canvas.height = 900;
 
 let background_color = "#C6D0D7"
-//let background_color = "#8B959B"
 
 let canvas_width = canvas.width;
 let canvas_height = canvas.height;
@@ -256,11 +255,6 @@ let mouse_up = function(event) {
         if (is_mouse_in_block(mouseX, mouseY, dict_blocks[50])) {
             is_dragging = false;
             confirm("Подтвердите снятие с должности!");
-//            if (confirm(text) == true) {
-//                text = "You pressed OK!";
-//            } else {
-//                text = "You canceled!";
-//            }
             text_data = {type_message: "remove_manager", from_position_id: dragging_block_key};
             websocket.send(JSON.stringify(text_data));
         } else {
@@ -321,11 +315,3 @@ canvas.onmousemove = mouse_move;
 canvas.onmousedown = mouse_down;
 canvas.onmouseup = mouse_up;
 canvas.onmouseout = mouse_out;
-
-//canvas.addEventListener("dblclick", ()=>console.log("dblclick"));
-//canvas.addEventListener("mousedown", e => mouse_down(e));
-//canvas.addEventListener("mouseup", e => mouse_up(e));
-//canvas.addEventListener("mousemove", e => mouse_move(e));
-//canvas.addEventListener("contextmenu", e => e.preventDefault());
-
-
