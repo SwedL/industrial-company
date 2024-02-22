@@ -27,4 +27,24 @@
 
 {% block script %}
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script>
+        function cngElementsAtr(cls, atr, val){
+            var elems = document.getElementsByClassName(cls);
+            for(var i = 0; i < elems.length; i++) {
+                elems[i][atr] = val;
+            }
+        }
+        document.body.addEventListener('htmx:afterRequest', (event) => {
+            path_str = event.detail.pathInfo.requestPath;
+            if(path_str.includes('update_employee_detail')){
+                if(event.detail.requestConfig.verb === 'put'){
+                    cngElementsAtr('disbtn', 'disabled', true);
+                }else{
+                    cngElementsAtr('disbtn', 'disabled', false);
+                }
+            }else {
+                cngElementsAtr('disbtn', 'disabled', false);
+            }
+        });
+    </script>
 {% endblock script %}

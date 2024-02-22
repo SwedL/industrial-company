@@ -40,4 +40,11 @@ class UpdateEmployeeDetailForm(forms.ModelForm):
 
     class Meta:
         model = Employee
-        fields = ['position', 'salary']
+        fields = ['last_name', 'first_name', 'patronymic', 'position', 'employment_date', 'salary']
+
+        widgets = {
+            'last_name': forms.TextInput(attrs={'class': 'readonly', 'readonly': 'True'}),
+            'first_name': forms.TextInput(attrs={'class': 'readonly', 'readonly': 'True'}),
+            'patronymic': forms.TextInput(attrs={'class': 'readonly', 'readonly': 'True'}),
+            'employment_date': forms.TextInput(attrs={'class': 'readonly', 'readonly': 'True'}),
+        }
