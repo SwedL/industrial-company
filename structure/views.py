@@ -11,9 +11,12 @@ from structure.forms import UserLoginForm, SearchEmployeeForm
 from structure.models import Employee
 from .forms import AddEmployeeForm, UpdateEmployeeDetailForm
 
-# словарь для хранения фильтров cql запросов и данных формы поиска
-# по полям страницы представления EmployeesView
-# {'where_for_sql': {'last_name': '', 'first_name': '', ...}, 'request_data': request.POST}
+
+""" 
+Словарь для хранения фильтров cql запросов и данных формы поиска
+по полям страницы представления EmployeesView
+{'where_for_sql': {'last_name': '', 'first_name': '', ...}, 'request_data': request.POST}
+"""
 common_where_and_request_data = {}
 
 
@@ -48,13 +51,15 @@ class EmployeesView(View):
 
     def get(self, request, order_by: str, direction: str, position_id: int = None):
 
-        # получаем данные из формы поиска и фильтры поиска для sql запроса если они есть
-        form = SearchEmployeeForm(common_where_and_request_data.get('request_data', {'position': position_id}))
-        where_for_sql = common_where_and_request_data.get('where_for_sql', '')
-
-        # если нет фильтров sql запроса, но есть параметр position_id (переход по блоку отдела),
-        # то фильтруем только по отделу и сохраняем фильтр
-        if not where_for_sql and position_id:
+        # получаем данные из формы поиска и фильтры поиска для sql запроса
+        if request.GET.get("page"):
+            # если переход по пагинатору, то фильтруем по данным из common_where_and_request_data
+            form = SearchEmployeeForm(common_where_and_request_data.get('request_data'))
+            where_for_sql = common_where_and_request_data.get('where_for_sql', '')
+        else:
+            # если переход впервые - по блоку отдела, то фильтруем по position и заносим данные в
+            # common_where_and_request_data
+            form = SearchEmployeeForm(common_where_and_request_data.get('request_data', {'position': position_id}))
             where_for_sql = f'WHERE position_id = {position_id}'
             common_where_and_request_data['where_for_sql'] = where_for_sql
             common_where_and_request_data['request_data'] = {'position': position_id}
@@ -73,7 +78,6 @@ class EmployeesView(View):
 
         context = {
             'employees': page_obj,
-            'position_id': position_id,
             'paginator_range': page_obj.paginator.get_elided_page_range(page_obj.number),
             'form': form,
         }
@@ -82,25 +86,25 @@ class EmployeesView(View):
 
     def post(self, request, order_by: str, direction: str, position_id: int = None):
         form = SearchEmployeeForm(request.POST)
-        where_for_sql = None  # переменная строки фильтров для sql запроса
-        list_filters_for_sql = None  # переменная списка фильтров запроса
-        position_id = request.POST.get('position', None)
+        position_id = request.POST.get('position', None)  # отдел берём request.POST
 
         if form.is_valid():
             # получаем фильтры для sql запроса из request.POST и создаём словарь
             request_dict_from_the_search_key_list = {k: v for k, v in form.cleaned_data.items() if v and k != 'position'}
             list_filters_for_sql = [f'{k} LIKE "%{v}%"' for k, v in request_dict_from_the_search_key_list.items()]
+        else:
+            list_filters_for_sql = []
 
         # если в форме есть фильтр по отделу, то добавляем его в список фильтров
         if position_id:
             list_filters_for_sql.insert(0, f'position_id = {position_id}')
 
-        """ 
-        если фильтров поиска не поступало, то словарь common_where_and_request_data очищается
-        иначе в словарь заносятся фильтры под ключом where_for_sql и данные формы под ключом request_data 
-        """
+        # если фильтров поиска не поступало, то словарь common_where_and_request_data очищается
+        # иначе в словарь заносятся фильтры под ключом where_for_sql и данные формы
+        # под ключом request_data
         if not list_filters_for_sql:
             common_where_and_request_data.clear()
+            where_for_sql = ''
         else:
             # создаём строку фильтра WHERE для sql запрос из списка фильтров
             where_for_sql = 'WHERE ' + ' AND '.join(list_filters_for_sql)
@@ -118,7 +122,6 @@ class EmployeesView(View):
 
         context = {
             'employees': page_obj,
-            'position_id': position_id,
             'paginator_range': page_obj.paginator.get_elided_page_range(page_obj.number),
             'form': form,
         }

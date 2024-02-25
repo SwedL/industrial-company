@@ -8,7 +8,7 @@
         <div class="form-search__input" style="width: 240px"><p>{{form.employment_date}}</p></div>
         <div class="form-search__input" style="width: 120px"><p>{{form.salary}}</p></div>
         <div class="form-search__button-box" style="width: 160px" >
-            <button type="submit" class="btn-x"
+            <button type="button" class="btn-x"
                 hx-get="{% url 'structure:clear_search' %}"
                 hx-target="closest form"
                 hx-swap="outerHTML">X

@@ -22,7 +22,7 @@ class SearchEmployeeForm(forms.Form):
     DEPARTMENT_CHOICES = [(None, '---')] + [(num, p.name) for num, p in enumerate(Position.objects.all(), 1)]
 
     last_name = forms.CharField(max_length=50, required=False)
-    first_name = forms.CharField(max_length=50, required=False)
+    first_name = forms.CharField(max_length=50, required=False, widget=forms.TextInput(attrs={'id': 'search-input'}))
     patronymic = forms.CharField(max_length=50, required=False)
     position = forms.ChoiceField(choices=DEPARTMENT_CHOICES, required=False)
     employment_date = forms.DateField(required=False, widget=forms.TextInput(attrs={'placeholder': 'гггг-мм-дд'}))
