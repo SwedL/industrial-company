@@ -13,11 +13,11 @@ from .forms import AddEmployeeForm, UpdateEmployeeDetailForm
 
 
 """ 
-Словарь для хранения фильтров cql запросов и данных формы поиска
+Словарь для хранения фильтра sql запроса и данных формы поиска
 по полям страницы представления EmployeesView
-{'where_for_sql': {'last_name': '', 'first_name': '', ...}, 'request_data': request.POST}
+{'where_for_sql': 'WHERE last_name LIKE '%..%' AND position_id = .. AND ...}, 'form_data': form.clean_data}
 """
-common_where_and_request_data = {}
+common_where_and_form_data = {}
 
 
 class UserLoginView(LoginView):
@@ -33,7 +33,7 @@ class StructureCompanyTemplateView(TemplateView):
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         # при открытии страницы стираются фильтры сортировки и поиска представления EmployeesView
-        common_where_and_request_data.clear()
+        common_where_and_form_data.clear()
         return self.render_to_response(context)
 
 
@@ -53,23 +53,29 @@ class EmployeesView(View):
 
         # получаем данные из формы поиска и фильтры поиска для sql запроса
         if request.GET.get("page"):
-            # если переход по пагинатору, то фильтруем по данным из common_where_and_request_data
-            form = SearchEmployeeForm(common_where_and_request_data.get('request_data'))
-            where_for_sql = common_where_and_request_data.get('where_for_sql', '')
+            # если переход по пагинатору, то фильтруем по данным из common_where_and_form_data
+            form = SearchEmployeeForm(common_where_and_form_data.get('form_data'))
+            where_for_sql = common_where_and_form_data.get('where_for_sql', '')
         else:
             # если переход впервые - по блоку отдела, то фильтруем по position и заносим данные в
-            # common_where_and_request_data
-            form = SearchEmployeeForm(common_where_and_request_data.get('request_data', {'position': position_id}))
-            where_for_sql = f'WHERE position_id = {position_id}'
-            common_where_and_request_data['where_for_sql'] = where_for_sql
-            common_where_and_request_data['request_data'] = {'position': position_id}
+            # common_where_and_form_data
+            form = SearchEmployeeForm(common_where_and_form_data.get('form_data', {'position': position_id}))
+            if common_where_and_form_data.get('where_for_sql'):
+                where_for_sql = common_where_and_form_data.get('where_for_sql')
+                position_id = common_where_and_form_data.get('form_data')['position']
+            else:
+                if position_id:
+                    where_for_sql = f'WHERE position_id = {position_id}'
+                else:
+                    where_for_sql = ''
+                    common_where_and_form_data['where_for_sql'] = where_for_sql
+                    common_where_and_form_data['form_data'] = {'position': position_id}
 
         # меняем сортировку на обратную если условие верно
         if direction == 'descend':
             order_by += ' DESC'
 
-        sql = f'SELECT ROW_NUMBER() OVER(ORDER BY {order_by}) AS num, * FROM structure_employee {where_for_sql} ORDER BY {order_by}'
-
+        sql = f'SELECT ROW_NUMBER() OVER(ORDER BY {order_by}) AS num, *, position_id FROM structure_employee {where_for_sql} ORDER BY {order_by}'
         employees_list = Employee.objects.raw(sql)
 
         paginator = Paginator(employees_list, 20)
@@ -78,15 +84,16 @@ class EmployeesView(View):
 
         context = {
             'employees': page_obj,
-            'paginator_range': page_obj.paginator.get_elided_page_range(page_obj.number),
             'form': form,
+            'paginator_range': page_obj.paginator.get_elided_page_range(page_obj.number),
+            'position_id': position_id,
         }
 
         return render(request, 'structure/department.html', context=context)
 
     def post(self, request, order_by: str, direction: str, position_id: int = None):
         form = SearchEmployeeForm(request.POST)
-        position_id = request.POST.get('position', None)  # отдел берём request.POST
+        position_id = request.POST.get('position')  # отдел берём из request.POST
 
         if form.is_valid():
             # получаем фильтры для sql запроса из request.POST и создаём словарь
@@ -99,17 +106,17 @@ class EmployeesView(View):
         if position_id:
             list_filters_for_sql.insert(0, f'position_id = {position_id}')
 
-        # если фильтров поиска не поступало, то словарь common_where_and_request_data очищается
+        # если фильтров поиска не поступало, то словарь common_where_and_form_data очищается
         # иначе в словарь заносятся фильтры под ключом where_for_sql и данные формы
         # под ключом request_data
         if not list_filters_for_sql:
-            common_where_and_request_data.clear()
+            common_where_and_form_data.clear()
             where_for_sql = ''
         else:
             # создаём строку фильтра WHERE для sql запрос из списка фильтров
             where_for_sql = 'WHERE ' + ' AND '.join(list_filters_for_sql)
-            common_where_and_request_data['where_for_sql'] = where_for_sql
-            common_where_and_request_data['request_data'] = request.POST
+            common_where_and_form_data['where_for_sql'] = where_for_sql
+            common_where_and_form_data['form_data'] = form.cleaned_data
 
         if direction == 'descend':
             order_by += ' DESC'
@@ -122,8 +129,9 @@ class EmployeesView(View):
 
         context = {
             'employees': page_obj,
-            'paginator_range': page_obj.paginator.get_elided_page_range(page_obj.number),
             'form': form,
+            'paginator_range': page_obj.paginator.get_elided_page_range(page_obj.number),
+            'position_id': position_id,
         }
 
         return render(request, 'structure/department.html', context=context)
@@ -176,26 +184,36 @@ class EmployeeCreateView(CreateView):
         position_id = None
         filter = None
 
-        if self.kwargs:
-            filter = self.kwargs['filter']
-            direction = self.kwargs['direction']
+        # if self.kwargs:
+        #     filter = self.kwargs['filter']
+        #     direction = self.kwargs['direction']
+        #
+        # if filter:
+        #     if filter == "id":
+        #         if direction == 'ascend':
+        #             employees_list = Employee.objects.filter(position=position_id).order_by('pk')
+        #         else:
+        #             employees_list = Employee.objects.filter(position=position_id).order_by('-pk')
+        #     else:
+        #         if direction == 'ascend':
+        #             employees_list = Employee.objects.filter(position=position_id).order_by(filter)
+        #         else:
+        #             employees_list = Employee.objects.filter(position=position_id).order_by('-' + filter)
+        #
+        # else:
+        #     employees_list = Employee.objects.filter(position=position_id)
+        #
+        # employees_list = Employee.objects.filter(position=position_id)
 
-        if filter:
-            if filter == "id":
-                if direction == 'ascend':
-                    employees_list = Employee.objects.filter(position=position_id).order_by('pk')
-                else:
-                    employees_list = Employee.objects.filter(position=position_id).order_by('-pk')
-            else:
-                if direction == 'ascend':
-                    employees_list = Employee.objects.filter(position=position_id).order_by(filter)
-                else:
-                    employees_list = Employee.objects.filter(position=position_id).order_by('-' + filter)
-
-        else:
-            employees_list = Employee.objects.filter(position=position_id)
+        sql = f'SELECT ROW_NUMBER() OVER(ORDER BY id) AS num, * FROM structure_employee WHERE position_id=NULL ORDER BY id'
+        employees_list = Employee.objects.raw(sql)
+        # employees_list = Employee.objects.filter(position_id=None)
+        # paginator = Paginator(employees_list, 20)
+        # page_number = request.GET.get("page")
+        # page_obj = paginator.get_page(page_number)
 
         context['employees'] = employees_list
-        context['department'] = 0
+        # context['paginator_range'] = page_obj.paginator.get_elided_page_range(page_obj.number),
+        # context['department'] = 0
 
         return context
