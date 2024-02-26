@@ -181,31 +181,9 @@ class EmployeeCreateView(CreateView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        position_id = None
-        filter = None
+        common_where_and_form_data.clear()
 
-        # if self.kwargs:
-        #     filter = self.kwargs['filter']
-        #     direction = self.kwargs['direction']
-        #
-        # if filter:
-        #     if filter == "id":
-        #         if direction == 'ascend':
-        #             employees_list = Employee.objects.filter(position=position_id).order_by('pk')
-        #         else:
-        #             employees_list = Employee.objects.filter(position=position_id).order_by('-pk')
-        #     else:
-        #         if direction == 'ascend':
-        #             employees_list = Employee.objects.filter(position=position_id).order_by(filter)
-        #         else:
-        #             employees_list = Employee.objects.filter(position=position_id).order_by('-' + filter)
-        #
-        # else:
-        #     employees_list = Employee.objects.filter(position=position_id)
-        #
-        # employees_list = Employee.objects.filter(position=position_id)
-
-        sql = f'SELECT ROW_NUMBER() OVER(ORDER BY id) AS num, * FROM structure_employee WHERE position_id is NULL ORDER BY id'
+        sql = f'SELECT ROW_NUMBER() OVER(ORDER BY last_name) AS num, * FROM structure_employee WHERE position_id is NULL ORDER BY last_name'
         employees_list = Employee.objects.raw(sql)
         # paginator = Paginator(employees_list, 20)
         # page_number = request.GET.get("page")
