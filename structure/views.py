@@ -184,13 +184,6 @@ class EmployeeCreateView(CreateView):
         common_where_and_form_data.clear()
 
         sql = f'SELECT ROW_NUMBER() OVER(ORDER BY last_name) AS num, * FROM structure_employee WHERE position_id is NULL ORDER BY last_name'
-        employees_list = Employee.objects.raw(sql)
-        # paginator = Paginator(employees_list, 20)
-        # page_number = request.GET.get("page")
-        # page_obj = paginator.get_page(page_number)
-
-        context['employees'] = employees_list
-        # context['paginator_range'] = page_obj.paginator.get_elided_page_range(page_obj.number),
-        # context['department'] = 0
+        context['employees'] = Employee.objects.raw(sql)
 
         return context
