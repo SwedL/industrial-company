@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.contrib.auth.views import LoginView
 from django.core.paginator import Paginator
+from django.db.models import F
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
@@ -8,7 +9,7 @@ from django.views.decorators.http import require_http_methods
 from django.views.generic import TemplateView, View, CreateView
 
 from structure.forms import UserLoginForm, SearchEmployeeForm
-from structure.models import Employee
+from structure.models import Employee, Position
 from .forms import AddEmployeeForm, UpdateEmployeeDetailForm
 
 
@@ -68,8 +69,8 @@ class EmployeesView(View):
                     where_for_sql = f'WHERE position_id = {position_id}'
                 else:
                     where_for_sql = ''
-                    common_where_and_form_data['where_for_sql'] = where_for_sql
-                    common_where_and_form_data['form_data'] = {'position': position_id}
+                common_where_and_form_data['form_data'] = {'position': position_id}
+                common_where_and_form_data['where_for_sql'] = where_for_sql
 
         # меняем сортировку на обратную если условие верно
         if direction == 'descend':
@@ -150,6 +151,17 @@ def update_employee_details(request, pk, num):
     if request.method == 'POST':
         form = UpdateEmployeeDetailForm(request.POST, instance=employee)
         if form.is_valid():
+            if any(map(lambda d: d == 'position', form.changed_data)):
+                # добавляем вакансию в предыдущей должности
+                prev_pos = Position.objects.filter(id=form.initial['position']).first()
+                prev_pos.vacancies += 1
+                prev_pos.save()
+                # уменьшаем кол-во вакансий в новой должности сотрудника
+                current_pos = Position.objects.filter(id=form.data['position']).first()
+                current_pos.vacancies -= 1
+                current_pos.save()
+
+            # сохраняем изменённые данные сотрудника
             employee = form.save()
             employee.num = num
             return render(request, 'structure/employee_detail.html', {'employee': employee})
@@ -170,6 +182,9 @@ def employee_detail(request, pk, num):
 def delete_employee(request, pk):
     """Функция удаления сотрудника из базы данных (кнопка уволить)"""
     employee = get_object_or_404(Employee, pk=pk)
+    # при увольнении сотрудника вакансии его должности увеличиваем на 1
+    employee.position.vacancies += 1
+    employee.position.save()
     employee.delete()
     return HttpResponse()
 
@@ -187,3 +202,4 @@ class EmployeeCreateView(CreateView):
         context['employees'] = Employee.objects.raw(sql)
 
         return context
+

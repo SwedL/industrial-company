@@ -2,6 +2,14 @@ from django.db import models
 from django.utils import timezone
 
 
+class PositionQuerySet(models.Manager):
+    def get_all_position(self):
+        return super().get_queryset()
+
+    def get_queryset(self):
+        return super().get_queryset().exclude(vacancies=0)
+
+
 class Position(models.Model):
     """Модель Должность"""
     boss = models.ForeignKey(
@@ -12,6 +20,8 @@ class Position(models.Model):
     is_manager = models.BooleanField(default=False, verbose_name='менеджер')
     vacancies = models.PositiveSmallIntegerField(default=1, verbose_name='количество вакансий')
     base_salary = models.PositiveIntegerField(default=0, verbose_name='базовая зарплата')
+
+    # objects = PositionQuerySet()
 
     class Meta:
         verbose_name = 'Должность'
