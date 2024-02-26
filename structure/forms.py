@@ -42,6 +42,8 @@ class UpdateEmployeeDetailForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['position'].queryset = Position.objects.exclude(vacancies=0)
+        t = self.fields['position'].queryset
+        p = 0
 
     class Meta:
         model = Employee

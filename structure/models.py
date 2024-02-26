@@ -21,8 +21,6 @@ class Position(models.Model):
     vacancies = models.PositiveSmallIntegerField(default=1, verbose_name='количество вакансий')
     base_salary = models.PositiveIntegerField(default=0, verbose_name='базовая зарплата')
 
-    # objects = PositionQuerySet()
-
     class Meta:
         verbose_name = 'Должность'
         verbose_name_plural = 'Должности'

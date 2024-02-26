@@ -153,13 +153,15 @@ def update_employee_details(request, pk, num):
         if form.is_valid():
             if any(map(lambda d: d == 'position', form.changed_data)):
                 # добавляем вакансию в предыдущей должности
-                prev_pos = Position.objects.filter(id=form.initial['position']).first()
-                prev_pos.vacancies += 1
-                prev_pos.save()
+                if form.initial['position']:
+                    prev_pos = Position.objects.filter(id=form.initial['position']).first()
+                    prev_pos.vacancies += 1
+                    prev_pos.save()
                 # уменьшаем кол-во вакансий в новой должности сотрудника
-                current_pos = Position.objects.filter(id=form.data['position']).first()
-                current_pos.vacancies -= 1
-                current_pos.save()
+                if form.data['position']:
+                    current_pos = Position.objects.filter(id=form.data['position']).first()
+                    current_pos.vacancies -= 1
+                    current_pos.save()
 
             # сохраняем изменённые данные сотрудника
             employee = form.save()
