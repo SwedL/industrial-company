@@ -5,98 +5,86 @@
         <tr>
             <!-- Заголовки столбцов таблицы -->
             <!-- Заголовок id сотрудника -->
-            <th scope="col" style="width: 5%">
+            <th scope="col" style="width: 70px">
                 <small>
                     №
-                    <a href="{% url 'structure:add_employee' filter='id' direction='ascend' %}">
-                       <i class="table-icon bi bi-arrow-down-square ms-1"></i>
-                    </a>
-                    <a href="{% url 'structure:add_employee' filter='id' direction='descend' %}">
-                       <i class="table-icon bi bi-arrow-up-square"></i>
-                    </a>
                 </small>
             </th>
 
             <!-- Заголовок фамилия сотрудника -->
-            <th scope="col" style="width: 10%">
+            <th scope="col" style="width: 165px">
                 <small>
                     Фамилия
-                    <a href="{% url 'structure:add_employee' filter='last_name' direction='ascend' %}">
+                    <a href="{% url 'structure:recruit_distribution' order_by='last_name' direction='ascend' %}">
                         <i class="table-icon bi bi-arrow-down-square ms-1"></i>
                     </a>
-                    <a href="{% url 'structure:add_employee' filter='last_name' direction='descend' %}">
+                    <a href="{% url 'structure:recruit_distribution' order_by='last_name' direction='descend' %}">
                         <i class="table-icon bi bi-arrow-up-square"></i>
                     </a>
                 </small>
             </th>
 
             <!-- Заголовок имени сотрудника -->
-            <th scope="col" style="width: 10%">
+            <th scope="col" style="width: 130px">
                 <small>
                     Имя
-                    <a href="{% url 'structure:add_employee' filter='first_name' direction='ascend' %}">
+                    <a href="{% url 'structure:recruit_distribution' order_by='first_name' direction='ascend' %}">
                         <i class="table-icon bi bi-arrow-down-square ms-1"></i>
                     </a>
-                    <a href="{% url 'structure:add_employee' filter='first_name' direction='descend' %}">
+                    <a href="{% url 'structure:recruit_distribution' order_by='first_name' direction='descend' %}">
                         <i class="table-icon bi bi-arrow-up-square"></i>
                     </a>
                 </small>
             </th>
 
             <!-- Заголовок отчество сотрудника -->
-            <th scope="col" style="width: 15%">
+            <th scope="col" style="width: 165px">
                 <small>
                     Отчество
-                    <a href="{% url 'structure:add_employee' filter='patronymic' direction='ascend' %}">
+                    <a href="{% url 'structure:recruit_distribution' order_by='patronymic' direction='ascend' %}">
                         <i class="table-icon bi bi-arrow-down-square ms-1"></i>
                     </a>
-                    <a href="{% url 'structure:add_employee' filter='patronymic' direction='descend' %}">
+                    <a href="{% url 'structure:recruit_distribution' order_by='patronymic' direction='descend' %}">
                         <i class="table-icon bi bi-arrow-up-square"></i>
                     </a>
                 </small>
             </th>
 
             <!-- Заголовок должности сотрудника -->
-            <th scope="col" style="width: 20%">
+            <th scope="col" style="width: 350px">
                 <small>
                     Должность
-                    <a href="{% url 'structure:add_employee' filter='position' direction='ascend' %}">
-                        <i class="table-icon bi bi-arrow-down-square ms-1"></i>
-                    </a>
-                    <a href="{% url 'structure:add_employee' filter='position' direction='descend' %}">
-                        <i class="table-icon bi bi-arrow-up-square"></i>
-                    </a>
                 </small>
             </th>
 
             <!-- Заголовок дата приёма на работу -->
-            <th scope="col" style="width: 25%">
+            <th scope="col" style="width: 240px">
                 <small>
                     Дата приёма на работу
-                    <a href="{% url 'structure:add_employee' filter='employment_date' direction='ascend' %}">
+                    <a href="{% url 'structure:recruit_distribution' order_by='employment_date' direction='ascend' %}">
                         <i class="table-icon bi bi-arrow-down-square ms-1"></i>
                     </a>
-                    <a href="{% url 'structure:add_employee' filter='employment_date' direction='descend' %}">
+                    <a href="{% url 'structure:recruit_distribution' order_by='employment_date' direction='descend' %}">
                         <i class="table-icon bi bi-arrow-up-square"></i>
                     </a>
                 </small>
             </th>
 
             <!-- Заголовок зарплаты сотрудника -->
-            <th scope="col" style="width: 12%">
+            <th scope="col" style="width: 120px">
                 <small>
                     Зарплата
-                    <a href="{% url 'structure:add_employee' filter='salary' direction='ascend' %}">
+                    <a href="{% url 'structure:recruit_distribution' order_by='salary' direction='ascend' %}">
                         <i class="table-icon bi bi-arrow-down-square ms-1"></i>
                     </a>
-                    <a href="{% url 'structure:add_employee' filter='salary' direction='descend' %}">
+                    <a href="{% url 'structure:recruit_distribution' order_by='salary' direction='descend' %}">
                         <i class="table-icon bi bi-arrow-up-square"></i>
                     </a>
                 </small>
             </th>
 
             <!-- Заголовок кнопок действия -->
-            <th scope="col" style="width: 3%">
+            <th scope="col" style="width: 160px">
                 <small>
                     Действия
                 </small>

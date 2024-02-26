@@ -27,17 +27,20 @@
 
 /* line 18, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/add_employee.sass */
 p {
+  display: flex;
+  flex-direction: row;
   margin-bottom: 5px;
 }
 
-/* line 20, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/add_employee.sass */
+/* line 22, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/add_employee.sass */
 p:last-child {
   margin-bottom: 20px;
 }
 
-/* line 24, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/add_employee.sass */
+/* line 26, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/add_employee.sass */
 .main-section__form {
-  margin-left: 70px;
+  width: 500px;
+  margin-left: 20px;
   margin-bottom: 50px;
   margin-bottom: 30px;
 }

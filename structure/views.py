@@ -176,8 +176,8 @@ def delete_employee(request, pk):
 
 class EmployeeCreateView(CreateView):
     form_class = AddEmployeeForm
-    template_name = 'structure/add_employee.html'
-    success_url = reverse_lazy('structure:add_employee')
+    template_name = 'structure/recruit_distribution.html'
+    success_url = reverse_lazy('structure:recruit_distribution')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -205,9 +205,8 @@ class EmployeeCreateView(CreateView):
         #
         # employees_list = Employee.objects.filter(position=position_id)
 
-        sql = f'SELECT ROW_NUMBER() OVER(ORDER BY id) AS num, * FROM structure_employee WHERE position_id=NULL ORDER BY id'
+        sql = f'SELECT ROW_NUMBER() OVER(ORDER BY id) AS num, * FROM structure_employee WHERE position_id is NULL ORDER BY id'
         employees_list = Employee.objects.raw(sql)
-        # employees_list = Employee.objects.filter(position_id=None)
         # paginator = Paginator(employees_list, 20)
         # page_number = request.GET.get("page")
         # page_obj = paginator.get_page(page_number)
