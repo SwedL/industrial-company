@@ -1,0 +1,36 @@
+@charset "UTF-8";
+/* line 1, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/recruit_distribution.sass */
+input {
+  font-size: 14px;
+}
+
+/* line 5, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/recruit_distribution.sass */
+.form-label {
+  display: inline-block;
+  min-width: 180px;
+  vertical-align: top;
+}
+
+/* line 9, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/recruit_distribution.sass */
+.form-submit {
+  margin-top: 10px;
+  width: 150px;
+  height: 30px;
+}
+
+/* line 14, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/recruit_distribution.sass */
+p {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 5px;
+}
+
+/* line 20, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/recruit_distribution.sass */
+.main-section__form {
+  width: 500px;
+  margin-left: 20px;
+  margin-bottom: 50px;
+  margin-bottom: 30px;
+}
+
+/*# sourceMappingURL=recruit_distribution.css.map */

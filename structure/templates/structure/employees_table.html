@@ -108,7 +108,7 @@
     </tbody>
 </table>
 </form>
-{% if paginator_range %}
+{% if paginator_range and employees.has_other_pages %}
 <div class="main-section__navigation">
     <nav aria-label="Page navigation example">
         <ul class="pagination">
