@@ -1,7 +1,7 @@
 from random import choice, uniform
 
 from structure.models import Employee, Position
-from tqdm import tqdm    # для красивой визуализации обработки данных
+from tqdm import tqdm
 import time
 from datetime import date, timedelta
 from django.core.management.base import BaseCommand
@@ -13,7 +13,7 @@ from mimesis.providers import BaseDataProvider
 from mimesis.types import MissingSeed, Seed
 
 
-__all__ = ["RussiaSpecProvider"]
+__all__ = ['RussiaSpecProvider']
 
 
 class RussiaSpecProvider(BaseDataProvider):
@@ -26,8 +26,8 @@ class RussiaSpecProvider(BaseDataProvider):
     class Meta:
         """The name of the provider."""
 
-        name = "russia_provider"
-        datafile = "builtin.json"
+        name = 'russia_provider'
+        datafile = 'builtin.json'
 
     def patronymic(self, gender: Gender | None = None) -> str:
         """Generate random patronymic name.
@@ -39,14 +39,14 @@ class RussiaSpecProvider(BaseDataProvider):
             Алексеевна.
         """
         gender = self.validate_enum(gender, Gender)
-        patronymics: list[str] = self._extract(["patronymic", str(gender)])
+        patronymics: list[str] = self._extract(['patronymic', str(gender)])
         return self.random.choice(patronymics)
 
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
         start_time = time.time()
-        self.stdout.write("Наполнения базы данных сотрудниками (Employee)")
+        self.stdout.write('Наполнения базы данных сотрудниками (Employee)')
 
         person = Person('ru')
         patron = RussiaSpecProvider()
@@ -76,12 +76,12 @@ class Command(BaseCommand):
             )
 
         # назначение на должности начальников
-        print("Назначение начальников")
+        print('Назначение начальников')
         for position_id in tqdm(range(1, 11), ncols=100, desc='Processing'):
             create_employee(position_id)
 
         # 50100 количество человек желающих получить работу
-        print("Назначение подчинённых")
+        print('Назначение подчинённых')
         for _ in tqdm(range(50100), ncols=100, desc='Processing'):
             # выбираем должности, у которых имеются вакансии
             position_id = choice(list(filter(lambda x: vacancies_for_positions[x] > 0, vacancies_for_positions)))
@@ -91,7 +91,7 @@ class Command(BaseCommand):
             p.vacancies = vacancies_for_positions[p.id]
             p.save()
 
-        self.stdout.write(f"Наполнение базы данных завершено за время: {str((time.time() - start_time) / 60 )} минут")
+        self.stdout.write(f'Наполнение базы данных завершено за время: {str((time.time() - start_time) / 60 )} минут')
 
 
 # запуск наполнения базы данных сотрудниками

@@ -11,7 +11,6 @@ class PositionAdmin(admin.ModelAdmin):
     fields = ('boss', 'name', 'vacancies', 'base_salary', 'is_manager',)
     list_display_links = ('name', 'boss', 'vacancies', 'base_salary')
     ordering = ('id',)
-    # list_per_page = 10
 
 
 @admin.register(Employee)
@@ -22,8 +21,6 @@ class EmployeeAdmin(admin.ModelAdmin):
     search_fields = ('last_name', 'first_name', 'salary')
     list_display_links = ('id', 'last_name', 'first_name', 'patronymic', 'position', 'employment_date', 'pos_rel', 'salary')
     ordering = ('id',)
-
-    # list_per_page = 10
 
     @admin.display(ordering='id', description='непосредственный начальник')
     def pos_rel(self, emp: Employee):

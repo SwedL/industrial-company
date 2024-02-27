@@ -62,7 +62,7 @@ class EmployeesView(LoginRequiredMixin, View):
     def get(self, request, order_by: str, direction: str, position_id: int = None):
 
         # получаем данные из формы поиска и фильтры поиска для sql запроса
-        if request.GET.get("page"):
+        if request.GET.get('page'):
             # если переход по пагинатору, то фильтруем по данным из common_where_and_form_data
             form = SearchEmployeeForm(common_where_and_form_data.get('form_data'))
             where_for_sql = common_where_and_form_data.get('where_for_sql', '')
@@ -89,7 +89,7 @@ class EmployeesView(LoginRequiredMixin, View):
         employees_list = Employee.objects.raw(sql)
 
         paginator = Paginator(employees_list, 20)
-        page_number = request.GET.get("page")
+        page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
 
         context = {
@@ -135,7 +135,7 @@ class EmployeesView(LoginRequiredMixin, View):
         sql = f'SELECT ROW_NUMBER() OVER(ORDER BY {order_by}) AS num, * FROM structure_employee {where_for_sql} ORDER BY {order_by}'
         employees_list = Employee.objects.raw(sql)
         paginator = Paginator(employees_list, 20)
-        page_number = request.GET.get("page")
+        page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
 
         context = {
@@ -143,6 +143,7 @@ class EmployeesView(LoginRequiredMixin, View):
             'form': form,
             'paginator_range': page_obj.paginator.get_elided_page_range(page_obj.number),
             'position_id': position_id,
+            'staff': request.user.has_perm('structure.change_employee'),
         }
 
         return render(request, 'structure/department.html', context=context)
@@ -162,7 +163,10 @@ def employee_detail(request, pk, num):
     """Функция для возврата исходных данных, при отмене изменений данных сотрудника"""
     employee = get_object_or_404(Employee, pk=pk)
     employee.num = num
-    return render(request, 'structure/employee_detail.html', {'employee': employee})
+    context = {
+        'employee': employee,
+    }
+    return render(request, 'structure/employee_detail.html', context=context)
 
 
 @permission_required('structure.change_employee')
@@ -173,21 +177,21 @@ def update_employee_details(request, pk, num):
         form = UpdateEmployeeDetailForm(request.POST, instance=employee)
         if form.is_valid():
             if any(map(lambda d: d == 'position', form.changed_data)):
-                # добавляем вакансию в предыдущей должности
+                # добавляем вакансию в предыдущей должности, если у сотрудника была должность
                 if form.initial['position']:
-                    prev_pos = Position.objects.filter(id=form.initial['position']).first()
-                    prev_pos.vacancies += 1
-                    prev_pos.save()
-                # уменьшаем кол-во вакансий в новой должности сотрудника
+                    Position.objects.filter(id=form.initial['position']).update(vacancies=F('vacancies') + 1)
+                # уменьшаем кол-во вакансий в новой должности сотрудника, если у сотрудника была должность
                 if form.data['position']:
-                    current_pos = Position.objects.filter(id=form.data['position']).first()
-                    current_pos.vacancies -= 1
-                    current_pos.save()
+                    Position.objects.filter(id=form.data['position']).update(vacancies=F('vacancies') - 1)
 
             # сохраняем изменённые данные сотрудника
             employee = form.save()
             employee.num = num
-            return render(request, 'structure/employee_detail.html', {'employee': employee})
+            context = {
+                'employee': employee,
+                'staff': request.user.has_perm('structure.change_employee'),
+            }
+            return render(request, 'structure/employee_detail.html', context=context)
     else:
         form = UpdateEmployeeDetailForm(instance=employee)
     return render(request, 'structure/partial_employee_update_form.html', {'employee': employee, 'form': form, 'num': num})

@@ -20,8 +20,8 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'django_channels_chat.settings')
 asgi_application = get_asgi_application()    # new
 
 application = ProtocolTypeRouter({
-    "http": asgi_application,
-    "websocket":
+    'http': asgi_application,
+    'websocket':
         AllowedHostsOriginValidator(
             AuthMiddlewareStack(
                 URLRouter(structure.routing.websocket_urlpatterns)

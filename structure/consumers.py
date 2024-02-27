@@ -7,7 +7,6 @@ from .models import Position
 
 class Connection(WebsocketConsumer):
     def connect(self):
-        # print("server says connected")
         self.accept()    # new
 
     def receive(self, text_data=None, bytes_data=None):
