@@ -19,6 +19,5 @@ urlpatterns = [
     path('update_employee_detail/<int:pk>/<int:num>', update_employee_details, name='update_employee_detail'),
     path('delete-employee/<int:pk>/', delete_employee, name='delete_employee'),
     path('recruit_distribution/', EmployeeCreateView.as_view(), name='recruit_distribution'),
-    # path('recruit_distribution/<order_by>/<direction>/', EmployeeCreateView.as_view(), name='recruit_distribution'),
 ]
 

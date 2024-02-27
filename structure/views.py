@@ -1,4 +1,5 @@
-from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.http import HttpResponse, HttpResponseNotFound
 from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView
@@ -33,7 +34,7 @@ def logout_user(request):
     return redirect('/')
 
 
-class StructureCompanyTemplateView(TemplateView):
+class StructureCompanyTemplateView(LoginRequiredMixin, TemplateView):
     """Представление отображающее страницу структуры компании в древовидной форме"""
 
     template_name = 'structure/structure_company.html'
@@ -46,7 +47,7 @@ class StructureCompanyTemplateView(TemplateView):
         return self.render_to_response(context)
 
 
-class EmployeesView(View):
+class EmployeesView(LoginRequiredMixin, View):
     """
     Представление отображающее список сотрудников с использованием фильтров и формы поиска.
     Изначально при переходе на страницу, по блоку отдела, используется:
@@ -147,6 +148,7 @@ class EmployeesView(View):
         return render(request, 'structure/department.html', context=context)
 
 
+@login_required
 @require_http_methods(['GET'])
 def clear_search(request):
     """Функция для очистки полей формы поиска EmployeesView"""
@@ -154,6 +156,16 @@ def clear_search(request):
     return render(request, 'structure/search_form.html', context={'form': form})
 
 
+@login_required
+@require_http_methods(['GET'])
+def employee_detail(request, pk, num):
+    """Функция для возврата исходных данных, при отмене изменений данных сотрудника"""
+    employee = get_object_or_404(Employee, pk=pk)
+    employee.num = num
+    return render(request, 'structure/employee_detail.html', {'employee': employee})
+
+
+@permission_required('structure.change_employee')
 def update_employee_details(request, pk, num):
     """Функция изменения данных сотрудника"""
     employee = Employee.objects.get(pk=pk)
@@ -181,14 +193,7 @@ def update_employee_details(request, pk, num):
     return render(request, 'structure/partial_employee_update_form.html', {'employee': employee, 'form': form, 'num': num})
 
 
-@require_http_methods(['GET'])
-def employee_detail(request, pk, num):
-    """Функция для возврата исходных данных, при отмене изменений данных сотрудника"""
-    employee = get_object_or_404(Employee, pk=pk)
-    employee.num = num
-    return render(request, 'structure/employee_detail.html', {'employee': employee})
-
-
+@permission_required('structure.change_employee')
 @require_http_methods(['DELETE'])
 def delete_employee(request, pk):
     """Функция удаления сотрудника из базы данных (кнопка уволить)"""
