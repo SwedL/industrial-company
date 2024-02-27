@@ -38,10 +38,11 @@
     <td>
         <div class="table__button-box">
             <!-- Кнопка "изменить" -->
+            {% if staff %}
             <button class="table__button-box_edit table_buttons disbtn"
                 hx-put="{% url 'structure:update_employee_detail' employee.id employee.num %}"
                 hx-target="closest tr"
-                hx-swap="outerHTML" >
+                hx-swap="outerHTML">
                 изменить
             </button>
 
@@ -53,6 +54,7 @@
                 hx-confirm="Вы уверенны что хотите уволить сотрудника?" >
                 уволить
             </button>
+            {% endif %}
         </div>
     </td>
 </tr>

@@ -18,18 +18,20 @@ let dragging_block;
 let dragging_block_key;
 let startX;
 let startY;
+let permission = false;
 
 base_url = `${window.location.hostname}:${window.location.port}`
         const websocket = new WebSocket(`ws://${base_url}`)
         websocket.onopen = function (event) {
             console.log('client says connection opened')
-            websocket.send("Client sends Welcomettt")
+            websocket.send("Client sends Welcome")
             draw_all();
         }
         websocket.onmessage = function (event) {
             message = JSON.parse(event.data)
             let position = message.position
-            console.log('Получен position')
+            permission = message.permission
+//            console.log('Получен position')
 
             /* запись имён менеджеров в фигуры */
             dict_blocks = {50: {x: 130, y: 20, width: 180, height: 90, position: "Снятие /n с занимаемой /n должности", font: "16px"}};
@@ -37,6 +39,9 @@ base_url = `${window.location.hostname}:${window.location.port}`
 
             for(let key in alfa_dict_blocks) {
                 check_is_manager = alfa_dict_blocks[key].is_manager
+                // если блок менеджера, и для этой должности есть имя сотрудника, то записываем блок в словарь блоков
+                // если имени нет, то блок попадает в словарь блоков призраков (должность без имени)
+                // если блок не менеджера, то он сразу попадает в словарь блоков
                 if (check_is_manager) {
                     if (key in position) {
                         dict_blocks[key] = {};
@@ -201,10 +206,10 @@ let mouse_down = function(event) {
        если нажат был блок отдела, то происходит переход на соответствующую страницу */
 
     /* проверяется нажатие на блок, если блок в данный момент, не несётся */
-    if (!is_dragging && event.which == 1) {
+    if (!is_dragging && event.which == 1)  {
         for (let key in dict_blocks) {
             if (is_mouse_in_block(startX, startY, dict_blocks[key])) {
-                if (dict_blocks[key].is_manager) {
+                if (dict_blocks[key].is_manager  && permission) {
                     is_dragging = true;
                     start_blockX = dict_blocks[key].x;
                     start_blockY = dict_blocks[key].y;

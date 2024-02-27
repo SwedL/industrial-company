@@ -1,9 +1,8 @@
-from django.urls import re_path, path
+from django.urls import path
 
 from . import consumers
 
 
 websocket_urlpatterns = [
-    path('', consumers.JoinAndLeave.as_asgi()),
-    # path('structure-company/', consumers.JoinAndLeave.as_asgi()),
+    path('', consumers.Connection.as_asgi()),
 ]

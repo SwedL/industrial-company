@@ -23,20 +23,24 @@
     <header class="header">
         <div class="header__container">
             <div class="header__container-logo">
-                <a href="{% url 'structure:login' %}"><img class="header__logo" src="{% static 'structure/icons/logo2.svg' %}" alt="logo"></a>
+                <img class="header__logo" src="{% static 'structure/icons/logo2.svg' %}" alt="logo">
             </div>
                 <!-- Блок навигации -->
             <nav class="header__container-nav nav-menu">
                 <ul class="nav-menu__list">
+                    {% if request.user.is_authenticated %}
                     <li class="nav-menu__list-item item-text">
                         <a class="nav-menu__text" href="{% url 'structure:structure_company' %}">структура компании</a>
                     </li>
-                    <li class="nav-menu__list-item item-text">
+                    <li class="nav-menu__list-item item-text empty-text">
+                    {% if staff %}
                         <a class="nav-menu__text" href="{% url 'structure:recruit_distribution' %}">найм и распределение сотрудников</a>
+                    {% endif %}
                     </li>
                     <li class="nav-menu__list-item item-text">
-                        <a class="nav-menu__text" href="{% url 'structure:login' %}">выход</a>
+                        <a class="nav-menu__text" href="{% url 'structure:logout' %}">{{user}} выход</a>
                     </li>
+                    {% endif %}
                 </ul>
             </nav>
         </div>

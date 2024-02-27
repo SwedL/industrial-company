@@ -1,9 +1,11 @@
-from django.http import HttpResponse
+from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.http import HttpResponse, HttpResponseNotFound
+from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView
 from django.core.paginator import Paginator
 from django.db.models import F
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.decorators.http import require_http_methods
 from django.views.generic import TemplateView, View, CreateView
@@ -26,6 +28,11 @@ class UserLoginView(LoginView):
     template_name = 'structure/login.html'
 
 
+def logout_user(request):
+    logout(request)
+    return redirect('/')
+
+
 class StructureCompanyTemplateView(TemplateView):
     """Представление отображающее страницу структуры компании в древовидной форме"""
 
@@ -35,6 +42,7 @@ class StructureCompanyTemplateView(TemplateView):
         context = self.get_context_data(**kwargs)
         # при открытии страницы стираются фильтры сортировки и поиска представления EmployeesView
         common_where_and_form_data.clear()
+        context['staff'] = request.user.has_perm('structure.change_employee')
         return self.render_to_response(context)
 
 
@@ -88,6 +96,7 @@ class EmployeesView(View):
             'form': form,
             'paginator_range': page_obj.paginator.get_elided_page_range(page_obj.number),
             'position_id': position_id,
+            'staff': request.user.has_perm('structure.change_employee'),
         }
 
         return render(request, 'structure/department.html', context=context)
@@ -191,10 +200,11 @@ def delete_employee(request, pk):
     return HttpResponse()
 
 
-class EmployeeCreateView(CreateView):
+class EmployeeCreateView(PermissionRequiredMixin, CreateView):
     form_class = AddEmployeeForm
-    template_name = 'structure/recruit_distribution.html'
+    permission_required = 'structure.change_employee'
     success_url = reverse_lazy('structure:recruit_distribution')
+    template_name = 'structure/recruit_distribution.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -202,6 +212,10 @@ class EmployeeCreateView(CreateView):
 
         sql = f'SELECT ROW_NUMBER() OVER(ORDER BY last_name) AS num, * FROM structure_employee WHERE position_id is NULL ORDER BY last_name'
         context['employees'] = Employee.objects.raw(sql)
+        context['staff'] = self.request.user.has_perm('structure.change_employee')
 
         return context
 
+
+def pageNotFound(request, exception):
+    return HttpResponseNotFound('<h1>Страница не найдена</h1>')
