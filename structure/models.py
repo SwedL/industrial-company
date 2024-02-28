@@ -2,14 +2,6 @@ from django.db import models
 from django.utils import timezone
 
 
-class PositionQuerySet(models.Manager):
-    def get_all_position(self):
-        return super().get_queryset()
-
-    def get_queryset(self):
-        return super().get_queryset().exclude(vacancies=0)
-
-
 class Position(models.Model):
     """Модель Должность"""
     boss = models.ForeignKey(
@@ -42,5 +34,7 @@ class Employee(models.Model):
         verbose_name = 'Сотрудник'
         verbose_name_plural = 'Сотрудники'
 
+    def __str__(self):
+        return self.last_name
 
 # python manage.py shell_plus --print-sql

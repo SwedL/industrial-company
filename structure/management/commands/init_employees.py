@@ -103,4 +103,4 @@ class Command(BaseCommand):
 # e.delete()
 
 # загрузка всех объектов Position
-# python manage.py loaddata structure\fixtures\position.json
+# python manage.py loaddata structure\fixtures\positions.json
