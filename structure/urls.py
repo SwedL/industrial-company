@@ -20,4 +20,3 @@ urlpatterns = [
     path('delete-employee/<int:pk>/', delete_employee, name='delete_employee'),
     path('recruit_distribution/', EmployeeCreateView.as_view(), name='recruit_distribution'),
 ]
-

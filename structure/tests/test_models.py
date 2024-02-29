@@ -55,6 +55,7 @@ class PositionModelTest(TestCase):
 
 
 class EmployeeModelTest(TestCase):
+    """Тест модели Employee"""
 
     fixtures = {'positions.json'}
 
@@ -77,30 +78,30 @@ class EmployeeModelTest(TestCase):
         self.assertEqual(len(self.positions), 47)
 
     def test_saving_and_retrieving_employee(self):
-        first_employee = Employee()
-        first_employee.first_name = 'Николай'
-        first_employee.last_name = 'Фролов'
-        first_employee.patronymic = 'Семёнович'
-        first_employee.position = self.positions[18]
-        first_employee.salary = 63_000
-        first_employee.save()
+        Employee.objects.create(
+            first_name='Николай',
+            last_name='Фролов',
+            patronymic='Семёнович',
+            position=self.positions[17],
+            salary=63_000,
+        )
 
-        second_employee = Employee()
-        second_employee.first_name = 'Михаил'
-        second_employee.last_name = 'Гурьев'
-        second_employee.patronymic = 'Васильевич'
-        second_employee.position = self.positions[19]
-        second_employee.salary = 53_000
-        second_employee.save()
+        Employee.objects.create(
+            first_name='Михаил',
+            last_name='Гурьев',
+            patronymic='Васильевич',
+            position=self.positions[19],
+            salary=53_000,
+        )
 
-        saved_employees = Employee.objects.all()
-        self.assertEqual(saved_employees.count(), 2)
+        employees = Employee.objects.all()
+        self.assertEqual(employees.count(), 2)
 
-        first_saved_employee = saved_employees[0]
-        second_saved_employee = saved_employees[1]
-        self.assertEqual(first_saved_employee.first_name, 'Николай')
-        self.assertEqual(first_saved_employee.salary, 63_000)
-        self.assertEqual(first_saved_employee.employment_date, date.today())
-        self.assertEqual(second_saved_employee.last_name, 'Гурьев')
-        self.assertEqual(second_saved_employee.salary, 53_000)
-        self.assertEqual(second_saved_employee.employment_date, date.today())
+        first_employee = employees[0]
+        second_employee = employees[1]
+        self.assertEqual(first_employee.first_name, 'Николай')
+        self.assertEqual(first_employee.salary, 63_000)
+        self.assertEqual(first_employee.employment_date, date.today())
+        self.assertEqual(second_employee.last_name, 'Гурьев')
+        self.assertEqual(second_employee.salary, 53_000)
+        self.assertEqual(second_employee.employment_date, date.today())

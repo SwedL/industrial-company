@@ -3,9 +3,13 @@ from django.utils import timezone
 
 
 class Position(models.Model):
-    """Модель Должность"""
+    """Модель должность"""
+
     boss = models.ForeignKey(
-        'self', on_delete=models.DO_NOTHING, default=1, verbose_name='непосредственный начальник',
+        'self',
+        on_delete=models.DO_NOTHING,
+        default=1,
+        verbose_name='непосредственный начальник',
         blank=True,
     )
     name = models.CharField(max_length=150, unique=True, blank=False, verbose_name='должность')
@@ -22,11 +26,12 @@ class Position(models.Model):
 
 
 class Employee(models.Model):
+    """Модель сотрудник"""
+
     first_name = models.CharField(max_length=50, verbose_name='имя')
     last_name = models.CharField(max_length=50, verbose_name='фамилия')
     patronymic = models.CharField(max_length=50, verbose_name='отчество')
-    position = models.ForeignKey(Position, on_delete=models.SET_NULL,
-                                 blank=True, null=True, verbose_name='должность')
+    position = models.ForeignKey(Position, on_delete=models.SET_NULL, blank=True, null=True, verbose_name='должность')
     employment_date = models.DateField(default=timezone.now, verbose_name='дата приёма на работу')
     salary = models.IntegerField(default=0, verbose_name='зарплата')
 
