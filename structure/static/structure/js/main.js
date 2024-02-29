@@ -23,7 +23,6 @@ let permission = false;
 base_url = `${window.location.hostname}:${window.location.port}`
         const websocket = new WebSocket(`ws://${base_url}`)
         websocket.onopen = function (event) {
-            console.log('client says connection opened')
             websocket.send("Client sends Welcome")
             draw_all();
         }
@@ -31,7 +30,6 @@ base_url = `${window.location.hostname}:${window.location.port}`
             message = JSON.parse(event.data)
             let position = message.position
             permission = message.permission
-//            console.log('Получен position')
 
             /* запись имён менеджеров в фигуры */
             dict_blocks = {50: {x: 130, y: 20, width: 180, height: 90, position: "Снятие /n с занимаемой /n должности", font: "16px"}};
@@ -91,7 +89,6 @@ function wrapText(context, block) {
         }
         else {
             for (let n = 0; n < countLines; n++) {
-//                context.fillText(lines[n], block.x + block.width/2, block.y + block.height/countLines * n);
                 context.fillText(lines[n], block.x + block.width/2, block.y + block.height/2 - countLines * 20/2 + 6*countLines + n * 14);
             }
         }
@@ -221,7 +218,6 @@ let mouse_down = function(event) {
                         ghost_blocks[key][k] = dragging_block[k]
                     }
                     ghost_blocks[key].manager_name = " "
-                    console.log(ghost_blocks)
                     break;    // если блок определился, происходит прерывание цикла поиска блока
                 } else {
                     let num_key = key;
@@ -242,7 +238,6 @@ let mouse_up = function(event) {
 
         // назначение менеджера
         for (let key in ghost_blocks) {
-            console.log(ghost_blocks)
             if (is_mouse_in_block(mouseX, mouseY, ghost_blocks[key])) {
                 is_dragging = false;
                 text_data = {type_message: "appoint_manager", from_position_id: dragging_block_key, to_position_id: key};

@@ -5,7 +5,7 @@ from datetime import date
 from structure.models import Position, Employee
 
 
-class PositionModelTestCase(TestCase):
+class PositionModelTest(TestCase):
     """Тест модели Position"""
 
     def setUp(self):
@@ -54,7 +54,7 @@ class PositionModelTestCase(TestCase):
         self.assertEqual(second_saved_position.boss, first_position)
 
 
-class EmployeeModelTestCase(TestCase):
+class EmployeeModelTest(TestCase):
 
     fixtures = {'positions.json'}
 

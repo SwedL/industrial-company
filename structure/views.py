@@ -27,6 +27,12 @@ common_where_and_form_data = {}
 class UserLoginView(LoginView):
     form_class = UserLoginForm
     template_name = 'structure/login.html'
+    title = 'Авторизация'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = self.title
+        return context
 
 
 def logout_user(request):
@@ -38,12 +44,14 @@ class StructureCompanyTemplateView(LoginRequiredMixin, TemplateView):
     """Представление отображающее страницу структуры компании в древовидной форме"""
 
     template_name = 'structure/structure_company.html'
+    title = 'Структура компании'
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         # при открытии страницы стираются фильтры сортировки и поиска представления EmployeesView
         common_where_and_form_data.clear()
         context['staff'] = request.user.has_perm('structure.change_employee')
+        context['title'] = self.title
         return self.render_to_response(context)
 
 
@@ -58,6 +66,7 @@ class EmployeesView(LoginRequiredMixin, View):
     """
 
     paginate_by = 25
+    title = 'Список сотрудников'
 
     def get(self, request, order_by: str, direction: str, position_id: int = None):
 
@@ -97,6 +106,7 @@ class EmployeesView(LoginRequiredMixin, View):
             'form': form,
             'paginator_range': page_obj.paginator.get_elided_page_range(page_obj.number),
             'position_id': position_id,
+            'title': self.title,
             'staff': request.user.has_perm('structure.change_employee'),
         }
 
@@ -143,6 +153,7 @@ class EmployeesView(LoginRequiredMixin, View):
             'form': form,
             'paginator_range': page_obj.paginator.get_elided_page_range(page_obj.number),
             'position_id': position_id,
+            'title': self.title,
             'staff': request.user.has_perm('structure.change_employee'),
         }
 
@@ -214,6 +225,7 @@ class EmployeeCreateView(PermissionRequiredMixin, CreateView):
     permission_required = 'structure.change_employee'
     success_url = reverse_lazy('structure:recruit_distribution')
     template_name = 'structure/recruit_distribution.html'
+    title = 'Найм и распределение'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -222,6 +234,7 @@ class EmployeeCreateView(PermissionRequiredMixin, CreateView):
         sql = f'SELECT ROW_NUMBER() OVER(ORDER BY last_name) AS num, * FROM structure_employee WHERE position_id is NULL ORDER BY last_name'
         context['employees'] = Employee.objects.raw(sql)
         context['staff'] = self.request.user.has_perm('structure.change_employee')
+        context['title'] = self.title
 
         return context
 
