@@ -183,7 +183,9 @@ def employee_detail(request, pk, num):
 @permission_required('structure.change_employee')
 def update_employee_details(request, pk, num):
     """Функция изменения данных сотрудника"""
+
     employee = Employee.objects.get(pk=pk)
+
     if request.method == 'POST':
         form = UpdateEmployeeDetailForm(request.POST, instance=employee)
         if form.is_valid():

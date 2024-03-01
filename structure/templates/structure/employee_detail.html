@@ -37,8 +37,8 @@
     <!--  Ячейка кнопок действия -->
     <td>
         <div class="table__button-box">
-            <!-- Кнопка "изменить" -->
             {% if staff %}
+            <!-- Кнопка "изменить" -->
             <button class="table__button-box_edit table_buttons disbtn"
                 hx-put="{% url 'structure:update_employee_detail' employee.id employee.num %}"
                 hx-target="closest tr"

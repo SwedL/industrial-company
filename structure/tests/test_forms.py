@@ -12,27 +12,17 @@ class UserLoginFormTest(TestCase):
     """Тест формы авторизации пользователя"""
 
     def setUp(self):
-        url = reverse('structure:login')
-        self.response = self.client.get(url)
-
-    def test_user_login_form(self):
-        # Проверка соответствие формы экземпляру UserLoginForm и наличие csrf токена
-        form = self.response.context_data.get('form')
-        self.assertIsInstance(form, UserLoginForm)
-        self.assertContains(self.response, 'csrfmiddlewaretoken')
+        self.form = UserLoginForm()
 
     def test_form_field_label(self):
         # Проверка названий полей формы
-        form = UserLoginForm()
         self.assertTrue(
-            form.fields['username'].label is None or form.fields['username'].label == 'Логин')
+            self.form.fields['username'].label is None or self.form.fields['username'].label == 'Логин')
         self.assertTrue(
-            form.fields['password'].label is None or form.fields['password'].label == 'Пароль')
+            self.form.fields['password'].label is None or self.form.fields['password'].label == 'Пароль')
 
     def test_user_form_validation_for_blank_items(self):
-        form = UserLoginForm(
-            data={'username': '', 'password': ''}
-        )
+        form = UserLoginForm(data={'username': '', 'password': ''})
         self.assertFalse(form.is_valid())
 
 

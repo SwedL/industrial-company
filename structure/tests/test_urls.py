@@ -54,6 +54,8 @@ class StructureURLsTest(TestCase):
     def test_structure_company_url_by_an_authorized_user(self):
         self.client.force_login(self.user)
         response = self.client.get(reverse('structure:structure_company'))
+        self.assertEqual(response.context_data['title'], 'Структура компании')
+        self.assertTemplateUsed(response, 'structure/structure_company.html')
         self.assertEqual(response.status_code, HTTPStatus.OK)
 
     # тест url 'department/<order_by>/<direction>/'
