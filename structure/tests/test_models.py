@@ -2,7 +2,7 @@ from django.test import TestCase
 
 from datetime import date
 
-from structure.models import Position, Employee
+from structure.models import Employee, Position
 
 
 class PositionModelTest(TestCase):
@@ -75,7 +75,7 @@ class EmployeeModelTest(TestCase):
         self.assertEqual(str(self.employee), 'Фролов')
 
     def test_count_position(self):
-        self.assertEqual(len(self.positions), 47)
+        self.assertEqual(self.positions.count(), 47)
 
     def test_saving_and_retrieving_employee(self):
         Employee.objects.create(
