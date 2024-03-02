@@ -1,11 +1,8 @@
-from django.test import TestCase, SimpleTestCase
-from django.urls import reverse
+from django.test import SimpleTestCase, TestCase
 from django.db.models import F
-from django.contrib.auth.models import User
+from structure.models import Position
 
-from http import HTTPStatus
-
-from structure.forms import *
+from structure.forms import AddEmployeeForm, SearchEmployeeForm, UpdateEmployeeDetailForm, UserLoginForm
 
 
 class UserLoginFormTest(TestCase):
@@ -61,7 +58,7 @@ class SearchEmployeeFormTest(SimpleTestCase):
 
 
 class AddEmployeeFormTest(TestCase):
-    """Тест формы добавления сотрудников"""
+    """Тест формы добавления нового сотрудника"""
 
     def setUp(self):
         self.form = AddEmployeeForm()
@@ -80,7 +77,7 @@ class AddEmployeeFormTest(TestCase):
 
 
 class UpdateEmployeeDetailFormTest(TestCase):
-    """Тест формы обновления данных сотрудников"""
+    """Тест формы обновления данных сотрудника"""
 
     fixtures = {'positions.json'}
 
@@ -102,9 +99,11 @@ class UpdateEmployeeDetailFormTest(TestCase):
         )
 
     def test_form_queryset(self):
-        # Проверка выбора должностей согласно вакансиям, поля position в форме выбора
+        # Проверка доступных для выбора должностей (у которых имеются вакансии)
         form1 = UpdateEmployeeDetailForm()
         self.assertEqual(len(form1.fields['position'].queryset), 47)
+
         Position.objects.filter(id=1).update(vacancies=F('vacancies') - 1)
+
         form2 = UpdateEmployeeDetailForm()
         self.assertEqual(len(form2.fields['position'].queryset), 46)
