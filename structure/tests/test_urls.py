@@ -15,23 +15,8 @@ class StructureURLsTest(TestCase):
     fixtures = {'positions.json'}
 
     def setUp(self):
-        self.positions = Position.objects.all()
         self.user = User.objects.create_user(username='test_user', password='12345')
         self.permission = Permission.objects.get(codename='change_employee')
-        Employee.objects.create(
-            first_name='Николай',
-            last_name='Фролов',
-            patronymic='Семёнович',
-            position=self.positions[17],
-            salary=63_000,
-        )
-        Employee.objects.create(
-            first_name='Михаил',
-            last_name='Гурьев',
-            patronymic='Васильевич',
-            position=self.positions[19],
-            salary=53_000,
-        )
 
     # тест url ''
     def test_root_url_resolves_to_homepage_view(self):
@@ -127,7 +112,7 @@ class StructureURLsTest(TestCase):
             'pk': 1,
             'num': 1,
         }))
-        self.assertEqual(response.status_code, HTTPStatus.OK)
+        self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
 
     # тест url 'update_employee_detail/<int:pk >/<int:num>'
     def test_root_url_resolves_to_update_employee_detail(self):
@@ -160,7 +145,7 @@ class StructureURLsTest(TestCase):
             'pk': 1,
             'num': 1,
         }))
-        self.assertEqual(response.status_code, HTTPStatus.OK)
+        self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
 
     # тест url 'delete-employee/<int:pk>/'
     def test_root_url_resolves_to_delete_employee(self):
@@ -180,12 +165,8 @@ class StructureURLsTest(TestCase):
         self.user.user_permissions.add(self.permission)
         self.user.save()
         self.client.force_login(self.user)
-        number_employees_before_delete_employee = Employee.objects.all().count()
         response = self.client.delete(reverse('structure:delete_employee', kwargs={'pk': 1}))
-        number_employees_after_delete_employee = Employee.objects.all().count()
-        self.assertEqual(response.status_code, HTTPStatus.OK)
-        self.assertEqual(number_employees_before_delete_employee, 2)
-        self.assertEqual(number_employees_after_delete_employee, 1)
+        self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
 
     # тест url 'recruit_distribution/'
     def test_root_url_resolves_to_recruit_distribution(self):

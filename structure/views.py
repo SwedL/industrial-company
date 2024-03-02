@@ -184,7 +184,8 @@ def employee_detail(request, pk, num):
 def update_employee_details(request, pk, num):
     """Функция изменения данных сотрудника"""
 
-    employee = Employee.objects.get(pk=pk)
+    employee = get_object_or_404(Employee, pk=pk)
+    # employee = Employee.objects.get(pk=pk)
 
     if request.method == 'POST':
         form = UpdateEmployeeDetailForm(request.POST, instance=employee)
@@ -216,8 +217,9 @@ def delete_employee(request, pk):
     """Функция удаления сотрудника из базы данных (кнопка уволить)"""
     employee = get_object_or_404(Employee, pk=pk)
     # при увольнении сотрудника вакансии его должности увеличиваем на 1
-    employee.position.vacancies += 1
-    employee.position.save()
+    if employee.position:
+        employee.position.vacancies += 1
+        employee.position.save()
     employee.delete()
     return HttpResponse()
 
