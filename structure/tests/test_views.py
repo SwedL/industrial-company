@@ -3,7 +3,7 @@ from django.contrib.auth.models import User, Permission
 from django.urls import reverse
 
 from http import HTTPStatus
-from structure.forms import *
+from structure.forms import AddEmployeeForm, SearchEmployeeForm, UpdateEmployeeDetailForm, UserLoginForm
 from datetime import date
 
 from structure.models import Position, Employee
@@ -141,7 +141,7 @@ class EmployeesViewTest(TestCase):
 
 
 class EmployeeDetailTest(TestCase):
-    """Тест функции для возврата исходных данных, при отмене изменений данных сотрудника"""
+    """Тест функции возврата исходных данных, при отмене изменений данных сотрудника"""
 
     fixtures = {'positions.json'}
 
@@ -188,7 +188,7 @@ class UpdateEmployeeDetails(TestCase):
         self.assertEqual(employee.salary, 63_000)
 
     def test_post_function_request(self):
-        # Тест post запроса функции. Проверяем что сотрудник сменил должность и зарплатуЮ
+        # Тест post запроса функции. Проверяем что сотрудник сменил должность и зарплату,
         # у предыдущей должности добавилась вакансия, а у текущей должности вакансия уменьшилась
         employee_before_update = Employee.objects.filter(pk=1).first()
         number_vacancies_position_17_before_update_employee = positions[17].vacancies

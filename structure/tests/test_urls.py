@@ -32,11 +32,11 @@ class StructureURLsTest(TestCase):
         found = resolve(reverse('structure:structure_company'))
         self.assertEqual(found.func.view_class, StructureCompanyTemplateView)
 
-    def test_structure_company_url_by_not_authorized_user(self):
+    def test_structure_company_url_as_unauthorized_user(self):
         response = self.client.get(reverse('structure:structure_company'))
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
 
-    def test_structure_company_url_by_an_authorized_user(self):
+    def test_structure_company_url_as_an_authorized_user(self):
         self.client.force_login(self.user)
         response = self.client.get(reverse('structure:structure_company'))
         self.assertEqual(response.context_data['title'], 'Структура компании')
@@ -60,7 +60,7 @@ class StructureURLsTest(TestCase):
         }))
         self.assertEqual(found.func.view_class, EmployeesView)
 
-    def test_department_url_by_an_unauthorized_user(self):
+    def test_department_url_as_an_unauthorized_user(self):
         response = self.client.get(reverse('structure:department', kwargs={
             'position_id': 18,
             'order_by': 'salary',
@@ -68,7 +68,7 @@ class StructureURLsTest(TestCase):
         }))
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
 
-    def test_department_url_by_an_authorized_user(self):
+    def test_department_url_as_an_authorized_user(self):
         self.client.force_login(self.user)
         response = self.client.get(reverse('structure:department', kwargs={
             'position_id': 18,
@@ -82,11 +82,11 @@ class StructureURLsTest(TestCase):
         found = resolve(reverse('structure:clear_search'))
         self.assertEqual(found.func, clear_search)
 
-    def test_clear_search_url_by_an_unauthorized_user(self):
+    def test_clear_search_url_as_an_unauthorized_user(self):
         response = self.client.get(reverse('structure:clear_search'))
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
 
-    def test_clear_search_url_by_an_authorized_user(self):
+    def test_clear_search_url_as_an_authorized_user(self):
         self.client.force_login(self.user)
         response = self.client.get(reverse('structure:clear_search'))
         self.assertEqual(response.status_code, HTTPStatus.OK)
@@ -99,14 +99,14 @@ class StructureURLsTest(TestCase):
         }))
         self.assertEqual(found.func, employee_detail)
 
-    def test_employee_detail_url_by_an_unauthorized_user(self):
+    def test_employee_detail_url_as_an_unauthorized_user(self):
         response = self.client.get(reverse('structure:employee_detail', kwargs={
             'pk': 1,
             'num': 1,
         }))
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
 
-    def test_employee_detail_url_by_an_authorized_user(self):
+    def test_employee_detail_url_as_an_authorized_user(self):
         self.client.force_login(self.user)
         response = self.client.get(reverse('structure:employee_detail', kwargs={
             'pk': 1,
@@ -122,14 +122,14 @@ class StructureURLsTest(TestCase):
         }))
         self.assertEqual(found.func, update_employee_details)
 
-    def test_update_employee_detail_url_by_an_unauthorized_user(self):
+    def test_update_employee_detail_url_as_an_unauthorized_user(self):
         response = self.client.get(reverse('structure:update_employee_detail', kwargs={
             'pk': 1,
             'num': 1,
         }))
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
 
-    def test_update_employee_detail_url_by_an_authorized_user_but_cannot_permission(self):
+    def test_update_employee_detail_url_as_an_authorized_user_without_permission(self):
         self.client.force_login(self.user)
         response = self.client.get(reverse('structure:update_employee_detail', kwargs={
             'pk': 1,
@@ -137,7 +137,7 @@ class StructureURLsTest(TestCase):
         }))
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
 
-    def test_update_employee_detail_url_by_an_authorized_user_can_permission(self):
+    def test_update_employee_detail_url_as_an_authorized_user_with_permission(self):
         self.user.user_permissions.add(self.permission)
         self.user.save()
         self.client.force_login(self.user)
@@ -152,16 +152,16 @@ class StructureURLsTest(TestCase):
         found = resolve(reverse('structure:delete_employee', kwargs={'pk': 1}))
         self.assertEqual(found.func, delete_employee)
 
-    def test_delete_employee_url_by_an_unauthorized_user(self):
+    def test_delete_employee_url_as_an_unauthorized_user(self):
         response = self.client.get(reverse('structure:delete_employee', kwargs={'pk': 1}))
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
 
-    def test_delete_employee_url_by_an_authorized_user_but_cannot_permission(self):
+    def test_delete_employee_url_as_an_authorized_user_without_permission(self):
         self.client.force_login(self.user)
         response = self.client.get(reverse('structure:delete_employee', kwargs={'pk': 1}))
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
 
-    def test_delete_employee_url_by_an_authorized_user_can_permission(self):
+    def test_delete_employee_url_by_an_authorized_user_with_permission(self):
         self.user.user_permissions.add(self.permission)
         self.user.save()
         self.client.force_login(self.user)
@@ -173,16 +173,16 @@ class StructureURLsTest(TestCase):
         found = resolve(reverse('structure:recruit_distribution'))
         self.assertEqual(found.func.view_class, EmployeeCreateView)
 
-    def test_recruit_distribution_url_by_an_unauthorized_user(self):
+    def test_recruit_distribution_url_as_an_unauthorized_user(self):
         response = self.client.get(reverse('structure:recruit_distribution'))
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
 
-    def test_recruit_distribution_url_by_an_authorized_user_but_cannot_permission(self):
+    def test_recruit_distribution_url_as_an_authorized_user_without_permission(self):
         self.client.force_login(self.user)
         response = self.client.get(reverse('structure:recruit_distribution'))
         self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
 
-    def test_recruit_distribution_url_by_an_authorized_user_can_permission(self):
+    def test_recruit_distribution_url_as_an_authorized_user_with_permission(self):
         self.user.user_permissions.add(self.permission)
         self.user.save()
         self.client.force_login(self.user)
