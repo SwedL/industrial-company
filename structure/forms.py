@@ -1,7 +1,10 @@
+import json
+import os
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 
 from .models import Employee, Position
+from ic.settings import BASE_DIR
 
 
 class UserLoginForm(AuthenticationForm):
@@ -17,18 +20,24 @@ class UserLoginForm(AuthenticationForm):
 
 
 class SearchEmployeeForm(forms.Form):
-    DEPARTMENT_CHOICES = [(None, '---')] + [(num, p.name) for num, p in enumerate(Position.objects.all(), 1)]
+    DEPARTMENT_CHOICES = [(None, '---')]
+
+    with open(f'{BASE_DIR}\structure\\fixtures\positions.json', 'r', encoding='utf-8') as file:
+        data = json.load(file)
+        for num, i in enumerate(data, 1):
+            DEPARTMENT_CHOICES.append((num, i['fields']['name']))
 
     last_name = forms.CharField(max_length=50, required=False, label='фамилия')
-    first_name = forms.CharField(max_length=50, required=False, label='имя', widget=forms.TextInput(attrs={'id': 'search-input'}))
+    first_name = forms.CharField(max_length=50, required=False, label='имя',
+                                 widget=forms.TextInput(attrs={'id': 'search-input'}))
     patronymic = forms.CharField(max_length=50, required=False, label='отчество')
     position = forms.ChoiceField(choices=DEPARTMENT_CHOICES, required=False, label='должность')
-    employment_date = forms.DateField(required=False, label='дата приёма на работу', widget=forms.TextInput(attrs={'placeholder': 'гггг-мм-дд'}))
+    employment_date = forms.DateField(required=False, label='дата приёма на работу',
+                                      widget=forms.TextInput(attrs={'placeholder': 'гггг-мм-дд'}))
     salary = forms.IntegerField(required=False, label='зарплата')
 
 
 class AddEmployeeForm(forms.ModelForm):
-
     class Meta:
         model = Employee
         fields = ['last_name', 'first_name', 'patronymic', 'employment_date', 'salary']

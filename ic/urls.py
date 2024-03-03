@@ -18,6 +18,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
+from ic import settings
 from structure.views import pageNotFound
 
 
@@ -26,6 +27,10 @@ urlpatterns = [
     path('', include('structure.urls', namespace='structure'))
 ]
 
+if settings.DEBUG:
+    urlpatterns = [
+        path("__debug__/", include("debug_toolbar.urls")),
+    ] + urlpatterns
 
 handler404 = pageNotFound
 handler403 = pageNotFound

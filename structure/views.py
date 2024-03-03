@@ -94,7 +94,7 @@ class EmployeesView(LoginRequiredMixin, View):
         if direction == 'descend':
             order_by += ' DESC'
 
-        sql = f'SELECT ROW_NUMBER() OVER(ORDER BY {order_by}) AS num, *, position_id FROM structure_employee {where_for_sql} ORDER BY {order_by}'
+        sql = f'SELECT ROW_NUMBER() OVER(ORDER BY {order_by}) AS num, * FROM structure_employee {where_for_sql} ORDER BY {order_by}'
         employees_list = Employee.objects.raw(sql)
 
         paginator = Paginator(employees_list, 20)
