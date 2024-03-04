@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseNotFound
 from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView
 from django.core.paginator import Paginator
-from django.db.models import F
+from django.db.models import F, Q
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
@@ -21,7 +21,13 @@ from .forms import AddEmployeeForm, UpdateEmployeeDetailForm
 по полям страницы представления EmployeesView
 {'where_for_sql': 'WHERE last_name LIKE '%..%' AND position_id = .. AND ...}, 'form_data': form.clean_data}
 """
-common_where_and_form_data = {}
+common_form_data = {
+    'last_name': '',
+    'first_name': '',
+    'patronymic': '',
+    'position': '',
+    'salary': '',
+}
 
 
 class UserLoginView(LoginView):
@@ -49,7 +55,7 @@ class StructureCompanyTemplateView(LoginRequiredMixin, TemplateView):
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         # при открытии страницы стираются фильтры сортировки и поиска представления EmployeesView
-        common_where_and_form_data.clear()
+        common_form_data.clear()
         context['staff'] = request.user.has_perm('structure.change_employee')
         context['title'] = self.title
         return self.render_to_response(context)
@@ -70,32 +76,29 @@ class EmployeesView(LoginRequiredMixin, View):
 
     def get(self, request, order_by: str, direction: str, position_id: int = None):
 
-        # получаем данные из формы поиска и фильтры поиска для sql запроса
-        if request.GET.get('page'):
-            # если переход по пагинатору, то фильтруем по данным из common_where_and_form_data
-            form = SearchEmployeeForm(common_where_and_form_data.get('form_data'))
-            where_for_sql = common_where_and_form_data.get('where_for_sql', '')
-        else:
-            # если переход впервые - по блоку отдела, то фильтруем по position и заносим данные в
-            # common_where_and_form_data
-            form = SearchEmployeeForm(common_where_and_form_data.get('form_data', {'position': position_id}))
-            if common_where_and_form_data.get('where_for_sql'):
-                where_for_sql = common_where_and_form_data.get('where_for_sql')
-                position_id = common_where_and_form_data.get('form_data')['position']
-            else:
-                if position_id:
-                    where_for_sql = f'WHERE position_id = {position_id}'
-                else:
-                    where_for_sql = ''
-                common_where_and_form_data['form_data'] = {'position': position_id}
-                common_where_and_form_data['where_for_sql'] = where_for_sql
+        # если переход впервые - по блоку отдела, то фильтруем по position и заносим данные в
+        if not request.GET.get('page'):
+            common_form_data['form_data'] = {'position': position_id}
+
+        # получаем данные из формы поиска sql запроса
+        form = SearchEmployeeForm(common_form_data)
 
         # меняем сортировку на обратную если условие верно
         if direction == 'descend':
             order_by += ' DESC'
 
-        sql = f'SELECT ROW_NUMBER() OVER(ORDER BY {order_by}) AS num, * FROM structure_employee {where_for_sql} ORDER BY {order_by}'
-        employees_list = Employee.objects.raw(sql)
+        last_name = common_form_data.get('last_name', '')
+        first_name = common_form_data.get('first_name', '')
+        patronymic = common_form_data.get('last_name', '')
+        position = common_form_data.get('last_name', '')
+        salary = common_form_data.get('last_name', '')
+
+        employees_list = Employee.objects.filter(
+            Q(last_name__contains=f'{last_name}') &
+            Q(first_name__contains=f'{first_name}') &
+            Q(patronymic__contains=f'{patronymic}') &
+            Q(salary__contains=f'{salary}')
+        ).order_by(order_by)
 
         paginator = Paginator(employees_list, 20)
         page_number = request.GET.get('page')
@@ -127,17 +130,17 @@ class EmployeesView(LoginRequiredMixin, View):
         if position_id:
             list_filters_for_sql.insert(0, f'position_id = {position_id}')
 
-        # если фильтров поиска не поступало, то словарь common_where_and_form_data очищается
+        # если фильтров поиска не поступало, то словарь common_form_data очищается
         # иначе в словарь заносятся фильтры под ключом where_for_sql и данные формы
         # под ключом request_data
         if not list_filters_for_sql:
-            common_where_and_form_data.clear()
+            common_form_data.clear()
             where_for_sql = ''
         else:
             # создаём строку фильтра WHERE для sql запрос из списка фильтров
             where_for_sql = 'WHERE ' + ' AND '.join(list_filters_for_sql)
-            common_where_and_form_data['where_for_sql'] = where_for_sql
-            common_where_and_form_data['form_data'] = form.cleaned_data
+            common_form_data['where_for_sql'] = where_for_sql
+            common_form_data['form_data'] = form.cleaned_data
 
         if direction == 'descend':
             order_by += ' DESC'
@@ -233,7 +236,7 @@ class EmployeeCreateView(PermissionRequiredMixin, CreateView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        common_where_and_form_data.clear()
+        common_form_data.clear()
 
         sql = f'SELECT ROW_NUMBER() OVER(ORDER BY last_name) AS num, * FROM structure_employee WHERE position_id is NULL ORDER BY last_name'
         context['employees'] = Employee.objects.raw(sql)
