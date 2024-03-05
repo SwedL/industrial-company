@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.http import HttpResponse, HttpResponseNotFound
+from django.db.models.expressions import RawSQL
 from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView
 from django.core.paginator import Paginator
@@ -21,13 +22,7 @@ from .forms import AddEmployeeForm, UpdateEmployeeDetailForm
 по полям страницы представления EmployeesView
 {'where_for_sql': 'WHERE last_name LIKE '%..%' AND position_id = .. AND ...}, 'form_data': form.clean_data}
 """
-common_form_data = {
-    'last_name': '',
-    'first_name': '',
-    'patronymic': '',
-    'position': '',
-    'salary': '',
-}
+
 
 
 class UserLoginView(LoginView):
@@ -55,7 +50,7 @@ class StructureCompanyTemplateView(LoginRequiredMixin, TemplateView):
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         # при открытии страницы стираются фильтры сортировки и поиска представления EmployeesView
-        common_form_data.clear()
+        # common_form_data.clear()
         context['staff'] = request.user.has_perm('structure.change_employee')
         context['title'] = self.title
         return self.render_to_response(context)
@@ -73,32 +68,61 @@ class EmployeesView(LoginRequiredMixin, View):
 
     paginate_by = 25
     title = 'Список сотрудников'
+    common_form_data = {
+        'last_name': '',
+        'first_name': '',
+        'patronymic': '',
+        'position_id': '',
+        'employment_date': '',
+        'salary': '',
+    }
 
-    def get(self, request, order_by: str, direction: str, position_id: int = None):
+    # @classmethod
+    # def clear_common_form_data(cls, common_form_data: dict):
+    #     t = cls.common_form_data
+    #     g = common_form_data
+    #     common_form_data.update(cls.common_form_data)
+    #     m = 0
 
-        # если переход впервые - по блоку отдела, то фильтруем по position и заносим данные в
-        if not request.GET.get('page'):
-            common_form_data['form_data'] = {'position': position_id}
-
-        # получаем данные из формы поиска sql запроса
-        form = SearchEmployeeForm(common_form_data)
-
+    def get_employees_list(self, order_by, direction):
         # меняем сортировку на обратную если условие верно
         if direction == 'descend':
-            order_by += ' DESC'
+            order_by = '-' + order_by
 
-        last_name = common_form_data.get('last_name', '')
-        first_name = common_form_data.get('first_name', '')
-        patronymic = common_form_data.get('last_name', '')
-        position = common_form_data.get('last_name', '')
-        salary = common_form_data.get('last_name', '')
+        last_name = self.common_form_data.get('last_name', '')
+        first_name = self.common_form_data.get('first_name', '')
+        patronymic = self.common_form_data.get('patronymic', '')
 
         employees_list = Employee.objects.filter(
             Q(last_name__contains=f'{last_name}') &
             Q(first_name__contains=f'{first_name}') &
-            Q(patronymic__contains=f'{patronymic}') &
-            Q(salary__contains=f'{salary}')
-        ).order_by(order_by)
+            Q(patronymic__contains=f'{patronymic}')
+        ).order_by(order_by).annotate(num=RawSQL('row_number() over ()', []))
+
+        # если в форме есть фильтр по отделу, то добавляем его в список фильтров
+        if self.common_form_data['position_id']:
+            employees_list = employees_list.filter(position_id=self.common_form_data['position_id'])
+
+        if self.common_form_data['salary']:
+            employees_list = employees_list.filter(salary=self.common_form_data['salary'])
+
+        if self.common_form_data['employment_date']:
+            employees_list = employees_list.filter(employment_date=self.common_form_data['employment_date'])
+
+        return employees_list
+
+    def get(self, request, order_by: str, direction: str, position_id: int = None):
+
+        # если переход впервые - по блоку отдела, то фильтруем по position_id и заносим данные в
+        if not request.GET.get('page') and position_id:
+            self.common_form_data = {'last_name': '', 'first_name': '', 'patronymic': '', 'position_id': position_id,
+                                     'employment_date': '', 'salary': ''}
+        if request.GET.get('page') and position_id:
+            # получаем данные из формы поиска sql запроса
+            form = SearchEmployeeForm(self.common_form_data)
+
+        form = SearchEmployeeForm(self.common_form_data)
+        employees_list = self.get_employees_list(order_by, direction)
 
         paginator = Paginator(employees_list, 20)
         page_number = request.GET.get('page')
@@ -116,37 +140,23 @@ class EmployeesView(LoginRequiredMixin, View):
         return render(request, 'structure/department.html', context=context)
 
     def post(self, request, order_by: str, direction: str, position_id: int = None):
+        # nonlocal common_form_data
+
         form = SearchEmployeeForm(request.POST)
-        position_id = request.POST.get('position')  # отдел берём из request.POST
+        # position_id = request.POST.get('position_id')  # отдел берём из request.POST
 
         if form.is_valid():
-            # получаем фильтры для sql запроса из request.POST и создаём словарь
-            request_dict_from_the_search_key_list = {k: v for k, v in form.cleaned_data.items() if v and k != 'position'}
-            list_filters_for_sql = [f'{k} LIKE "%{v}%"' for k, v in request_dict_from_the_search_key_list.items()]
-        else:
-            list_filters_for_sql = []
-
-        # если в форме есть фильтр по отделу, то добавляем его в список фильтров
-        if position_id:
-            list_filters_for_sql.insert(0, f'position_id = {position_id}')
+            # получаем фильтры для sql запроса из формы и обновляем словарь common_form_data
+            self.common_form_data.update(form.cleaned_data)
 
         # если фильтров поиска не поступало, то словарь common_form_data очищается
         # иначе в словарь заносятся фильтры под ключом where_for_sql и данные формы
         # под ключом request_data
-        if not list_filters_for_sql:
-            common_form_data.clear()
-            where_for_sql = ''
-        else:
-            # создаём строку фильтра WHERE для sql запрос из списка фильтров
-            where_for_sql = 'WHERE ' + ' AND '.join(list_filters_for_sql)
-            common_form_data['where_for_sql'] = where_for_sql
-            common_form_data['form_data'] = form.cleaned_data
+        # if not form.cleaned_data:
+        #     common_form_data = dict.fromkeys(form.cleaned_data.keys(), '')
 
-        if direction == 'descend':
-            order_by += ' DESC'
+        employees_list = self.get_employees_list(order_by, direction)
 
-        sql = f'SELECT ROW_NUMBER() OVER(ORDER BY {order_by}) AS num, * FROM structure_employee {where_for_sql} ORDER BY {order_by}'
-        employees_list = Employee.objects.raw(sql)
         paginator = Paginator(employees_list, 20)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
@@ -236,7 +246,7 @@ class EmployeeCreateView(PermissionRequiredMixin, CreateView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        common_form_data.clear()
+        # common_form_data.clear()
 
         sql = f'SELECT ROW_NUMBER() OVER(ORDER BY last_name) AS num, * FROM structure_employee WHERE position_id is NULL ORDER BY last_name'
         context['employees'] = Employee.objects.raw(sql)

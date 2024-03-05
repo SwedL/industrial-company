@@ -1,7 +1,7 @@
 <tr>
     <!-- Ячейка id сотрудника -->
     <td>
-        {{ forloop.counter1 }}
+        {{ employee.num }}
     </td>
 
     <!-- Ячейка фамилии сотрудника -->
@@ -40,7 +40,7 @@
             {% if staff %}
             <!-- Кнопка "изменить" -->
             <button class="table__button-box_edit table_buttons disbtn"
-                hx-put="{% url 'structure:update_employee_detail' employee.id forloop.counter1 %}"
+                hx-put="{% url 'structure:update_employee_detail' employee.id employee.num %}"
                 hx-target="closest tr"
                 hx-swap="outerHTML">
                 изменить

@@ -44,8 +44,8 @@ class SearchEmployeeFormTest(SimpleTestCase):
             self.form.fields['patronymic'].label == 'отчество'
         )
         self.assertTrue(
-            self.form.fields['position'].label is None or
-            self.form.fields['position'].label == 'должность'
+            self.form.fields['position_id'].label is None or
+            self.form.fields['position_id'].label == 'должность'
         )
         self.assertTrue(
             self.form.fields['employment_date'].label is None or

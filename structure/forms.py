@@ -31,7 +31,7 @@ class SearchEmployeeForm(forms.Form):
     first_name = forms.CharField(max_length=50, required=False, label='имя',
                                  widget=forms.TextInput(attrs={'id': 'search-input'}))
     patronymic = forms.CharField(max_length=50, required=False, label='отчество')
-    position = forms.ChoiceField(choices=DEPARTMENT_CHOICES, required=False, label='должность')
+    position_id = forms.ChoiceField(choices=DEPARTMENT_CHOICES, required=False, label='должность')
     employment_date = forms.DateField(required=False, label='дата приёма на работу',
                                       widget=forms.TextInput(attrs={'placeholder': 'гггг-мм-дд'}))
     salary = forms.IntegerField(required=False, label='зарплата')

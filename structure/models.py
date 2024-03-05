@@ -51,4 +51,7 @@ class Employee(models.Model):
     def __str__(self):
         return self.last_name
 
+# from django.db.models.expressions import RawSQL
+# e = Employee.objects.filter(first_name='Алексей').annotate(num=RawSQL('row_number() over ()', []))
 # python manage.py shell_plus --print-sql
+
