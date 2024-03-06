@@ -16,12 +16,14 @@
         <th scope="col" style="width: 165px">
             <small>
                 Фамилия
+                {% if not common_form_data.last_name %}
                 <a href="{% url 'structure:department' order_by='last_name' direction='ascend' %}">
                     <i class="table-icon bi bi-arrow-down-square ms-1"></i>
                 </a>
                 <a href="{% url 'structure:department' order_by='last_name' direction='descend' %}">
                     <i class="table-icon bi bi-arrow-up-square"></i>
                 </a>
+                {% endif %}
             </small>
         </th>
 
@@ -29,12 +31,14 @@
         <th scope="col" style="width: 130px">
             <small>
                 Имя
+                {% if not common_form_data.first_name %}
                 <a href="{% url 'structure:department' order_by='first_name' direction='ascend' %}">
                     <i class="table-icon bi bi-arrow-down-square ms-1"></i>
                 </a>
                 <a href="{% url 'structure:department' order_by='first_name' direction='descend' %}">
                     <i class="table-icon bi bi-arrow-up-square"></i>
                 </a>
+                {% endif %}
             </small>
         </th>
 
@@ -42,12 +46,14 @@
         <th scope="col" style="width: 165px">
             <small>
                 Отчество
+                {% if not common_form_data.patronymic %}
                 <a href="{% url 'structure:department' order_by='patronymic' direction='ascend' %}">
                     <i class="table-icon bi bi-arrow-down-square ms-1"></i>
                 </a>
                 <a href="{% url 'structure:department' order_by='patronymic' direction='descend' %}">
                     <i class="table-icon bi bi-arrow-up-square"></i>
                 </a>
+                {% endif %}
             </small>
         </th>
 
@@ -55,7 +61,7 @@
         <th scope="col" style="width: 350px">
             <small>
                 Должность
-                {% if not position_id %}
+                {% if not common_form_data.position_id %}
                 <a href="{% url 'structure:department' order_by='position_id' direction='ascend' %}">
                     <i class="table-icon bi bi-arrow-down-square ms-1"></i>
                 </a>
@@ -70,12 +76,14 @@
         <th scope="col" style="width: 240px">
             <small>
                 Дата приёма на работу
+                {% if not common_form_data.employment_date %}
                 <a href="{% url 'structure:department' order_by='employment_date' direction='ascend' %}">
                     <i class="table-icon bi bi-arrow-down-square ms-1"></i>
                 </a>
                 <a href="{% url 'structure:department' order_by='employment_date' direction='descend' %}">
                     <i class="table-icon bi bi-arrow-up-square"></i>
                 </a>
+                {% endif %}
             </small>
         </th>
 
@@ -83,12 +91,14 @@
         <th scope="col" style="width: 120px">
             <small>
                 Зарплата
+                {% if not common_form_data.salary %}
                 <a href="{% url 'structure:department' order_by='salary' direction='ascend' %}">
                     <i class="table-icon bi bi-arrow-down-square ms-1"></i>
                 </a>
                 <a href="{% url 'structure:department' order_by='salary' direction='descend' %}">
                     <i class="table-icon bi bi-arrow-up-square"></i>
                 </a>
+                {% endif %}
             </small>
         </th>
 

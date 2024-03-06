@@ -107,7 +107,7 @@ class EmployeesView(LoginRequiredMixin, View):
             'employees': page_obj,
             'form': form,
             'paginator_range': page_obj.paginator.get_elided_page_range(page_obj.number),
-            'position_id': position_id,
+            'common_form_data': common_form_data,
             'title': self.title,
             'staff': request.user.has_perm('structure.change_employee'),
         }
@@ -132,7 +132,7 @@ class EmployeesView(LoginRequiredMixin, View):
             'employees': page_obj,
             'form': form,
             'paginator_range': page_obj.paginator.get_elided_page_range(page_obj.number),
-            'position_id': position_id,
+            'common_form_data': common_form_data,
             'title': self.title,
             'staff': request.user.has_perm('structure.change_employee'),
         }
