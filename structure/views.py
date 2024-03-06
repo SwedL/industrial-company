@@ -1,12 +1,10 @@
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.http import HttpResponse, HttpResponseNotFound
-from django.db.models.expressions import RawSQL
 from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView
 from django.core.paginator import Paginator
 from django.db.models import F, Q, QuerySet
-from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.decorators.http import require_http_methods
@@ -16,6 +14,9 @@ from structure.forms import UserLoginForm, SearchEmployeeForm
 from structure.models import Employee, Position
 from .forms import AddEmployeeForm, UpdateEmployeeDetailForm
 from collections import defaultdict
+
+from django.db.models.expressions import Window
+from django.db.models.functions import RowNumber
 
 """ Словарь для хранения данных полей фильтра SearchEmployeeForm """
 common_form_data = defaultdict(str)
@@ -51,7 +52,8 @@ class StructureCompanyTemplateView(LoginRequiredMixin, TemplateView):
 
 
 def get_employees_list(order_by: str, direction: str) -> QuerySet:
-    """ Функция фильтрации Employee QuerySet согласно заполненным полям формы SearchEmployeeForm """
+    """ Функция фильтрует Employee QuerySet согласно заполненным полям формы SearchEmployeeForm,
+        возвращает пронумерованный и отсортированный queryset """
 
     # меняем сортировку на обратную если условие верно
     if direction == 'descend':
@@ -61,7 +63,7 @@ def get_employees_list(order_by: str, direction: str) -> QuerySet:
         Q(last_name__contains=f'{common_form_data["last_name"]}') &
         Q(first_name__contains=f'{common_form_data["first_name"]}') &
         Q(patronymic__contains=f'{common_form_data["patronymic"]}')
-    ).order_by(order_by).annotate(num=RawSQL('row_number() over ()', []))
+    )
 
     # если в форме есть фильтр по отделу, дате трудоустройства или зарплате, то фильтруем дополнительно
     if common_form_data['position_id']:
@@ -71,17 +73,16 @@ def get_employees_list(order_by: str, direction: str) -> QuerySet:
     elif common_form_data['salary']:
         employees_list = employees_list.filter(salary=common_form_data['salary'])
 
-    return employees_list
+    return employees_list.order_by(order_by).annotate(num=Window(expression=RowNumber(), order_by=[order_by]))
 
 
 class EmployeesView(LoginRequiredMixin, View):
     """
-    Представление отображающее список сотрудников с использованием фильтров и формы поиска.
-    Изначально при переходе на страницу, по блоку отдела, используется:
-     фильтр отдела - position,
-     сортировка по id сотрудника в прямом порядке
-    Поиск позволяет фильтровать сотрудников в форме поиска,
-    а также искать по неполному совпадению значений полей.
+    Представление отображающее список сотрудников с использованием фильтров формы поиска и сортировки данных
+    Изначально при переходе на страницу, по блоку должность, используется фильтр должность - position
+    Поиск позволяет фильтровать сотрудников в форме поиска:
+        по полному и неполному совпадению значений полей - фамилия, имя, отчество
+        по полному совпадению значений полей - дата приёма на работу, зарплата
     """
 
     paginate_by = 25
@@ -118,8 +119,8 @@ class EmployeesView(LoginRequiredMixin, View):
 
         form = SearchEmployeeForm(request.POST)
 
+        # обновляем словарь common_form_data
         if form.is_valid():
-            # обновляем словарь common_form_data
             common_form_data.update(form.cleaned_data)
 
         employees_list = get_employees_list(order_by, direction)
@@ -214,10 +215,10 @@ class EmployeeCreateView(PermissionRequiredMixin, CreateView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        # common_form_data.clear()
 
-        sql = f'SELECT ROW_NUMBER() OVER(ORDER BY last_name) AS num, * FROM structure_employee WHERE position_id is NULL ORDER BY last_name'
-        context['employees'] = Employee.objects.raw(sql)
+        employees_list = Employee.objects.filter(position=None).order_by('employment_date').annotate(num=Window(expression=RowNumber(), order_by=['employment_date']))
+
+        context['employees'] = employees_list
         context['staff'] = self.request.user.has_perm('structure.change_employee')
         context['title'] = self.title
 
