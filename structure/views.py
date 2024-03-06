@@ -17,7 +17,6 @@ from structure.models import Employee, Position
 from .forms import AddEmployeeForm, UpdateEmployeeDetailForm
 from collections import defaultdict
 
-
 """ Словарь для хранения данных полей фильтра SearchEmployeeForm """
 common_form_data = defaultdict(str)
 
@@ -157,12 +156,13 @@ def employee_detail(request, pk, num):
     employee.num = num
     context = {
         'employee': employee,
+        'staff': request.user.has_perm('structure.change_employee'),
     }
     return render(request, 'structure/employee_detail.html', context=context)
 
 
 @permission_required('structure.change_employee')
-def update_employee_details(request, employee_id, num):
+def update_employee_details(request, employee_id, employee_num):
     """Функция изменения данных сотрудника"""
 
     employee = get_object_or_404(Employee, pk=employee_id)
@@ -180,7 +180,7 @@ def update_employee_details(request, employee_id, num):
 
             # сохраняем изменённые данные сотрудника
             employee = form.save()
-            employee.num = num
+            employee.num = employee_num
             context = {
                 'employee': employee,
                 'staff': request.user.has_perm('structure.change_employee'),
@@ -188,7 +188,8 @@ def update_employee_details(request, employee_id, num):
             return render(request, 'structure/employee_detail.html', context=context)
     else:
         form = UpdateEmployeeDetailForm(instance=employee)
-    return render(request, 'structure/partial_employee_update_form.html', {'employee': employee, 'form': form, 'num': num})
+    return render(request, 'structure/partial_employee_update_form.html',
+                  {'employee': employee, 'form': form, 'employee_num': employee_num})
 
 
 @permission_required('structure.change_employee')

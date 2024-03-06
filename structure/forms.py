@@ -1,7 +1,7 @@
 import json
-import os
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
+from django.db.models import Q
 
 from .models import Employee, Position
 from ic.settings import BASE_DIR
@@ -47,7 +47,10 @@ class UpdateEmployeeDetailForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['position'].queryset = Position.objects.exclude(vacancies=0)
+        # оставляем в queryset только должности с вакансиями и текущую должность сотрудника
+        self.fields['position'].queryset = Position.objects.filter(
+            Q(vacancies__gt=0) | Q(pk=kwargs['instance'].position_id)
+        )
 
     class Meta:
         model = Employee
