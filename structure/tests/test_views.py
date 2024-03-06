@@ -177,7 +177,7 @@ class UpdateEmployeeDetails(TestCase):
 
     def test_get_function_request(self):
         # Тест get запроса функции. Проверяем полученные данных.
-        response = self.client.get(reverse('structure:update_employee_detail', kwargs={'pk': 1, 'num': 1}))
+        response = self.client.get(reverse('structure:update_employee_detail', kwargs={'employee_id': 1, 'employee_num': 1}))
         employee = response.context['employee']
         self.assertIsInstance(response.context['form'], UpdateEmployeeDetailForm)
         self.assertEqual(employee.first_name, 'Николай')
@@ -195,7 +195,7 @@ class UpdateEmployeeDetails(TestCase):
         number_vacancies_position_0_before_update_employee = positions[0].vacancies
 
         self.client.post(
-            reverse('structure:update_employee_detail', kwargs={'pk': 1, 'num': 1}),
+            reverse('structure:update_employee_detail', kwargs={'employee_id': 1, 'employee_num': 1}),
             data={
                 'first_name': 'Николай',
                 'last_name': 'Фролов',

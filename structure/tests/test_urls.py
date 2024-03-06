@@ -114,26 +114,26 @@ class StructureURLsTest(TestCase):
         }))
         self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
 
-    # тест url 'update_employee_detail/<int:pk >/<int:num>'
+    # тест url 'update_employee_detail/<int:employee_id >/<int:employee_num>'
     def test_root_url_resolves_to_update_employee_detail(self):
         found = resolve(reverse('structure:update_employee_detail', kwargs={
-            'pk': 1,
-            'num': 1,
+            'employee_id': 1,
+            'employee_num': 1,
         }))
         self.assertEqual(found.func, update_employee_details)
 
     def test_update_employee_detail_url_as_an_unauthorized_user(self):
         response = self.client.get(reverse('structure:update_employee_detail', kwargs={
-            'pk': 1,
-            'num': 1,
+            'employee_id': 1,
+            'employee_num': 1,
         }))
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
 
     def test_update_employee_detail_url_as_an_authorized_user_without_permission(self):
         self.client.force_login(self.user)
         response = self.client.get(reverse('structure:update_employee_detail', kwargs={
-            'pk': 1,
-            'num': 1,
+            'employee_id': 1,
+            'employee_num': 1,
         }))
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
 
@@ -142,8 +142,8 @@ class StructureURLsTest(TestCase):
         self.user.save()
         self.client.force_login(self.user)
         response = self.client.get(reverse('structure:update_employee_detail', kwargs={
-            'pk': 1,
-            'num': 1,
+            'employee_id': 1,
+            'employee_num': 1,
         }))
         self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
 

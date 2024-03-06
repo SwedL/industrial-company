@@ -1,6 +1,6 @@
 from django.test import SimpleTestCase, TestCase
 from django.db.models import F
-from structure.models import Position
+from structure.models import Employee, Position
 
 from structure.forms import AddEmployeeForm, SearchEmployeeForm, UpdateEmployeeDetailForm, UserLoginForm
 
@@ -83,12 +83,19 @@ class UpdateEmployeeDetailFormTest(TestCase):
 
     def setUp(self):
         self.positions = Position.objects.all()
-        self.form = UpdateEmployeeDetailForm()
+        self.employee = Employee.objects.create(
+            first_name='Николай',
+            last_name='Фролов',
+            patronymic='Семёнович',
+            position=self.positions[17],
+            salary=63_000,
+        )
 
     def test_form_field(self):
         # Проверка полей формы
+        form = UpdateEmployeeDetailForm(instance=self.employee)
         self.assertEqual(
-            list(self.form.base_fields), [
+            list(form.base_fields), [
                 'last_name',
                 'first_name',
                 'patronymic',
@@ -100,10 +107,10 @@ class UpdateEmployeeDetailFormTest(TestCase):
 
     def test_form_queryset(self):
         # Проверка доступных для выбора должностей (у которых имеются вакансии)
-        form1 = UpdateEmployeeDetailForm()
+        form1 = UpdateEmployeeDetailForm(instance=self.employee)
         self.assertEqual(len(form1.fields['position'].queryset), 47)
 
         Position.objects.filter(id=1).update(vacancies=F('vacancies') - 1)
 
-        form2 = UpdateEmployeeDetailForm()
+        form2 = UpdateEmployeeDetailForm(instance=self.employee)
         self.assertEqual(len(form2.fields['position'].queryset), 46)
