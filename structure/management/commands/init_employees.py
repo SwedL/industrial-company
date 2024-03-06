@@ -1,17 +1,16 @@
-from random import choice, uniform
-
-from structure.models import Employee, Position
-from tqdm import tqdm
 import time
 from datetime import date, timedelta
-from django.core.management.base import BaseCommand
+from random import choice, uniform
 
+from django.core.management.base import BaseCommand
 from mimesis import Person
 from mimesis.enums import Gender
 from mimesis.locales import Locale
 from mimesis.providers import BaseDataProvider
 from mimesis.types import MissingSeed, Seed
+from tqdm import tqdm
 
+from structure.models import Employee, Position
 
 __all__ = ['RussiaSpecProvider']
 

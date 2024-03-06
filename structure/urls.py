@@ -1,10 +1,11 @@
-"""Определяет схемы URL для structure"""
+""" Определяет схемы URL для structure """
 
-from django.contrib.auth.views import LogoutView
 from django.urls import path
-from django.urls import reverse
 
-from .views import *
+from .views import (EmployeeCreateView, EmployeesView,
+                    StructureCompanyTemplateView, UserLoginView, clear_search,
+                    delete_employee, employee_detail, logout_user,
+                    update_employee_details)
 
 app_name = 'structure'
 
@@ -16,7 +17,11 @@ urlpatterns = [
     path('department/<position_id>/<order_by>/<direction>/', EmployeesView.as_view(), name='department'),
     path('clear-search/', clear_search, name='clear_search'),
     path('employee-detail/<int:pk>/<int:num>/', employee_detail, name='employee_detail'),
-    path('update_employee_detail/<int:employee_id>/<int:employee_num>', update_employee_details, name='update_employee_detail'),
+    path(
+        'update_employee_detail/<int:employee_id>/<int:employee_num>',
+        update_employee_details,
+        name='update_employee_detail',
+    ),
     path('delete-employee/<int:pk>/', delete_employee, name='delete_employee'),
     path('recruit_distribution/', EmployeeCreateView.as_view(), name='recruit_distribution'),
 ]

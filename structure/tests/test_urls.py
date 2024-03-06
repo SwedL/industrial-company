@@ -1,12 +1,14 @@
+from http import HTTPStatus
+
+from django.contrib.auth.models import Permission, User
 from django.test import TestCase
 from django.urls import reverse
 from django.urls.base import resolve
-from django.contrib.auth.models import User, Permission
 
-
-from http import HTTPStatus
-
-from structure.views import *
+from structure.views import (EmployeeCreateView, EmployeesView,
+                             StructureCompanyTemplateView, UserLoginView,
+                             clear_search, delete_employee, employee_detail,
+                             update_employee_details)
 
 
 class StructureURLsTest(TestCase):

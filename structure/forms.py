@@ -1,10 +1,12 @@
 import json
+
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.db.models import Q
 
-from .models import Employee, Position
 from ic.settings import BASE_DIR
+
+from .models import Employee, Position
 
 
 class UserLoginForm(AuthenticationForm):
@@ -22,7 +24,8 @@ class UserLoginForm(AuthenticationForm):
 class SearchEmployeeForm(forms.Form):
     DEPARTMENT_CHOICES = [(None, '---')]
 
-    with open(f'{BASE_DIR}\structure\\fixtures\positions.json', 'r', encoding='utf-8') as file:
+    # формируем список поля выбора из фикстуры всех должностей компании
+    with open(f'{BASE_DIR}\\structure\\fixtures\\positions.json', 'r', encoding='utf-8') as file:
         data = json.load(file)
         for num, i in enumerate(data, 1):
             DEPARTMENT_CHOICES.append((num, i['fields']['name']))

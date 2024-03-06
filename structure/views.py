@@ -1,22 +1,24 @@
-from django.contrib.auth.decorators import login_required, permission_required
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.http import HttpResponse, HttpResponseNotFound
+from collections import defaultdict
+
 from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.mixins import (LoginRequiredMixin,
+                                        PermissionRequiredMixin)
 from django.contrib.auth.views import LoginView
 from django.core.paginator import Paginator
 from django.db.models import F, Q, QuerySet
-from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse_lazy
-from django.views.decorators.http import require_http_methods
-from django.views.generic import TemplateView, View, CreateView
-
-from structure.forms import UserLoginForm, SearchEmployeeForm
-from structure.models import Employee, Position
-from .forms import AddEmployeeForm, UpdateEmployeeDetailForm
-from collections import defaultdict
-
 from django.db.models.expressions import Window
 from django.db.models.functions import RowNumber
+from django.http import HttpResponse, HttpResponseNotFound
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse_lazy
+from django.views.decorators.http import require_http_methods
+from django.views.generic import CreateView, TemplateView, View
+
+from structure.forms import SearchEmployeeForm, UserLoginForm
+from structure.models import Employee, Position
+
+from .forms import AddEmployeeForm, UpdateEmployeeDetailForm
 
 """ Словарь для хранения данных полей фильтра SearchEmployeeForm """
 common_form_data = defaultdict(str)
@@ -145,6 +147,7 @@ class EmployeesView(LoginRequiredMixin, View):
 @require_http_methods(['GET'])
 def clear_search(request):
     """Функция для очистки полей формы поиска EmployeesView"""
+
     form = SearchEmployeeForm()
     return render(request, 'structure/search_form.html', context={'form': form})
 
@@ -153,6 +156,7 @@ def clear_search(request):
 @require_http_methods(['GET'])
 def employee_detail(request, pk, num):
     """Функция для возврата исходных данных, при отмене изменений данных сотрудника"""
+
     employee = get_object_or_404(Employee, pk=pk)
     employee.num = num
     context = {
@@ -187,10 +191,14 @@ def update_employee_details(request, employee_id, employee_num):
                 'staff': request.user.has_perm('structure.change_employee'),
             }
             return render(request, 'structure/employee_detail.html', context=context)
-    else:
-        form = UpdateEmployeeDetailForm(instance=employee)
-    return render(request, 'structure/partial_employee_update_form.html',
-                  {'employee': employee, 'form': form, 'employee_num': employee_num})
+
+    context = {
+        'employee': employee,
+        'form': UpdateEmployeeDetailForm(instance=employee),
+        'employee_num': employee_num,
+    }
+
+    return render(request, 'structure/partial_employee_update_form.html', context=context)
 
 
 @permission_required('structure.change_employee')
@@ -203,6 +211,7 @@ def delete_employee(request, pk):
         employee.position.vacancies += 1
         employee.position.save()
     employee.delete()
+
     return HttpResponse()
 
 
@@ -216,7 +225,13 @@ class EmployeeCreateView(PermissionRequiredMixin, CreateView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        employees_list = Employee.objects.filter(position=None).order_by('employment_date').annotate(num=Window(expression=RowNumber(), order_by=['employment_date']))
+        employees_list = Employee.objects.filter(
+            position=None
+        ).order_by(
+            'employment_date'
+        ).annotate(
+            num=Window(expression=RowNumber(), order_by=['employment_date'])
+        )
 
         context['employees'] = employees_list
         context['staff'] = self.request.user.has_perm('structure.change_employee')

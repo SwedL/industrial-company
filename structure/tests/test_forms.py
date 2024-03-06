@@ -1,8 +1,9 @@
-from django.test import SimpleTestCase, TestCase
 from django.db.models import F
-from structure.models import Employee, Position
+from django.test import SimpleTestCase, TestCase
 
-from structure.forms import AddEmployeeForm, SearchEmployeeForm, UpdateEmployeeDetailForm, UserLoginForm
+from structure.forms import (AddEmployeeForm, SearchEmployeeForm,
+                             UpdateEmployeeDetailForm, UserLoginForm)
+from structure.models import Employee, Position
 
 
 class UserLoginFormTest(TestCase):

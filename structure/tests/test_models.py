@@ -1,6 +1,6 @@
-from django.test import TestCase
-
 from datetime import date
+
+from django.test import TestCase
 
 from structure.models import Employee, Position
 
