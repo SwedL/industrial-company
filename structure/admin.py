@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import Position, Employee
 
+from structure.models import Employee, Position
 
 # Register your models here.
 
@@ -15,20 +15,25 @@ class PositionAdmin(admin.ModelAdmin):
 
 @admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
-    # readonly_fields = ('date',)
     list_display = ('id', 'last_name', 'first_name', 'patronymic', 'position', 'employment_date', 'pos_rel', 'salary')
     fields = ('last_name', 'first_name', 'patronymic', 'position', 'salary')
     search_fields = ('last_name', 'first_name', 'salary')
-    list_display_links = ('id', 'last_name', 'first_name', 'patronymic', 'position', 'employment_date', 'pos_rel', 'salary')
+    list_display_links = (
+        'id',
+        'last_name',
+        'first_name',
+        'patronymic',
+        'position',
+        'employment_date',
+        'pos_rel',
+        'salary',
+    )
     ordering = ('id',)
 
     @admin.display(ordering='id', description='непосредственный начальник')
     def pos_rel(self, emp: Employee):
         try:
             res = emp.position.boss
-        except:
+        except AttributeError:
             res = None
         return res
-
-
-admin.site.site_title = 'Администрирование Aquamarine structure'

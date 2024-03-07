@@ -39,7 +39,7 @@
         <div class="table__button-box">
             <!-- Кнопка "Сохранить" -->
             <button class="table__button-box_save table_buttons" type="submit"
-                hx-post="{% url 'structure:update_employee_detail' employee.id num %}"
+                hx-post="{% url 'structure:update_employee_detail' employee.id employee_num %}"
                 hx-target="closest tr"
                 hx-swap="outerHTML"
                 hx-include="closest tr" >
@@ -47,7 +47,7 @@
             </button>
             <!-- Кнопка "Отменить" -->
             <button class="table__button-box_cancel table_buttons"
-                hx-get="{% url 'structure:employee_detail' employee.id num %}"
+                hx-get="{% url 'structure:employee_detail' employee.id employee_num %}"
                 hx-target="closest tr"
                 hx-swap="outerHTML" >
                 отменить

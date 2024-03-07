@@ -1,9 +1,9 @@
+import json
+
+from channels.generic.websocket import WebsocketConsumer
 from django.db.models import F
 
-import json
-from asgiref.sync import async_to_sync
-from channels.generic.websocket import WebsocketConsumer
-from .models import Position
+from structure.models import Position
 
 
 class Connection(WebsocketConsumer):

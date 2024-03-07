@@ -5,7 +5,7 @@
 		"../sass/recruit_distribution.sass"
 	],
 	"sourcesContent": [
-		"input {\n    font-size: 14px; }\n\n.form {\n    &-label {\n        display: inline-block;\n        min-width: 180px;\n        vertical-align: top; }\n    &-submit {\n        margin-top: 10px;\n        width: 150px;\n        height: 30px; } }\n\np {\n    display: flex;\n    flex-direction: row;\n    margin-bottom: 5px; }\n\n.main-section {\n    &__form {\n        width: 500px;\n        margin-left: 20px;\n        margin-bottom: 50px;\n        margin-bottom: 30px; } }\n\n"
+		"input {\n    font-size: 14px; }\n\n.form {\n    &-label {\n        display: inline-block;\n        min-width: 180px;\n        vertical-align: top; }\n    &-submit {\n        margin-top: 10px;\n        width: 250px;\n        height: 30px; } }\n\np {\n    display: flex;\n    flex-direction: row;\n    margin-bottom: 5px; }\n\n.main-section {\n    &__form {\n        width: 500px;\n        margin-left: 20px;\n        margin-bottom: 50px;\n        margin-bottom: 30px; } }\n\n"
 	],
 	"names": [],
 	"mappings": ";;AAAA,AAAA,KAAK,CAAC;EACF,SAAS,EAAE,IAAI;CAAG;;;AAGjB,AAAD,WAAO,CAAC;EACJ,OAAO,EAAE,YAAY;EACrB,SAAS,EAAE,KAAK;EAChB,cAAc,EAAE,GAAG;CAAG;;;AACzB,AAAD,YAAQ,CAAC;EACL,UAAU,EAAE,IAAI;EAChB,KAAK,EAAE,KAAK;EACZ,MAAM,EAAE,IAAI;CAAG;;;AAEvB,AAAA,CAAC,CAAC;EACE,OAAO,EAAE,IAAI;EACb,cAAc,EAAE,GAAG;EACnB,aAAa,EAAE,GAAG;CAAG;;;AAGpB,AAAD,mBAAO,CAAC;EACJ,KAAK,EAAE,KAAK;EACZ,WAAW,EAAE,IAAI;EACjB,aAAa,EAAE,IAAI;EACnB,aAAa,EAAE,IAAI;CAAG"

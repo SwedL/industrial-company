@@ -21,7 +21,6 @@ from django.urls import include, path
 from ic import settings
 from structure.views import pageNotFound
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('structure.urls', namespace='structure'))

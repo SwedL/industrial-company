@@ -1,10 +1,11 @@
 import json
-import os
+
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
+from django.db.models import Q
 
-from .models import Employee, Position
 from ic.settings import BASE_DIR
+from structure.models import Employee, Position
 
 
 class UserLoginForm(AuthenticationForm):
@@ -22,7 +23,8 @@ class UserLoginForm(AuthenticationForm):
 class SearchEmployeeForm(forms.Form):
     DEPARTMENT_CHOICES = [(None, '---')]
 
-    with open(f'{BASE_DIR}\structure\\fixtures\positions.json', 'r', encoding='utf-8') as file:
+    # формируем список поля выбора из фикстуры всех должностей компании
+    with open(f'{BASE_DIR}\\structure\\fixtures\\positions.json', 'r', encoding='utf-8') as file:
         data = json.load(file)
         for num, i in enumerate(data, 1):
             DEPARTMENT_CHOICES.append((num, i['fields']['name']))
@@ -31,7 +33,7 @@ class SearchEmployeeForm(forms.Form):
     first_name = forms.CharField(max_length=50, required=False, label='имя',
                                  widget=forms.TextInput(attrs={'id': 'search-input'}))
     patronymic = forms.CharField(max_length=50, required=False, label='отчество')
-    position = forms.ChoiceField(choices=DEPARTMENT_CHOICES, required=False, label='должность')
+    position_id = forms.ChoiceField(choices=DEPARTMENT_CHOICES, required=False, label='должность')
     employment_date = forms.DateField(required=False, label='дата приёма на работу',
                                       widget=forms.TextInput(attrs={'placeholder': 'гггг-мм-дд'}))
     salary = forms.IntegerField(required=False, label='зарплата')
@@ -47,7 +49,10 @@ class UpdateEmployeeDetailForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['position'].queryset = Position.objects.exclude(vacancies=0)
+        # оставляем в queryset только должности с вакансиями и текущую должность сотрудника
+        self.fields['position'].queryset = Position.objects.filter(
+            Q(vacancies__gt=0) | Q(pk=kwargs['instance'].position_id)
+        )
 
     class Meta:
         model = Employee

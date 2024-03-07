@@ -1,13 +1,13 @@
+from datetime import date
+from http import HTTPStatus
+
+from django.contrib.auth.models import Permission, User
 from django.test import SimpleTestCase, TestCase
-from django.contrib.auth.models import User, Permission
 from django.urls import reverse
 
-from http import HTTPStatus
-from structure.forms import AddEmployeeForm, SearchEmployeeForm, UpdateEmployeeDetailForm, UserLoginForm
-from datetime import date
-
-from structure.models import Position, Employee
-
+from structure.forms import (AddEmployeeForm, SearchEmployeeForm,
+                             UpdateEmployeeDetailForm, UserLoginForm)
+from structure.models import Employee, Position
 
 positions = Position.objects.all()
 permission = Permission.objects.get(codename='change_employee')
@@ -177,7 +177,12 @@ class UpdateEmployeeDetails(TestCase):
 
     def test_get_function_request(self):
         # Тест get запроса функции. Проверяем полученные данных.
-        response = self.client.get(reverse('structure:update_employee_detail', kwargs={'pk': 1, 'num': 1}))
+        response = self.client.get(
+            reverse(
+                'structure:update_employee_detail',
+                kwargs={'employee_id': 1, 'employee_num': 1},
+                )
+        )
         employee = response.context['employee']
         self.assertIsInstance(response.context['form'], UpdateEmployeeDetailForm)
         self.assertEqual(employee.first_name, 'Николай')
@@ -195,7 +200,7 @@ class UpdateEmployeeDetails(TestCase):
         number_vacancies_position_0_before_update_employee = positions[0].vacancies
 
         self.client.post(
-            reverse('structure:update_employee_detail', kwargs={'pk': 1, 'num': 1}),
+            reverse('structure:update_employee_detail', kwargs={'employee_id': 1, 'employee_num': 1}),
             data={
                 'first_name': 'Николай',
                 'last_name': 'Фролов',
@@ -270,6 +275,3 @@ class EmployeeCreateViewTest(TestCase):
         self.assertEqual(self.response.status_code, HTTPStatus.OK)
         self.assertEqual(self.response.context_data['title'], 'Найм и распределение')
         self.assertTemplateUsed(self.response, 'structure/recruit_distribution.html')
-
-
-
