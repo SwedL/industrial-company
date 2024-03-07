@@ -65,7 +65,7 @@ def get_employees_list(order_by: str, direction: str) -> QuerySet:
         Q(last_name__contains=f'{common_form_data["last_name"]}') &
         Q(first_name__contains=f'{common_form_data["first_name"]}') &
         Q(patronymic__contains=f'{common_form_data["patronymic"]}')
-    )
+    ).select_related('position')
 
     # если в форме есть фильтр по отделу, дате трудоустройства или зарплате, то фильтруем дополнительно
     if common_form_data['position_id']:

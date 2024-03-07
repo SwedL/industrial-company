@@ -18,7 +18,7 @@ import structure.routing
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'django_channels_chat.settings')
 
-asgi_application = get_asgi_application()    # new
+asgi_application = get_asgi_application()
 
 application = ProtocolTypeRouter({
     'http': asgi_application,
