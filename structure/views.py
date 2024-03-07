@@ -15,16 +15,17 @@ from django.urls import reverse_lazy
 from django.views.decorators.http import require_http_methods
 from django.views.generic import CreateView, TemplateView, View
 
-from structure.forms import SearchEmployeeForm, UserLoginForm
+from structure.forms import (AddEmployeeForm, SearchEmployeeForm,
+                             UpdateEmployeeDetailForm, UserLoginForm)
 from structure.models import Employee, Position
-
-from .forms import AddEmployeeForm, UpdateEmployeeDetailForm
 
 """ Словарь для хранения данных полей фильтра SearchEmployeeForm """
 common_form_data = defaultdict(str)
 
 
 class UserLoginView(LoginView):
+    """ Представление домашней страницы для авторизации пользователя """
+
     form_class = UserLoginForm
     template_name = 'structure/login.html'
     title = 'Авторизация'
@@ -41,7 +42,7 @@ def logout_user(request):
 
 
 class StructureCompanyTemplateView(LoginRequiredMixin, TemplateView):
-    """Представление отображающее страницу структуры компании в древовидной форме"""
+    """ Представление страницы структуры компании в древовидной форме """
 
     template_name = 'structure/structure_company.html'
     title = 'Структура компании'
@@ -57,7 +58,7 @@ def get_employees_list(order_by: str, direction: str) -> QuerySet:
     """ Функция фильтрует Employee QuerySet согласно заполненным полям формы SearchEmployeeForm,
         возвращает пронумерованный и отсортированный queryset """
 
-    # меняем сортировку на обратную если условие верно
+    # если условие верно сортировка меняется на обратную
     if direction == 'descend':
         order_by = '-' + order_by
 
@@ -67,7 +68,7 @@ def get_employees_list(order_by: str, direction: str) -> QuerySet:
         Q(patronymic__contains=f'{common_form_data["patronymic"]}')
     ).select_related('position')
 
-    # если в форме есть фильтр по отделу, дате трудоустройства или зарплате, то фильтруем дополнительно
+    # дополнительная фильтрация, если в форме есть фильтр по отделу, дате трудоустройства или зарплате
     if common_form_data['position_id']:
         employees_list = employees_list.filter(position_id=common_form_data['position_id'])
     elif common_form_data['employment_date']:
@@ -80,8 +81,8 @@ def get_employees_list(order_by: str, direction: str) -> QuerySet:
 
 class EmployeesView(LoginRequiredMixin, View):
     """
-    Представление отображающее список сотрудников с использованием фильтров формы поиска и сортировки данных
-    Изначально при переходе на страницу, по блоку должность, используется фильтр должность - position
+    Представление страницы списка сотрудников с использованием фильтров формы поиска,
+     сортировки данных и изменения данных сотрудника
     Поиск позволяет фильтровать сотрудников в форме поиска:
         по полному и неполному совпадению значений полей - фамилия, имя, отчество
         по полному совпадению значений полей - дата приёма на работу, зарплата
@@ -93,7 +94,7 @@ class EmployeesView(LoginRequiredMixin, View):
     def get(self, request, order_by: str, direction: str, position_id: str = None):
         global common_form_data
 
-        # если переход впервые - по блоку отдела, то фильтруем по position_id и заносим данные в common_form_data
+        # если переход впервые - по блоку отдела, то фильтрация по position_id и занесение фильтра в common_form_data
         if not request.GET.get('page') and position_id:
             common_form_data.clear()
             common_form_data['position_id'] = position_id
@@ -121,7 +122,7 @@ class EmployeesView(LoginRequiredMixin, View):
 
         form = SearchEmployeeForm(request.POST)
 
-        # обновляем словарь common_form_data
+        # обновление словаря common_form_data
         if form.is_valid():
             common_form_data.update(form.cleaned_data)
 
@@ -146,7 +147,7 @@ class EmployeesView(LoginRequiredMixin, View):
 @login_required
 @require_http_methods(['GET'])
 def clear_search(request):
-    """Функция для очистки полей формы поиска EmployeesView"""
+    """ Функция для очистки полей формы поиска EmployeesView """
 
     form = SearchEmployeeForm()
     return render(request, 'structure/search_form.html', context={'form': form})
@@ -155,7 +156,7 @@ def clear_search(request):
 @login_required
 @require_http_methods(['GET'])
 def employee_detail(request, pk, num):
-    """Функция для возврата исходных данных, при отмене изменений данных сотрудника"""
+    """ Функция для возврата исходных данных, при отмене изменений данных сотрудника """
 
     employee = get_object_or_404(Employee, pk=pk)
     employee.num = num
@@ -168,7 +169,7 @@ def employee_detail(request, pk, num):
 
 @permission_required('structure.change_employee')
 def update_employee_details(request, employee_id, employee_num):
-    """Функция изменения данных сотрудника"""
+    """ Функция изменения данных сотрудника """
 
     employee = get_object_or_404(Employee, pk=employee_id)
 
@@ -176,14 +177,14 @@ def update_employee_details(request, employee_id, employee_num):
         form = UpdateEmployeeDetailForm(request.POST, instance=employee)
         if form.is_valid():
             if any(map(lambda d: d == 'position', form.changed_data)):
-                # добавляем вакансию в предыдущей должности, если у сотрудника была должность
+                # добавление вакансии в предыдущей должности, если у сотрудника была должность (не None)
                 if form.initial['position']:
                     Position.objects.filter(id=form.initial['position']).update(vacancies=F('vacancies') + 1)
-                # уменьшаем кол-во вакансий в новой должности сотрудника, если у сотрудника была должность
+                # уменьшение кол-ва вакансий в новой должности сотрудника, если у сотрудника была должность (не None)
                 if form.data['position']:
                     Position.objects.filter(id=form.data['position']).update(vacancies=F('vacancies') - 1)
 
-            # сохраняем изменённые данные сотрудника
+            # сохранение изменённых данных сотрудника
             employee = form.save()
             employee.num = employee_num
             context = {
@@ -204,9 +205,10 @@ def update_employee_details(request, employee_id, employee_num):
 @permission_required('structure.change_employee')
 @require_http_methods(['DELETE'])
 def delete_employee(request, pk):
-    """Функция удаления сотрудника из базы данных (кнопка уволить)"""
+    """ Функция удаления сотрудника из базы данных (кнопка уволить) """
+
     employee = get_object_or_404(Employee, pk=pk)
-    # при увольнении сотрудника вакансии его должности увеличиваем на 1
+    # при увольнении сотрудника вакансии его должности увеличивается на 1
     if employee.position:
         employee.position.vacancies += 1
         employee.position.save()
@@ -216,6 +218,9 @@ def delete_employee(request, pk):
 
 
 class EmployeeCreateView(PermissionRequiredMixin, CreateView):
+    """ Представление страницы добавления новых сотрудников в компанию
+    и распределение по должностям незанятых сотрудников """
+
     form_class = AddEmployeeForm
     permission_required = 'structure.change_employee'
     success_url = reverse_lazy('structure:recruit_distribution')

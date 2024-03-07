@@ -13,13 +13,14 @@ class UserLoginFormTest(TestCase):
         self.form = UserLoginForm()
 
     def test_form_field_label(self):
-        # Проверка названий полей формы
+        # Проверка наименования полей формы
         self.assertTrue(
             self.form.fields['username'].label is None or self.form.fields['username'].label == 'Логин')
         self.assertTrue(
             self.form.fields['password'].label is None or self.form.fields['password'].label == 'Пароль')
 
     def test_user_form_validation_for_blank_items(self):
+        # Проверка невалидных данных формы
         form = UserLoginForm(data={'username': '', 'password': ''})
         self.assertFalse(form.is_valid())
 
@@ -31,7 +32,7 @@ class SearchEmployeeFormTest(SimpleTestCase):
         self.form = SearchEmployeeForm()
 
     def test_form_field_label(self):
-        # Проверка названий полей формы
+        # Проверка наименования полей формы
         self.assertTrue(
             self.form.fields['last_name'].label is None or
             self.form.fields['last_name'].label == 'фамилия'
@@ -111,6 +112,7 @@ class UpdateEmployeeDetailFormTest(TestCase):
         form1 = UpdateEmployeeDetailForm(instance=self.employee)
         self.assertEqual(len(form1.fields['position'].queryset), 47)
 
+        # закрываем вакансию на должность руководителя и кол-во вакантных должностей сокращается
         Position.objects.filter(id=1).update(vacancies=F('vacancies') - 1)
 
         form2 = UpdateEmployeeDetailForm(instance=self.employee)

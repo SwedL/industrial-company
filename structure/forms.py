@@ -5,8 +5,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.db.models import Q
 
 from ic.settings import BASE_DIR
-
-from .models import Employee, Position
+from structure.models import Employee, Position
 
 
 class UserLoginForm(AuthenticationForm):

@@ -45,12 +45,12 @@ class RussiaSpecProvider(BaseDataProvider):
 class Command(BaseCommand):
     def handle(self, *args, **options):
         start_time = time.time()
-        self.stdout.write('Наполнения базы данных сотрудниками (Employee)')
+        self.stdout.write('Наполнение базы данных сотрудниками (Employee)')
 
         person = Person('ru')
         patron = RussiaSpecProvider()
 
-        # создание словаря, где key - id, value - количество доступных вакансий на должность
+        # создание словаря, где key - id должности, value - количество доступных вакансий на должность
         vacancies_for_positions = {i.id: i.vacancies for i in Position.objects.all()}
 
         # список зарплат сотрудников относительно id должности ([0, 500000, ...])
@@ -75,12 +75,10 @@ class Command(BaseCommand):
             )
 
         # назначение на должности начальников
-        print('Назначение начальников')
         for position_id in tqdm(range(1, 11), ncols=100, desc='Processing'):
             create_employee(position_id)
 
         # 50100 количество человек желающих получить работу
-        print('Назначение подчинённых')
         for _ in tqdm(range(50100), ncols=100, desc='Processing'):
             # выбираем должности, у которых имеются вакансии
             position_id = choice(list(filter(lambda x: vacancies_for_positions[x] > 0, vacancies_for_positions)))
@@ -93,6 +91,9 @@ class Command(BaseCommand):
         self.stdout.write(f'Наполнение базы данных завершено за время: {str((time.time() - start_time) / 60 )} минут')
 
 
+# загрузка всех объектов Position из фикстуры
+# python manage.py loaddata structure\fixtures\positions.json
+
 # запуск наполнения базы данных сотрудниками
 # python manage.py init_employees
 
@@ -100,6 +101,3 @@ class Command(BaseCommand):
 # python manage.py shell_plus --print-sql
 # e = Employee.objects.all()
 # e.delete()
-
-# загрузка всех объектов Position
-# python manage.py loaddata structure\fixtures\positions.json

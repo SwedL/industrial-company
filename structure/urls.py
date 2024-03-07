@@ -1,4 +1,4 @@
-""" Определяет схемы URL для structure """
+""" Схемы URL для structure """
 
 from django.urls import path
 

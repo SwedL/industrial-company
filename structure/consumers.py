@@ -3,7 +3,7 @@ import json
 from channels.generic.websocket import WebsocketConsumer
 from django.db.models import F
 
-from .models import Position
+from structure.models import Position
 
 
 class Connection(WebsocketConsumer):
