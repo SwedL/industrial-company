@@ -195,32 +195,44 @@ tr:nth-child(even) {
 }
 
 /* line 135, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/department.sass */
+.table__button-box_edit:hover {
+  background-color: #017ed1;
+  border-color: #0078c8;
+}
+
+/* line 138, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/department.sass */
 .table__button-box_edit:disabled {
   background-color: #4c84aa99;
   border-color: #61abdd99;
   color: #f3f3f3f8;
 }
 
-/* line 139, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/department.sass */
+/* line 142, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/department.sass */
 .table__button-box_dismiss {
   background-color: #d83600;
   border-color: #af2d02;
 }
 
-/* line 142, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/department.sass */
+/* line 145, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/department.sass */
+.table__button-box_dismiss:hover {
+  background-color: #ff4608;
+  border-color: #af2d02;
+}
+
+/* line 148, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/department.sass */
 .table__button-box_dismiss:disabled {
   background-color: #dd663fab;
   border-color: #ff774a9b;
   color: #f3f3f3f8;
 }
 
-/* line 146, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/department.sass */
+/* line 152, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/department.sass */
 .table__button-box_save {
   background-color: #9baf00;
   border-color: #c3dc03;
 }
 
-/* line 149, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/department.sass */
+/* line 155, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/department.sass */
 .table__button-box_cancel {
   background-color: #7b7b7b;
   border-color: #a1a1a1;
