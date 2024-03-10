@@ -141,9 +141,8 @@ DEBUG=True
 SECRET_KEY='vu1c-=svhigsn81!1doknfa2zxchlq&^37vdyqgc165a8wswjr'
 ```
 
-Создайте файл базы данных SQLite и проведите миграции моделей командами:
+Создайте файл базы данных SQLite и проведите миграции моделей командой:
 ```sh
-python manage.py makemigrations
 python manage.py migrate
 ```
 
@@ -157,7 +156,8 @@ python manage.py migrate
 ```sh
 python manage.py init_employees
 ```
-
+Возможно для наполнения базы сотрудниками потребуется какое-то время
+<a href="https://ibb.co/N1HcPRr"><img src="https://i.ibb.co/RhVRm8N/init-employees1.png" alt="init-employees1" border="0"></a>
 Создайте модель суперпользователя командой:
 ```sh
 python manage.py createsuperuser

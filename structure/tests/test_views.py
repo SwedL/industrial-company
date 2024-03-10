@@ -82,7 +82,7 @@ class StructureCompanyTemplateViewTest(TestCase):
         self.client.force_login(self.user)
         response = self.client.get(self.url)
         self.assertIn('структура компании', response.content.decode())
-        self.assertIn('найм и распределение сотрудников', response.content.decode())
+        self.assertIn('наём и распределение сотрудников', response.content.decode())
         self.assertIn('выход', response.content.decode())
         self.assertEqual(response.status_code, HTTPStatus.OK)
 
@@ -133,7 +133,7 @@ class EmployeesViewTest(TestCase):
         self.client.force_login(self.user)
         response = self.client.get(self.url)
         self.assertIn('структура компании', response.content.decode())
-        self.assertIn('найм и распределение сотрудников', response.content.decode())
+        self.assertIn('наём и распределение сотрудников', response.content.decode())
         self.assertIn('выход', response.content.decode())
         self.assertIn('изменить', response.content.decode())
         self.assertIn('уволить', response.content.decode())
