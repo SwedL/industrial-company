@@ -24,7 +24,7 @@
 
 ### Древовидная структура компании
 
-<a href="https://ibb.co/s90HzLp"><img src="https://i.ibb.co/qYt5VbL/2024-03-08-14-14-05.png" alt="structure-company" border="0"></a>
+<a href="https://ibb.co/vhSWD9r"><img src="https://i.ibb.co/bFkV7ty/2024-03-10-19-01-52.png" alt="2024-03-10-19-01-52" border="0"></a>
 
 <table>
    <thead>
@@ -61,7 +61,7 @@
 </table>
 
 ### Страница списка сотрудников
-<a href="https://ibb.co/4jdYh3X"><img src="https://i.ibb.co/NLSmcbJ/2024-03-10-17-28-10.png" alt="2024-03-10-17-28-10" border="0"></a>
+<a href="https://ibb.co/Sm2sKTC"><img src="https://i.ibb.co/T0ZvHX3/2024-03-10-19-00-03.png" alt="2024-03-10-19-00-03" border="0"></a>
 <table>
    <thead>
    <tr>
@@ -102,7 +102,7 @@
 Здесь в компанию принимается новый сотрудник, далее он попадает в список снятых с должности или нераспределённых сотрудников, где можно назначить на должность или уволить
 
 
-<a href="https://ibb.co/DL9YWgw"><img src="https://i.ibb.co/3kpvdYS/2024-03-10-16-54-25.png" alt="2024-03-10-16-54-25" border="0"></a>
+<a href="https://ibb.co/mSLCRCX"><img src="https://i.ibb.co/7bwJSJR/2024-03-10-18-57-25.png" alt="2024-03-10-18-57-25" border="0"></a>
 
 
 
