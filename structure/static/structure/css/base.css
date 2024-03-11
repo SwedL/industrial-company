@@ -81,7 +81,7 @@ body {
 
 /* line 54, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/base.sass */
 .nav-menu__list-item {
-  margin-right: 65px;
+  margin-right: 50px;
   font-size: 16px;
 }
 
@@ -104,7 +104,7 @@ body {
 
 /* line 66, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/base.sass */
 .empty-text {
-  width: 252px;
+  width: 262px;
 }
 
 /* line 69, ../../Users/Алексей/PycharmProjects/industrial-company-server/industrial-company/structure/static/structure/sass/base.sass */
