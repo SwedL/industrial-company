@@ -24,7 +24,7 @@
 
 ### Древовидная структура компании
 
-<a href="https://ibb.co/vhSWD9r"><img src="https://i.ibb.co/bFkV7ty/2024-03-10-19-01-52.png" alt="2024-03-10-19-01-52" border="0"></a>
+<a href="https://ibb.co/nMPZBbq"><img src="https://i.ibb.co/HTh1CVL/2024-03-11-07-05-01.png" alt="2024-03-11-07-05-01" border="0"></a>
 
 <table>
    <thead>
@@ -61,7 +61,7 @@
 </table>
 
 ### Страница списка сотрудников
-<a href="https://ibb.co/Sm2sKTC"><img src="https://i.ibb.co/T0ZvHX3/2024-03-10-19-00-03.png" alt="2024-03-10-19-00-03" border="0"></a>
+<a href="https://ibb.co/s5jpDFV"><img src="https://i.ibb.co/TKcDnHg/2024-03-11-07-06-50.png" alt="2024-03-11-07-06-50" border="0"></a>
 <table>
    <thead>
    <tr>
@@ -97,13 +97,11 @@
    </tbody>
 </table>
 
-### Интерфейс администратора <наём и распределение сотрудников>
+### Интерфейс администратора <приём и распределение сотрудников>
 Страница доступная только пользователю с разрешением изменения данных. <br>
 Здесь в компанию принимается новый сотрудник, далее он попадает в список снятых с должности или нераспределённых сотрудников, где можно назначить на должность или уволить
 
-
-<a href="https://ibb.co/mSLCRCX"><img src="https://i.ibb.co/7bwJSJR/2024-03-10-18-57-25.png" alt="2024-03-10-18-57-25" border="0"></a>
-
+<a href="https://ibb.co/hFk6hyk"><img src="https://i.ibb.co/yFD9GXD/2024-03-11-07-08-00.png" alt="2024-03-11-07-08-00" border="0"></a>
 
 
 ## Установка
@@ -141,7 +139,7 @@ DEBUG=True
 SECRET_KEY='vu1c-=svhigsn81!1doknfa2zxchlq&^37vdyqgc165a8wswjr'
 ```
 
-Создайте файл базы данных SQLite и проведите миграции моделей командой:
+Создайте необходимые таблицы базы данных (по умолчанию SQLite) командой:
 ```sh
 python manage.py migrate
 ```
