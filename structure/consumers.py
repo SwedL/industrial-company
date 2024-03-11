@@ -15,7 +15,7 @@ class Connection(WebsocketConsumer):
 
         if text_data and 'type_message' in text_data:
             td = json.loads(text_data)
-            # если в сообщении снятие с руководящей должности, сотрудник становится без должности,
+            # если в сообщении 'remove_manager', сотрудник становится без должности,
             # а вакансия в данной должности открывается
             if td['type_message'] == 'remove_manager':
                 from_position = Position.objects.filter(id=td['from_position_id']).first()
@@ -24,7 +24,7 @@ class Connection(WebsocketConsumer):
                 current_employee.save()
                 Position.objects.filter(id=td['from_position_id']).update(vacancies=F('vacancies') + 1)
 
-            # если в сообщении переназначение должности, то сотруднику присваивается новая должность,
+            # если в сообщении 'appoint_manager', то сотруднику присваивается новая должность,
             # вакансия закрывается у новой должности и открывается у старой
             if td['type_message'] == 'appoint_manager':
                 from_position = Position.objects.filter(id=td['from_position_id']).first()

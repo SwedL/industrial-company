@@ -6,7 +6,7 @@ from structure.models import Employee, Position
 
 
 class PositionModelTest(TestCase):
-    """Тест модели Position"""
+    """ Тест модели Position """
 
     def setUp(self):
         self.position = Position(
@@ -55,7 +55,7 @@ class PositionModelTest(TestCase):
 
 
 class EmployeeModelTest(TestCase):
-    """Тест модели Employee"""
+    """ Тест модели Employee """
 
     fixtures = {'positions.json'}
 

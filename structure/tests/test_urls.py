@@ -12,7 +12,7 @@ from structure.views import (EmployeeCreateView, EmployeesView,
 
 
 class StructureURLsTest(TestCase):
-    """   Тестируем URLs   """
+    """ Тестируем URLs """
 
     fixtures = {'positions.json'}
 

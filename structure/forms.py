@@ -9,7 +9,7 @@ from structure.models import Employee, Position
 
 
 class UserLoginForm(AuthenticationForm):
-    """Форма авторизация пользователя"""
+    """ Форма авторизация пользователя """
 
     username = forms.CharField(label='Логин', widget=forms.TextInput(attrs={
         'class': 'form-control py-4', 'placeholder': 'Username'}))
@@ -21,6 +21,8 @@ class UserLoginForm(AuthenticationForm):
 
 
 class SearchEmployeeForm(forms.Form):
+    """ Форма поиска или фильтрации сотрудников по полям формы """
+
     DEPARTMENT_CHOICES = [(None, '---')]
 
     # формируем список поля выбора из фикстуры всех должностей компании
@@ -40,12 +42,15 @@ class SearchEmployeeForm(forms.Form):
 
 
 class AddEmployeeForm(forms.ModelForm):
+    """ Форма добавления нового сотрудника """
+
     class Meta:
         model = Employee
         fields = ['last_name', 'first_name', 'patronymic', 'employment_date', 'salary']
 
 
 class UpdateEmployeeDetailForm(forms.ModelForm):
+    """ Форма обновления данных сотрудника (поля должность и зарплата) """
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

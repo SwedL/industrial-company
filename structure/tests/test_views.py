@@ -32,7 +32,7 @@ def common_func():
 
 
 class UserLoginViewTest(SimpleTestCase):
-    """Тест представления главной страницы"""
+    """ Тест представления главной страницы """
 
     def setUp(self):
         self.url = reverse('structure:login')
@@ -52,7 +52,7 @@ class UserLoginViewTest(SimpleTestCase):
 
 
 class StructureCompanyTemplateViewTest(TestCase):
-    """Тест представления страницы структуры компании"""
+    """ Тест представления страницы структуры компании """
 
     def setUp(self):
         self.user = User.objects.create(username='test_user', password='12345')
@@ -88,7 +88,8 @@ class StructureCompanyTemplateViewTest(TestCase):
 
 
 class EmployeesViewTest(TestCase):
-    """Тест представления отображающего список сотрудников с использованием фильтров и формы поиска"""
+    """ Тест представления отображающего список сотрудников
+     с использованием фильтров и формы поиска """
 
     fixtures = {'positions.json'}
 
@@ -141,7 +142,7 @@ class EmployeesViewTest(TestCase):
 
 
 class EmployeeDetailTest(TestCase):
-    """Тест функции возврата исходных данных, при отмене изменений данных сотрудника"""
+    """ Тест функции возврата исходных данных, при отмене изменений данных сотрудника """
 
     fixtures = {'positions.json'}
 
@@ -164,7 +165,7 @@ class EmployeeDetailTest(TestCase):
 
 
 class UpdateEmployeeDetails(TestCase):
-    """Тест функции изменения данных сотрудника"""
+    """ Тест функции изменения данных сотрудника """
 
     fixtures = {'positions.json'}
 
@@ -228,7 +229,7 @@ class UpdateEmployeeDetails(TestCase):
 
 
 class DeleteEmployee(TestCase):
-    """Тест функции удаления сотрудника из БД (увольнение)"""
+    """ Тест функции удаления сотрудника из БД (увольнение) """
 
     fixtures = {'positions.json'}
 
@@ -253,7 +254,7 @@ class DeleteEmployee(TestCase):
 
 
 class EmployeeCreateViewTest(TestCase):
-    """Тест представления найма и распределения сотрудников"""
+    """ Тест представления приёма и распределения сотрудников """
 
     fixtures = {'positions.json'}
 

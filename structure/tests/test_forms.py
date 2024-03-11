@@ -7,7 +7,7 @@ from structure.models import Employee, Position
 
 
 class UserLoginFormTest(TestCase):
-    """Тест формы авторизации пользователя"""
+    """ Тест формы авторизации пользователя """
 
     def setUp(self):
         self.form = UserLoginForm()
@@ -26,7 +26,7 @@ class UserLoginFormTest(TestCase):
 
 
 class SearchEmployeeFormTest(SimpleTestCase):
-    """Тест формы поиска и фильтра сотрудников"""
+    """ Тест формы поиска и фильтра сотрудников """
 
     def setUp(self):
         self.form = SearchEmployeeForm()
@@ -60,7 +60,7 @@ class SearchEmployeeFormTest(SimpleTestCase):
 
 
 class AddEmployeeFormTest(TestCase):
-    """Тест формы добавления нового сотрудника"""
+    """ Тест формы добавления нового сотрудника """
 
     def setUp(self):
         self.form = AddEmployeeForm()
@@ -79,7 +79,7 @@ class AddEmployeeFormTest(TestCase):
 
 
 class UpdateEmployeeDetailFormTest(TestCase):
-    """Тест формы обновления данных сотрудника"""
+    """ Тест формы обновления данных сотрудника """
 
     fixtures = {'positions.json'}
 

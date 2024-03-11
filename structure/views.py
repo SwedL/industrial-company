@@ -19,7 +19,7 @@ from structure.forms import (AddEmployeeForm, SearchEmployeeForm,
                              UpdateEmployeeDetailForm, UserLoginForm)
 from structure.models import Employee, Position
 
-""" Словарь для хранения данных полей фильтра SearchEmployeeForm """
+# Словарь для хранения данных полей фильтра SearchEmployeeForm
 common_form_data = defaultdict(str)
 
 

@@ -2,8 +2,6 @@ from django.contrib import admin
 
 from structure.models import Employee, Position
 
-# Register your models here.
-
 
 @admin.register(Position)
 class PositionAdmin(admin.ModelAdmin):

@@ -4,7 +4,7 @@ from django.utils import timezone
 
 
 class Position(models.Model):
-    """Модель должность"""
+    """ Модель должность """
 
     boss = models.ForeignKey(
         'self',
@@ -27,7 +27,7 @@ class Position(models.Model):
 
 
 class Employee(models.Model):
-    """Модель сотрудник"""
+    """ Модель сотрудник """
 
     first_name = models.CharField(max_length=50, verbose_name='имя', db_index=True)
     last_name = models.CharField(max_length=50, verbose_name='фамилия', db_index=True)
