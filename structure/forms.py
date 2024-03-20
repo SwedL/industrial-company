@@ -26,7 +26,7 @@ class SearchEmployeeForm(forms.Form):
     DEPARTMENT_CHOICES = [(None, '---')]
 
     # формируем список поля выбора из фикстуры всех должностей компании
-    with open(f'{BASE_DIR}\\structure\\fixtures\\positions.json', 'r', encoding='utf-8') as file:
+    with open(f'{BASE_DIR}/structure/fixtures/positions.json', 'r', encoding='utf-8') as file:
         data = json.load(file)
         for num, i in enumerate(data, 1):
             DEPARTMENT_CHOICES.append((num, i['fields']['name']))
