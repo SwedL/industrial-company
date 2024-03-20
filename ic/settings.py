@@ -10,32 +10,31 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+from dotenv import load_dotenv
 import os
 from pathlib import Path
 
-import environ
+load_dotenv()
 
-env = environ.Env(
-    DEBUG=(bool, False),
-    SECRET_KEY=(str, False),
-)
+
+# # Take environment variables from .env file
+# environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Take environment variables from .env file
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG')
+DEBUG = str(os.getenv('DEBUG'))
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = str(os.getenv('ALLOWED_HOSTS')).split(" ")
 
 
 # Application definition
@@ -92,11 +91,23 @@ ASGI_APPLICATION = 'ic.asgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": str(os.getenv("SQL_ENGINE")),
+        "NAME": str(os.getenv("SQL_DATABASE")),
+        "USER": str(os.getenv("SQL_USER")),
+        "PASSWORD": str(os.getenv("SQL_PASSWORD")),
+        "HOST": str(os.getenv("SQL_HOST")),
+        "PORT": str(os.getenv("SQL_PORT")),
     }
 }
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -136,10 +147,8 @@ STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 STATICFILES_DIRS = []
 
-INTERNAL_IPS = [
-    '127.0.0.1',
-    'localhost',
-]
+INTERNAL_IPS = str(os.getenv('INTERNAL_IPS')).split(" ")
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
