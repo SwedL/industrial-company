@@ -74,10 +74,6 @@ class Command(BaseCommand):
                 salary=salary
             )
 
-        # назначение на должности начальников
-        for position_id in tqdm(range(1, 11), ncols=100, desc='Processing'):
-            create_employee(position_id)
-
         # 50100 количество человек желающих получить работу
         for _ in tqdm(range(50100), ncols=100, desc='Processing'):
             # выбираем должности, у которых имеются вакансии
