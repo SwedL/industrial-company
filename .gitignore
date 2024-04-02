@@ -3,4 +3,4 @@
 .vscode/
 .env
 .flake8
-.db.sqlite3
+/db.sqlite3
