@@ -29,6 +29,7 @@ class PositionModelTest(TestCase):
         first_position.vacancies = 1
         first_position.base_salary = 100_000
         first_position.save()
+        first_position.boss_id = 1
 
         second_position = Position()
         second_position.name = 'Производственный цех 1'
@@ -36,6 +37,7 @@ class PositionModelTest(TestCase):
         second_position.vacancies = 800
         second_position.base_salary = 60_000
         second_position.save()
+        second_position.boss_id = 1
 
         third_position = Position()
         third_position.name = 'Производственный цех 2'
@@ -43,6 +45,7 @@ class PositionModelTest(TestCase):
         third_position.vacancies = 1000
         third_position.base_salary = 50_000
         third_position.save()
+        third_position.boss_id = 1
 
         saved_positions = Position.objects.all()
         self.assertEqual(saved_positions.count(), 3)
@@ -51,7 +54,7 @@ class PositionModelTest(TestCase):
         second_saved_position = saved_positions[1]
         self.assertEqual(first_saved_position.name, 'Руководитель')
         self.assertEqual(second_saved_position.base_salary, 60_000)
-        self.assertEqual(second_saved_position.boss, first_position)
+        self.assertEqual(second_position.boss_id, 1)
 
 
 class EmployeeModelTest(TestCase):

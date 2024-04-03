@@ -9,24 +9,29 @@ from structure.forms import (AddEmployeeForm, SearchEmployeeForm,
                              UpdateEmployeeDetailForm, UserLoginForm)
 from structure.models import Employee, Position
 
-positions = Position.objects.all()
+from django.core import management
+
 permission = Permission.objects.get(codename='change_employee')
 
 
-def common_func():
-    # Общая функция для создания тестовых сотрудников
+def setUpModule():
+    """ Создаём сотрудников для всех тестов """
+
+    management.call_command('loaddata', 'structure/fixtures/positions.json', verbosity=1)
+    positions = Position.objects.all()
+
     Employee.objects.create(
         first_name='Николай',
         last_name='Фролов',
         patronymic='Семёнович',
-        position=positions[17],
+        position=positions.get(pk=18),
         salary=63_000,
     )
     Employee.objects.create(
         first_name='Михаил',
         last_name='Гурьев',
         patronymic='Васильевич',
-        position=positions[19],
+        position=positions.get(pk=20),
         salary=53_000,
     )
 
@@ -91,8 +96,6 @@ class EmployeesViewTest(TestCase):
     """ Тест представления отображающего список сотрудников
      с использованием фильтров и формы поиска """
 
-    fixtures = {'positions.json'}
-
     def setUp(self):
         self.user = User.objects.create(username='user', password='12345')
         self.url = reverse(
@@ -101,9 +104,8 @@ class EmployeesViewTest(TestCase):
                 'position_id': 18,
                 'order_by': 'salary',
                 'direction': 'descend',
-                }
-            )
-        common_func()
+            }
+        )
 
     def test_view_content(self):
         # Тест на содержимое страницы
@@ -144,12 +146,11 @@ class EmployeesViewTest(TestCase):
 class EmployeeDetailTest(TestCase):
     """ Тест функции возврата исходных данных, при отмене изменений данных сотрудника """
 
-    fixtures = {'positions.json'}
-
     def setUp(self):
-        self.user = User.objects.create(email='test_user', password='12345')
-        self.url = reverse('structure:employee_detail', kwargs={'pk': 1, 'num': 1})
-        common_func()
+        self.user = User.objects.create(username='user', password='12345')
+        first_employee = Employee.objects.all().first()
+        self.url = reverse('structure:employee_detail', kwargs={'pk': first_employee.pk, 'num': 1})
+        self.all_positions = Position.objects.all()
 
     def test_get_request_function(self):
         # Проверяем содержимое возвращаемых данных
@@ -159,7 +160,7 @@ class EmployeeDetailTest(TestCase):
         self.assertEqual(employee.first_name, 'Николай')
         self.assertEqual(employee.last_name, 'Фролов')
         self.assertEqual(employee.patronymic, 'Семёнович')
-        self.assertEqual(employee.position, positions[17])
+        self.assertEqual(employee.position, self.all_positions.get(pk=18))
         self.assertEqual(employee.employment_date, date.today())
         self.assertEqual(employee.salary, 63_000)
 
@@ -167,41 +168,43 @@ class EmployeeDetailTest(TestCase):
 class UpdateEmployeeDetails(TestCase):
     """ Тест функции изменения данных сотрудника """
 
-    fixtures = {'positions.json'}
-
     def setUp(self):
         self.user = User.objects.create(email='test_user', password='12345')
         self.user.user_permissions.add(permission)
         self.user.save()
         self.client.force_login(self.user)
-        common_func()
+        self.all_positions = Position.objects.all().order_by('pk')
+        self.first_employee = Employee.objects.all().first()
 
     def test_get_function_request(self):
         # Тест get запроса функции. Проверяем полученные данных.
         response = self.client.get(
             reverse(
                 'structure:update_employee_detail',
-                kwargs={'employee_id': 1, 'employee_num': 1},
-                )
+                kwargs={'employee_id': self.first_employee.pk, 'employee_num': 1},
+            )
         )
         employee = response.context['employee']
         self.assertIsInstance(response.context['form'], UpdateEmployeeDetailForm)
         self.assertEqual(employee.first_name, 'Николай')
         self.assertEqual(employee.last_name, 'Фролов')
         self.assertEqual(employee.patronymic, 'Семёнович')
-        self.assertEqual(employee.position, positions[17])
+        self.assertEqual(employee.position, self.all_positions.get(pk=18))
         self.assertEqual(employee.employment_date, date.today())
         self.assertEqual(employee.salary, 63_000)
 
     def test_post_function_request(self):
         # Тест post запроса функции. Проверяем что сотрудник сменил должность и зарплату,
         # у предыдущей должности добавилась вакансия, а у текущей должности вакансия уменьшилась
-        employee_before_update = Employee.objects.filter(pk=1).first()
-        number_vacancies_position_17_before_update_employee = positions[17].vacancies
-        number_vacancies_position_0_before_update_employee = positions[0].vacancies
+        employee_before_update = Employee.objects.get(pk=self.first_employee.pk)
+        number_vacancies_position_17_before_update_employee = self.all_positions.get(pk=18).vacancies
+        number_vacancies_position_0_before_update_employee = self.all_positions.get(pk=1).vacancies
 
         self.client.post(
-            reverse('structure:update_employee_detail', kwargs={'employee_id': 1, 'employee_num': 1}),
+            reverse('structure:update_employee_detail', kwargs={
+                'employee_id': self.first_employee.pk,
+                'employee_num': 1,
+            }),
             data={
                 'first_name': 'Николай',
                 'last_name': 'Фролов',
@@ -209,17 +212,18 @@ class UpdateEmployeeDetails(TestCase):
                 'position': 1,
                 'employment_date': date.today(),
                 'salary': 100_000,
-                }
+                },
         )
-        employee_after_update = Employee.objects.filter(pk=1).first()
-        number_vacancies_position_17_after_update_employee = positions[17].vacancies
-        number_vacancies_position_0_after_update_employee = positions[0].vacancies
+        employee_after_update = Employee.objects.get(pk=self.first_employee.pk)
+        number_vacancies_position_17_after_update_employee = self.all_positions.get(pk=18).vacancies
+        number_vacancies_position_0_after_update_employee = self.all_positions.get(pk=1).vacancies
+
         self.assertEqual(employee_before_update.first_name, employee_after_update.first_name)
         self.assertEqual(employee_before_update.last_name, employee_after_update.last_name)
         self.assertEqual(employee_before_update.patronymic, employee_after_update.patronymic)
         self.assertEqual(employee_before_update.employment_date, employee_after_update.employment_date)
-        self.assertEqual(employee_before_update.position, positions[17])
-        self.assertEqual(employee_after_update.position, positions[0])
+        self.assertEqual(employee_before_update.position, self.all_positions.get(pk=18))
+        self.assertEqual(employee_after_update.position, self.all_positions.get(pk=1))
         self.assertEqual(employee_before_update.salary, 63_000)
         self.assertEqual(employee_after_update.salary, 100_000)
         self.assertEqual(number_vacancies_position_17_before_update_employee, 11_000)
@@ -231,11 +235,10 @@ class UpdateEmployeeDetails(TestCase):
 class DeleteEmployee(TestCase):
     """ Тест функции удаления сотрудника из БД (увольнение) """
 
-    fixtures = {'positions.json'}
-
     def setUp(self):
+        self.all_positions = Position.objects.all()
+        self.first_employee = Employee.objects.all().first()
         self.user = User.objects.create(email='test_user', password='12345')
-        common_func()
 
     def test_delete_employee_function(self):
         # Проверяем что кол-во сотрудников сократилось на 1, а также добавилась вакансия его должности
@@ -243,10 +246,10 @@ class DeleteEmployee(TestCase):
         self.user.save()
         self.client.force_login(self.user)
         number_employees_before_delete_employee = Employee.objects.all().count()
-        number_vacancies_position_before_delete_employee = positions[17].vacancies
-        self.client.delete(reverse('structure:delete_employee', kwargs={'pk': 1}))
+        number_vacancies_position_before_delete_employee = self.all_positions.get(pk=18).vacancies
+        self.client.delete(reverse('structure:delete_employee', kwargs={'pk': self.first_employee.pk}))
         number_employees_after_delete_employee = Employee.objects.all().count()
-        number_vacancies_position_after_delete_employee = positions[17].vacancies
+        number_vacancies_position_after_delete_employee = self.all_positions.get(pk=18).vacancies
         self.assertEqual(number_employees_before_delete_employee, 2)
         self.assertEqual(number_employees_after_delete_employee, 1)
         self.assertEqual(number_vacancies_position_before_delete_employee, 11000)
@@ -255,8 +258,6 @@ class DeleteEmployee(TestCase):
 
 class EmployeeCreateViewTest(TestCase):
     """ Тест представления приёма и распределения сотрудников """
-
-    fixtures = {'positions.json'}
 
     def setUp(self):
         self.user = User.objects.create(email='test_user', password='12345')
