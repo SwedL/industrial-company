@@ -160,7 +160,7 @@ class EmployeeDetailTest(TestCase):
         self.assertEqual(employee.first_name, 'Николай')
         self.assertEqual(employee.last_name, 'Фролов')
         self.assertEqual(employee.patronymic, 'Семёнович')
-        self.assertEqual(employee.position, self.all_positions[17])
+        self.assertEqual(employee.position, self.all_positions.get(pk=18))
         self.assertEqual(employee.employment_date, date.today())
         self.assertEqual(employee.salary, 63_000)
 
