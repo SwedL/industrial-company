@@ -7,10 +7,10 @@ class Position(models.Model):
     """ Модель должность """
 
     boss = models.ForeignKey(
-        'structure.Position',
+        'self',
         on_delete=models.DO_NOTHING,
+        default=1,
         verbose_name='непосредственный начальник',
-        null=True,
         blank=True,
     )
     name = models.CharField(max_length=150, unique=True, blank=False, verbose_name='должность')
