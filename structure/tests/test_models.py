@@ -8,53 +8,53 @@ from structure.models import Employee, Position
 class PositionModelTest(TestCase):
     """ Тест модели Position """
 
-    fixtures = {'positions.json'}
+    def setUp(self):
+        self.position = Position(
+            name='Руководитель',
+            is_manager=True,
+            vacancies=1,
+            base_salary=100_000,
+        )
 
-    # def setUp(self):
-    #     self.position = Position(
-    #         name='Руководитель',
-    #         is_manager=True,
-    #         vacancies=1,
-    #         base_salary=100_000,
-    #     )
+    def test_create_position(self):
+        self.assertIsInstance(self.position, Position)
 
-    # def test_create_position(self):
-    #     self.assertIsInstance(self.position, Position)
-    #
-    # def test_str_representation(self):
-    #     self.assertEqual(str(self.position), 'Руководитель')
+    def test_str_representation(self):
+        self.assertEqual(str(self.position), 'Руководитель')
 
     def test_saving_and_retrieving_position(self):
-        first_position = Position.objects.all()[0]
-        # first_position.name = 'Руководитель'
-        # first_position.is_manager = True
-        # first_position.vacancies = 1
-        # first_position.base_salary = 100_000
-        # first_position.save()
+        first_position = Position()
+        first_position.name = 'Руководитель'
+        first_position.is_manager = True
+        first_position.vacancies = 1
+        first_position.base_salary = 100_000
+        first_position.save()
+        first_position.boss_id = 1
 
-        second_position = Position.objects.all()[1]
-        # second_position.name = 'Производственный цех 1'
-        # second_position.is_manager = True
-        # second_position.vacancies = 800
-        # second_position.base_salary = 60_000
-        # second_position.save()
+        second_position = Position()
+        second_position.name = 'Производственный цех 1'
+        second_position.is_manager = True
+        second_position.vacancies = 800
+        second_position.base_salary = 60_000
+        second_position.save()
+        second_position.boss_id = 1
 
-        # third_position = Position()
-        # third_position.name = 'Производственный цех 2'
-        # third_position.is_manager = False
-        # third_position.vacancies = 1000
-        # third_position.base_salary = 50_000
-        # third_position.save()
+        third_position = Position()
+        third_position.name = 'Производственный цех 2'
+        third_position.is_manager = False
+        third_position.vacancies = 1000
+        third_position.base_salary = 50_000
+        third_position.save()
+        third_position.boss_id = 1
 
-        # saved_positions = Position.objects.all()
-        # print(saved_positions)
-        # self.assertEqual(saved_positions.count(), 3)
-        #
-        # first_saved_position = saved_positions[0]
-        # second_saved_position = saved_positions[1]
-        # self.assertEqual(first_saved_position.name, 'Руководитель')
-        # self.assertEqual(second_saved_position.base_salary, 60_000)
-        self.assertEqual(second_position.boss_id, first_position.pk)
+        saved_positions = Position.objects.all()
+        self.assertEqual(saved_positions.count(), 3)
+
+        first_saved_position = saved_positions[0]
+        second_saved_position = saved_positions[1]
+        self.assertEqual(first_saved_position.name, 'Руководитель')
+        self.assertEqual(second_saved_position.base_salary, 60_000)
+        self.assertEqual(second_position.boss_id, 1)
 
 
 class EmployeeModelTest(TestCase):
