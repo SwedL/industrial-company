@@ -9,7 +9,8 @@ services:
     ports:
       - "5432:5432"
   ic_project:
-    build: ./backend
+    build:
+      context: ./backend
     container_name: ic_project
     ports:
       - "8000:8000"
