@@ -10,9 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
-from dotenv import load_dotenv
 import os
 from pathlib import Path
+
+from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -98,11 +99,7 @@ DATABASES = {
         "PASSWORD": str(os.getenv("SQL_PASSWORD")),
         "HOST": str(os.getenv("SQL_HOST")),
         "PORT": str(os.getenv("SQL_PORT")),
-    },
-    'TEST': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'mytestdatabase',
-    },
+    }
 }
 
 

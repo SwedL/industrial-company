@@ -15,11 +15,3 @@ RUN pip install -r requirements.txt
 
 # copy project
 COPY . /usr/src/app
-
-#CMD python manage.py shell -c "from django.contrib.auth import get_user_model; User=get_user_model(); User.objects.filter(username='root').exists() or User.objects.create_superuser('root', 'root@example.com', 'root')"
-
-#CMD python manage.py migrate \
-#    && python manage.py runserver 0.0.0.0:8000
-#    && python manage.py shell -c "from django.contrib.auth import get_user_model; User=get_user_model(); User.objects.filter(username='root').exists() or User.objects.create_superuser('root', 'root@example.com', 'root')"
-#    && python manage.py loaddata structure/fixtures/positions.json \
-#    && python manage.py init_employees

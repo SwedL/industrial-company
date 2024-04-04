@@ -1,4 +1,3 @@
 .idea/
-../.flake8
+.flake8
 db.sqlite3
-
