@@ -1,6 +1,4 @@
 .idea
-/backend/*__pycache__
-.vscode/
 .env
 .flake8
 /backend/db.sqlite3

@@ -6,10 +6,8 @@ services:
     container_name: postgres
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-    environment:
-      POSTGRES_USER: ic_django
-      POSTGRES_PASSWORD: ic_django
-      POSTGRES_DB: ic_django
+    env_file:
+      - .env
     ports:
       - "5432:5432"
   ic_project:
@@ -18,9 +16,7 @@ services:
     command: >
       sh -c "python manage.py migrate \
       && python manage.py loaddata structure/fixtures/positions.json \
-      && python manage.py runserver 0.0.0.0:8000" \
-    volumes:
-      - ./backend/:/usr/src/app/
+      && python manage.py runserver 0.0.0.0:8000"
     ports:
       - "8000:8000"
     env_file:
