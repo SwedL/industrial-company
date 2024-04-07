@@ -122,21 +122,34 @@ git clone https://github.com/SwedL/industrial-company.git
 - Linux: `source venv/bin/activate`
 
 
-Перейдите в каталог industrial-company и установите зависимости в виртуальное окружение:
+Перейдите в каталог `backend` и установите зависимости в виртуальное окружение:
 ```sh
-cd industrial-company
+cd backend
 ```
 ```sh
 pip install -r requirements.txt
 ```
 
 Создайте файл `.env` в каталоге
-`industrial-company/` и положите туда такой код:
+`backend` и положите туда такой код:
 
 ! **Важно**: SECRET_KEY замените на свой
 ```sh
 DEBUG=True
 SECRET_KEY='vu1c-=svhigsn81!1doknfa2zxchlq&^37vdyqgc165a8wswjr'
+ALLOWED_HOSTS='127.0.0.1 localhost'
+INTERNAL_IPS='127.0.0.1 localhost'
+
+POSTGRES_USER=user
+POSTGRES_PASSWORD=user_pass
+POSTGRES_DB=user_db
+
+SQL_ENGINE=django.db.backends.postgresql
+SQL_DATABASE=user_db
+SQL_USER=user
+SQL_PASSWORD=user_pass
+SQL_HOST=localhost
+SQL_PORT=5432
 ```
 
 Создайте необходимые таблицы базы данных (по умолчанию SQLite) командой:
@@ -167,12 +180,34 @@ python manage.py runserver
 ```
 Для добавления разрешения на изменения данных новому пользователю необходимо выдать право **structure.change_employee**
 
+## Как запустить версию сайта в docker.
+После клонирования репозитория и создания файла с переменными окружения `.env`.
+Замените параметр `SQL_HOST=localhost` на `SQL_HOST=postgres`
+
+Затем выполните сборку и запуск образа:
+```sh
+docker-compose up -d
+```
+Если необходимо наполнить базу фейковыми данными сотрудников, используйте команду:
+```sh
+docker exec -it ic_project python manage.py init_employees
+```
+Создайте суперпользователя:
+```sh
+docker exec -it ic_project python manage.py createsuperuser
+```
+
+
 ### Тестирование
 
-Проект покрыт различными тестами, которые проверяют его работоспособность.<br>
+Проект покрыт тестами моделей, форм, представлений и url.<br>
 Тесты запускаются командой:
 ```sh
 python manage.py test
+```
+В docker:
+```sh
+docker exec -it ic_project python manage.py test
 ```
 ## Автор проекта
 
