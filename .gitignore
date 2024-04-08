@@ -1,4 +1,4 @@
 .idea
 .env
 .flake8
-/backend/db.sqlite3
+/project/db.sqlite3

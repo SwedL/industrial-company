@@ -11,7 +11,7 @@ services:
     ports:
       - "5432:5432"
   ic_project:
-    build: backend
+    build: project
     container_name: ic_project
     command: >
       sh -c "python manage.py migrate \

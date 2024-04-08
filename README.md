@@ -97,7 +97,7 @@
    </tbody>
 </table>
 
-### Интерфейс администратора <приём и распределение сотрудников>
+### Интерфейс администратора "приём и распределение сотрудников"
 Страница доступная только пользователю с разрешением изменения данных. <br>
 Здесь в компанию принимается новый сотрудник, далее он попадает в список снятых с должности или нераспределённых сотрудников, где можно назначить на должность или уволить
 
@@ -106,13 +106,15 @@
 
 ## Установка
 
-Предварительно создайте директорию для приложения (some directory)<br>
-Клонируйте код репозитория в созданную директорию (в some directory):
+Скачайте код:
 ```sh
 git clone https://github.com/SwedL/industrial-company.git
 ```
-Также в каталоге проекта (some directory) создайте виртуальное окружение, выполнив команду:
+Перейдите в каталог проекта `industrial-company`, создайте виртуальное окружение, выполнив команду:
 
+```sh
+cd industrial-company
+```
 - Windows: `python -m venv venv`
 - Linux: `python3 -m venv venv`
 
@@ -122,18 +124,10 @@ git clone https://github.com/SwedL/industrial-company.git
 - Linux: `source venv/bin/activate`
 
 
-Перейдите в каталог `backend` и установите зависимости в виртуальное окружение:
-```sh
-cd backend
-```
-```sh
-pip install -r requirements.txt
-```
+Создайте файл `.env` и положите туда такой код:<br>
+! **Важно**: SECRET_KEY замените на свой.<br>
+Если вы хотите использовать базу данных `PostgreSQL`, то замените настройки доступа к базе данных на свои
 
-Создайте файл `.env` в каталоге
-`backend` и положите туда такой код:
-
-! **Важно**: SECRET_KEY замените на свой
 ```sh
 DEBUG=True
 SECRET_KEY='vu1c-=svhigsn81!1doknfa2zxchlq&^37vdyqgc165a8wswjr'
@@ -151,8 +145,18 @@ SQL_PASSWORD=user_pass
 SQL_HOST=localhost
 SQL_PORT=5432
 ```
+Если хотите использовать базу данных по умолчанию `SQLite`,
+то файле `settings.py` каталога `ic` поменяйте базу данных на `SQLite`
 
-Создайте необходимые таблицы базы данных (по умолчанию SQLite) командой:
+Перейдите в каталог `project` и установите зависимости в виртуальное окружение:
+```sh
+cd project
+```
+```sh
+pip install -r requirements.txt
+```
+
+Создайте необходимые таблицы базы данных командой:
 ```sh
 python manage.py migrate
 ```
@@ -162,7 +166,7 @@ python manage.py migrate
 - Windows: `python manage.py loaddata structure\fixtures\positions.json`
 - Linux: `python manage.py loaddata structure/fixtures/positions.json`
 
-Для наполнения базы фейковыми данными сотрудников можно воспользоваться скриптом, путь его размещения structure/management/commands/init_employees.py<br>
+Для наполнения базы фейковыми данными сотрудников можно воспользоваться скриптом, путь его размещения `structure/management/commands/init_employees.py`<br>
 Команда запуска:
 ```sh
 python manage.py init_employees
