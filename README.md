@@ -112,9 +112,6 @@ git clone https://github.com/SwedL/industrial-company.git
 ```
 Перейдите в каталог проекта `industrial-company`, создайте виртуальное окружение, выполнив команду:
 
-```sh
-cd industrial-company
-```
 - Windows: `python -m venv venv`
 - Linux: `python3 -m venv venv`
 
@@ -124,9 +121,7 @@ cd industrial-company
 - Linux: `source venv/bin/activate`
 
 
-Создайте файл `.env` и положите туда такой код:<br>
-! **Важно**: SECRET_KEY замените на свой.<br>
-Если вы хотите использовать базу данных `PostgreSQL`, то замените настройки доступа к базе данных на свои
+Создайте файл `.env` с переменными окружения и положите туда такой код:<br>
 
 ```sh
 DEBUG=True
@@ -145,13 +140,14 @@ SQL_PASSWORD=user_pass
 SQL_HOST=localhost
 SQL_PORT=5432
 ```
+! **Важно**: SECRET_KEY замените на свой.<br>
+Если вы хотите использовать базу данных `PostgreSQL`, то замените настройки доступа к базе данных на свои.
+
 Если хотите использовать базу данных по умолчанию `SQLite`,
 то файле `settings.py` каталога `ic` поменяйте базу данных на `SQLite`
 
 Перейдите в каталог `project` и установите зависимости в виртуальное окружение:
-```sh
-cd project
-```
+
 ```sh
 pip install -r requirements.txt
 ```
@@ -185,8 +181,33 @@ python manage.py runserver
 Для добавления разрешения на изменения данных новому пользователю необходимо выдать право **structure.change_employee**
 
 ## Как запустить версию сайта в docker.
-После клонирования репозитория и создания файла с переменными окружения `.env`.
-Замените параметр `SQL_HOST=localhost` на `SQL_HOST=postgres`
+Скачайте код:
+```sh
+git clone https://github.com/SwedL/industrial-company.git
+```
+Приложение в docker настроено на работу с использованием базы данных PostgreSQL.
+
+Перейдите в каталог проекта `industrial-company`.<br>
+Создайте файл `.env` с переменными окружения и положите туда такой код:<br>
+
+```sh
+DEBUG=True
+SECRET_KEY='vu1c-=svhigsn81!1doknfa2zxchlq&^37vdyqgc165a8wswjr'
+ALLOWED_HOSTS='127.0.0.1 localhost'
+INTERNAL_IPS='127.0.0.1 localhost'
+
+POSTGRES_USER=user
+POSTGRES_PASSWORD=user_pass
+POSTGRES_DB=user_db
+
+SQL_ENGINE=django.db.backends.postgresql
+SQL_DATABASE=user_db
+SQL_USER=user
+SQL_PASSWORD=user_pass
+SQL_HOST=postgres
+SQL_PORT=5432
+```
+**! Важно**: SECRET_KEY замените на свой.<br>
 
 Затем выполните сборку и запуск образа:
 ```sh
