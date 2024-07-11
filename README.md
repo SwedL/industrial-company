@@ -47,7 +47,7 @@
             <a href="https://ibb.co/fqFCRxQ"><img src="https://i.ibb.co/gm9D1R6/test-user-without-permission-1.gif" alt="test-user-without-permission-1" border="0" width="300"></a>
          </td>
          <td>
-            <a href="https://ibb.co/9T4qgt2"><img src="https://i.ibb.co/FgCYsbk/IC.gif" alt="image" border="0" width="300"></a>            
+            <a href="https://i.ibb.co/J29CXm6/test-user-with-permission.gif"><img src="https://i.ibb.co/J29CXm6/test-user-with-permission.gif" alt="image" border="0" width="300"></a>            
          </td>
       </tr>
       <tr>
