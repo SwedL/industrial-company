@@ -20,11 +20,11 @@
 ### Авторизация пользователя
 Страница, после авторизации, на которой, можно будет получить доступ к информации приложения, в зависимости от прав пользователя.
 
-<a href="https://ibb.co/Ph7QmCY"><img src="https://i.ibb.co/d2dgWKc/2024-03-08-14-02-52.png" alt="2024-03-08-14-02-52" border="0"></a>
+<a href="https://i.ibb.co/d2dgWKc/2024-03-08-14-02-52.png"><img src="https://i.ibb.co/d2dgWKc/2024-03-08-14-02-52.png" alt="image" border="0"></a>
 
 ### Древовидная структура компании
 
-<a href="https://ibb.co/nMPZBbq"><img src="https://i.ibb.co/HTh1CVL/2024-03-11-07-05-01.png" alt="2024-03-11-07-05-01" border="0"></a>
+<a href="https://i.ibb.co/HTh1CVL/2024-03-11-07-05-01.png"><img src="https://i.ibb.co/HTh1CVL/2024-03-11-07-05-01.png" alt="image" border="0"></a>
 
 <table>
    <thead>
@@ -44,10 +44,10 @@
       </tr>
       <tr>
          <td>
-            <a href="https://ibb.co/fqFCRxQ"><img src="https://i.ibb.co/gm9D1R6/test-user-without-permission-1.gif" alt="test-user-without-permission-1" border="0" width="300"></a>
+            <a href="https://i.ibb.co/gm9D1R6/test-user-without-permission-1.gif"><img src="https://i.ibb.co/gm9D1R6/test-user-without-permission-1.gif" alt="gif" border="0" width="300"></a>
          </td>
          <td>
-            <a href="https://i.ibb.co/J29CXm6/test-user-with-permission.gif"><img src="https://i.ibb.co/J29CXm6/test-user-with-permission.gif" alt="image" border="0" width="300"></a>            
+            <a href="https://i.ibb.co/J29CXm6/test-user-with-permission.gif"><img src="https://i.ibb.co/J29CXm6/test-user-with-permission.gif" alt="gif" border="0" width="300"></a>            
          </td>
       </tr>
       <tr>
