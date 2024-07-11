@@ -61,7 +61,7 @@
 </table>
 
 ### Страница списка сотрудников
-<a href="https://ibb.co/s5jpDFV"><img src="https://i.ibb.co/TKcDnHg/2024-03-11-07-06-50.png" alt="2024-03-11-07-06-50" border="0"></a>
+<a href="https://i.ibb.co/TKcDnHg/2024-03-11-07-06-50.png"><img src="https://i.ibb.co/TKcDnHg/2024-03-11-07-06-50.png" alt="image" border="0"></a>
 <table>
    <thead>
    <tr>
@@ -80,10 +80,10 @@
       </tr>
       <tr>
          <td>
-            <a href="https://ibb.co/znMLSJW"><img src="https://i.ibb.co/HFSMrdL/2024-03-10-14-37-51.gif" alt="2024-03-10-14-37-51" border="0" width="300"></a>
+            <a href="https://i.ibb.co/HFSMrdL/2024-03-10-14-37-51.gif"><img src="https://i.ibb.co/HFSMrdL/2024-03-10-14-37-51.gif" alt="gif" border="0" width="300"></a>
          </td>
          <td>
-            <a href="https://ibb.co/hYsHQn8"><img src="https://i.ibb.co/9Zn2KfY/2024-03-10-14-59-47.gif" alt="2024-03-10-14-59-47" border="0" width="300"></a>
+            <a href="https://i.ibb.co/9Zn2KfY/2024-03-10-14-59-47.gif"><img src="https://i.ibb.co/9Zn2KfY/2024-03-10-14-59-47.gif" alt="gif" border="0" width="300"></a>
          </td>
       </tr>
       <tr>
@@ -101,7 +101,7 @@
 Страница доступная только пользователю с разрешением изменения данных. <br>
 Здесь в компанию принимается новый сотрудник, далее он попадает в список снятых с должности или нераспределённых сотрудников, где можно назначить на должность или уволить
 
-<a href="https://ibb.co/hFk6hyk"><img src="https://i.ibb.co/yFD9GXD/2024-03-11-07-08-00.png" alt="2024-03-11-07-08-00" border="0"></a>
+<a href="https://i.ibb.co/yFD9GXD/2024-03-11-07-08-00.png"><img src="https://i.ibb.co/yFD9GXD/2024-03-11-07-08-00.png" alt="image" border="0"></a>
 
 
 ## Установка
@@ -168,7 +168,7 @@ python manage.py migrate
 python manage.py init_employees
 ```
 Возможно для наполнения базы сотрудниками потребуется какое-то время
-<a href="https://ibb.co/N1HcPRr"><img src="https://i.ibb.co/RhVRm8N/init-employees1.png" alt="init-employees1" border="0"></a>
+<a href="https://i.ibb.co/RhVRm8N/init-employees1.png"><img src="https://i.ibb.co/RhVRm8N/init-employees1.png" alt="image" border="0"></a>
 Создайте модель суперпользователя командой:
 ```sh
 python manage.py createsuperuser
