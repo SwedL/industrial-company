@@ -1,0 +1,85 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: psgr
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    networks:
+      - backend
+    restart: always
+
+  project:
+    build:
+      context: ./project
+      dockerfile: Dockerfile
+    image: project
+    container_name: project
+    command: >
+      sh -c "python manage.py collectstatic --noinput \
+            && python manage.py migrate \
+            && python manage.py loaddata structure/fixtures/positions.json \
+            && python manage.py runserver 0.0.0.0:8000"
+    networks:
+      - backend
+    volumes:
+      - static:/app/static
+    links:
+      - "postgres:dbps"
+    env_file:
+      - .env
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+      - redis
+    restart: always
+
+  nginx:
+    build: ./nginx/prod
+    container_name: nginx-server
+    networks:
+      - backend
+    expose:
+      - 8088
+      - 443
+    volumes:
+      - static:/app/static
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    ports:
+      - "80:8088"
+      - "443:443"
+    depends_on:
+      - project
+    restart: always
+
+  redis:
+    image: redis:latest
+    networks:
+      - backend
+
+  certbot:
+      image: certbot/certbot
+      volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+      command: certonly --webroot --webroot-path=/var/www/certbot/ --email ваш@email --agree-tos --no-eff-email -d имя_вашего_домена ->
+      depends_on:
+      - nginx
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  postgres-data:
+  static:
