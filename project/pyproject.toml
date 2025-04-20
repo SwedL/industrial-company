@@ -1,0 +1,25 @@
+[project]
+name = "project"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "osminin",email = "osminin555@bk.ru"}
+]
+readme = "README.md"
+requires-python = ">=3.12,<4.0"
+dependencies = [
+    "django (>=5.2,<6.0)",
+    "dotenv (>=0.9.9,<0.10.0)",
+    "channels (>=4.2.2,<5.0.0)",
+    "daphne (>=4.1.2,<5.0.0)",
+    "django-debug-toolbar (>=5.1.0,<6.0.0)",
+    "django-extensions (>=4.1,<5.0)",
+    "psycopg2-binary (>=2.9.10,<3.0.0)",
+    "mimesis (>=18.0.0,<19.0.0)",
+    "tqdm (>=4.67.1,<5.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

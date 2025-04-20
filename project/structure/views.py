@@ -18,6 +18,7 @@ from django.views.generic import CreateView, TemplateView, View
 from structure.forms import (AddEmployeeForm, SearchEmployeeForm,
                              UpdateEmployeeDetailForm, UserLoginForm)
 from structure.models import Employee, Position
+from structure.permissions.staff_permissions import staff_permission
 
 # Словарь для хранения данных полей фильтра SearchEmployeeForm
 common_form_data = defaultdict(str)
@@ -167,7 +168,7 @@ def employee_detail(request, pk, num):
     return render(request, 'structure/employee_detail.html', context=context)
 
 
-@permission_required('structure.change_employee')
+@permission_required(staff_permission)
 def update_employee_details(request, employee_id, employee_num):
     """ Функция изменения данных сотрудника """
 
@@ -202,7 +203,7 @@ def update_employee_details(request, employee_id, employee_num):
     return render(request, 'structure/partial_employee_update_form.html', context=context)
 
 
-@permission_required('structure.change_employee')
+@permission_required(staff_permission)
 @require_http_methods(['DELETE'])
 def delete_employee(request, pk):
     """ Функция удаления сотрудника из базы данных (кнопка уволить) """

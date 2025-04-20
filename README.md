@@ -210,16 +210,16 @@ SQL_PORT=5432
 **! Важно**: SECRET_KEY замените на свой.<br>
 
 Затем выполните сборку и запуск образа:
-```sh
+```
 docker-compose up -d
 ```
 Если необходимо наполнить базу фейковыми данными сотрудников, используйте команду:
-```sh
-docker exec -it ic_project python manage.py init_employees
+```
+docker exec -it project python manage.py init_employees
 ```
 Создайте суперпользователя:
-```sh
-docker exec -it ic_project python manage.py createsuperuser
+```
+docker exec -it project python manage.py createsuperuser
 ```
 
 
@@ -227,12 +227,12 @@ docker exec -it ic_project python manage.py createsuperuser
 
 Проект покрыт тестами моделей, форм, представлений и url.<br>
 Тесты запускаются командой:
-```sh
+```
 python manage.py test
 ```
 В docker:
-```sh
-docker exec -it ic_project python manage.py test
+```
+docker exec -it project python manage.py test
 ```
 ## Автор проекта
 
