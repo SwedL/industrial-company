@@ -20,50 +20,57 @@ let startX;
 let startY;
 let permission = false;
 
-base_url = `${window.location.hostname}:${window.location.port}`
-        const websocket = new WebSocket(`ws://${base_url}`)
-        websocket.onopen = function (event) {
-            websocket.send("Client sends Welcome")
-            draw_all();
-        }
-        websocket.onmessage = function (event) {
-            message = JSON.parse(event.data)
-            let position = message.position
-            permission = message.permission
+protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+base_url = `${window.location.host}${window.location.pathname}`
+const chatSocket = new WebSocket(`${protocol}://${base_url}`);
 
-            /* запись имён менеджеров в фигуры */
-            dict_blocks = {50: {x: 130, y: 20, width: 180, height: 90, position: "Снятие /n с занимаемой /n должности", font: "16px"}};
-            ghost_blocks = {};
+chatSocket.onopen = function (e) {
+    chatSocket.send("Client sends XXXXXXXXXXXX")
+    draw_all();
+}
 
-            for(let key in alfa_dict_blocks) {
-                check_is_manager = alfa_dict_blocks[key].is_manager
-                // если блок менеджера, и для этой должности есть имя сотрудника, то записываем блок в словарь блоков
-                // если имени нет, то блок попадает в словарь блоков призраков (должность без имени)
-                // если блок не менеджера, то он сразу попадает в словарь блоков
-                if (check_is_manager) {
-                    if (key in position) {
-                        dict_blocks[key] = {};
-                        for (let k in alfa_dict_blocks[key]) {
-                            dict_blocks[key][k] = alfa_dict_blocks[key][k]
-                        }
-                        dict_blocks[key].manager_name = position[key];
-                    } else {
-                        ghost_blocks[key] = {};
-                        for (let k in alfa_dict_blocks[key]) {
-                            ghost_blocks[key][k] = alfa_dict_blocks[key][k]
-                        }
-                        ghost_blocks[key].manager_name = " ";
-                    }
-                } else {
-                    dict_blocks[key] = {};
-                    for (let k in alfa_dict_blocks[key]) {
-                        dict_blocks[key][k] = alfa_dict_blocks[key][k]
-                    }
-                    dict_blocks[key].manager_name = " ";
+chatSocket.onclose = function (e) {
+    console.error('Chat socket closed unexpectedly');
+};
+
+chatSocket.onmessage = function (e) {
+    message = JSON.parse(e.data).message;
+    let position = message.position
+    permission = message.permission
+
+    /* запись имён менеджеров в фигуры */
+    dict_blocks = {50: {x: 130, y: 20, width: 180, height: 90, position: "Снятие /n с занимаемой /n должности", font: "16px"}};
+    ghost_blocks = {};
+
+    for(let key in alfa_dict_blocks) {
+        check_is_manager = alfa_dict_blocks[key].is_manager
+        // если блок менеджера, и для этой должности есть имя сотрудника, то записываем блок в словарь блоков
+        // если имени нет, то блок попадает в словарь блоков призраков (должность без имени)
+        // если блок не менеджера, то он сразу попадает в словарь блоков
+        if (check_is_manager) {
+            if (key in position) {
+                dict_blocks[key] = {};
+                for (let k in alfa_dict_blocks[key]) {
+                    dict_blocks[key][k] = alfa_dict_blocks[key][k]
                 }
+                dict_blocks[key].manager_name = position[key];
+            } else {
+                ghost_blocks[key] = {};
+                for (let k in alfa_dict_blocks[key]) {
+                    ghost_blocks[key][k] = alfa_dict_blocks[key][k]
+                }
+                ghost_blocks[key].manager_name = " ";
             }
-            draw_all();
+        } else {
+            dict_blocks[key] = {};
+            for (let k in alfa_dict_blocks[key]) {
+                dict_blocks[key][k] = alfa_dict_blocks[key][k]
+            }
+            dict_blocks[key].manager_name = " ";
         }
+    }
+    draw_all();
+}
 
 /* проверка, что указатель мыши находится в блоке */
 let is_mouse_in_block = function (x, y, block) {
@@ -241,7 +248,7 @@ let mouse_up = function(event) {
             if (is_mouse_in_block(mouseX, mouseY, ghost_blocks[key])) {
                 is_dragging = false;
                 text_data = {type_message: "appoint_manager", from_position_id: dragging_block_key, to_position_id: key};
-                websocket.send(JSON.stringify(text_data));
+                chatSocket.send(JSON.stringify(text_data));
                 start_blockX = ghost_blocks[key].x;
                 start_blockY = ghost_blocks[key].y;
                 dragging_block.width = ghost_blocks[key].width
@@ -256,7 +263,7 @@ let mouse_up = function(event) {
             is_dragging = false;
             confirm("Подтвердите снятие с должности!");
             text_data = {type_message: "remove_manager", from_position_id: dragging_block_key};
-            websocket.send(JSON.stringify(text_data));
+            chatSocket.send(JSON.stringify(text_data));
         } else {
             dragging_block.x = start_blockX;
             dragging_block.y = start_blockY;
