@@ -263,7 +263,8 @@ let mouse_up = function(event) {
             const userConfirmed = confirm("Подтвердите снятие с должности!");
             if (userConfirmed) {
                 is_dragging = false;
-                delete dragging_block;
+                delete dict_blocks[dragging_block_key];
+                draw_all();
                 text_data = {type_message: "remove_manager", from_position_id: dragging_block_key};
                 chatSocket.send(JSON.stringify(text_data));
                 }
