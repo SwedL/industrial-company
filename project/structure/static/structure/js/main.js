@@ -35,7 +35,7 @@ chatSocket.onclose = function (e) {
 
 chatSocket.onmessage = function (e) {
     message = JSON.parse(e.data).message;
-    let position = message.position
+    let positions = message.positions
     permission = message.permission
 
     /* запись имён менеджеров в фигуры */
@@ -48,12 +48,12 @@ chatSocket.onmessage = function (e) {
         // если имени нет, то блок попадает в словарь блоков призраков (должность без имени)
         // если блок не менеджера, то он сразу попадает в словарь блоков
         if (check_is_manager) {
-            if (key in position) {
+            if (key in positions) {
                 dict_blocks[key] = {};
                 for (let k in alfa_dict_blocks[key]) {
                     dict_blocks[key][k] = alfa_dict_blocks[key][k]
                 }
-                dict_blocks[key].manager_name = position[key];
+                dict_blocks[key].manager_name = positions[key];
             } else {
                 ghost_blocks[key] = {};
                 for (let k in alfa_dict_blocks[key]) {
@@ -260,10 +260,18 @@ let mouse_up = function(event) {
 
         // снятие с должности менеджера
         if (is_mouse_in_block(mouseX, mouseY, dict_blocks[50])) {
-            is_dragging = false;
-            confirm("Подтвердите снятие с должности!");
-            text_data = {type_message: "remove_manager", from_position_id: dragging_block_key};
-            chatSocket.send(JSON.stringify(text_data));
+            const userConfirmed = confirm("Подтвердите снятие с должности!");
+            if (userConfirmed) {
+                is_dragging = false;
+                delete dragging_block;
+                text_data = {type_message: "remove_manager", from_position_id: dragging_block_key};
+                chatSocket.send(JSON.stringify(text_data));
+                }
+            else {
+                dragging_block.x = start_blockX;
+                dragging_block.y = start_blockY;
+                delete ghost_blocks[dragging_block_key]
+            }
         } else {
             dragging_block.x = start_blockX;
             dragging_block.y = start_blockY;

@@ -1,1 +1,2 @@
-staff_permission = 'structure.change_employee'
+def staff_required(user):
+    return user.is_authenticated and user.is_staff

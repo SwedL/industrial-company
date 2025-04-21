@@ -6,6 +6,8 @@ from django.db.models import F
 
 from structure.models import Position
 
+from project.structure.permissions.staff_permissions import staff_required
+
 
 class Connection(WebsocketConsumer):
     def connect(self):
@@ -35,10 +37,12 @@ class GroupConsumer(WebsocketConsumer):
             self.room_group_name, self.channel_name
         )
 
+
+
     # Receive message from WebSocket
     def receive(self, text_data=None, bytes_data=None):
         # Send message to room group
-        position = {}  # словарь где key = position_id, value = ФИО сотрудника
+        positions = {}  # словарь где key = position_id, value = ФИО сотрудника
 
         if text_data and 'type_message' in text_data:
             td = json.loads(text_data)
@@ -67,10 +71,10 @@ class GroupConsumer(WebsocketConsumer):
             employee = position_obj.employee_set.first()
             if employee:
                 manager_name = f'{employee.last_name} {employee.first_name[0]}.{employee.patronymic[0]}.'
-                position[str(position_obj.id)] = manager_name
+                positions[str(position_obj.id)] = manager_name
         data = {
-            'position': position,
-            'permission': self.scope['user'].has_perm('structure.change_employee'),
+            'positions': positions,
+            'permission': staff_required(self.scope['user']),
         }
 
         async_to_sync(self.channel_layer.group_send)(

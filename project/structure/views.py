@@ -1,9 +1,8 @@
 from collections import defaultdict
 
 from django.contrib.auth import logout
-from django.contrib.auth.decorators import login_required, permission_required
-from django.contrib.auth.mixins import (LoginRequiredMixin,
-                                        PermissionRequiredMixin)
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import LoginView
 from django.core.paginator import Paginator
 from django.db.models import F, Q, QuerySet
@@ -18,7 +17,7 @@ from django.views.generic import CreateView, TemplateView, View
 from structure.forms import (AddEmployeeForm, SearchEmployeeForm,
                              UpdateEmployeeDetailForm, UserLoginForm)
 from structure.models import Employee, Position
-from structure.permissions.staff_permissions import staff_permission
+from structure.permissions.staff_permissions import staff_required
 
 # Словарь для хранения данных полей фильтра SearchEmployeeForm
 common_form_data = defaultdict(str)
@@ -50,7 +49,7 @@ class StructureCompanyTemplateView(LoginRequiredMixin, TemplateView):
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        context['staff'] = request.user.has_perm('structure.change_employee')
+        context['staff'] = staff_required(request.user)
         context['title'] = self.title
         return self.render_to_response(context)
 
@@ -114,7 +113,7 @@ class EmployeesView(LoginRequiredMixin, View):
             'paginator_range': page_obj.paginator.get_elided_page_range(page_obj.number),
             'common_form_data': common_form_data,
             'title': self.title,
-            'staff': request.user.has_perm('structure.change_employee'),
+            'staff': staff_required(request.user),
         }
 
         return render(request, 'structure/department.html', context=context)
@@ -139,7 +138,7 @@ class EmployeesView(LoginRequiredMixin, View):
             'paginator_range': page_obj.paginator.get_elided_page_range(page_obj.number),
             'common_form_data': common_form_data,
             'title': self.title,
-            'staff': request.user.has_perm('structure.change_employee'),
+            'staff': staff_required(request.user),
         }
 
         return render(request, 'structure/department.html', context=context)
@@ -163,12 +162,11 @@ def employee_detail(request, pk, num):
     employee.num = num
     context = {
         'employee': employee,
-        'staff': request.user.has_perm('structure.change_employee'),
+        'staff': staff_required(request.user),
     }
     return render(request, 'structure/employee_detail.html', context=context)
 
-
-@permission_required(staff_permission)
+@user_passes_test(staff_required, login_url='/')
 def update_employee_details(request, employee_id, employee_num):
     """ Функция изменения данных сотрудника """
 
@@ -190,7 +188,7 @@ def update_employee_details(request, employee_id, employee_num):
             employee.num = employee_num
             context = {
                 'employee': employee,
-                'staff': request.user.has_perm('structure.change_employee'),
+                'staff': staff_required(request.user),
             }
             return render(request, 'structure/employee_detail.html', context=context)
 
@@ -203,7 +201,7 @@ def update_employee_details(request, employee_id, employee_num):
     return render(request, 'structure/partial_employee_update_form.html', context=context)
 
 
-@permission_required(staff_permission)
+@user_passes_test(staff_required, login_url='/')
 @require_http_methods(['DELETE'])
 def delete_employee(request, pk):
     """ Функция удаления сотрудника из базы данных (кнопка уволить) """
@@ -218,15 +216,17 @@ def delete_employee(request, pk):
     return HttpResponse()
 
 
-class EmployeeCreateView(PermissionRequiredMixin, CreateView):
+class EmployeeCreateView(UserPassesTestMixin, CreateView):
     """ Представление страницы добавления новых сотрудников в компанию
     и распределение по должностям незанятых сотрудников """
 
     form_class = AddEmployeeForm
-    permission_required = 'structure.change_employee'
     success_url = reverse_lazy('structure:recruit_distribution')
     template_name = 'structure/recruit_distribution.html'
     title = 'Найм и распределение'
+
+    def test_func(self):
+        return staff_required(self.request.user)
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -240,7 +240,7 @@ class EmployeeCreateView(PermissionRequiredMixin, CreateView):
         )
 
         context['employees'] = employees_list
-        context['staff'] = self.request.user.has_perm('structure.change_employee')
+        context['staff'] = self.test_func()
         context['title'] = self.title
 
         return context
