@@ -10,8 +10,6 @@ from structure.forms import (AddEmployeeForm, SearchEmployeeForm,
                              UpdateEmployeeDetailForm, UserLoginForm)
 from structure.models import Employee, Position
 
-permission = Permission.objects.get(codename='change_employee')
-
 
 def setUpModule():
     """ Создаём сотрудников для всех тестов """
@@ -81,7 +79,7 @@ class StructureCompanyTemplateViewTest(TestCase):
 
     def test_view_content_for_user_with_permission(self):
         # Тест на содержимое страницы для пользователя с разрешением на изменение данных
-        self.user.user_permissions.add(permission)
+        self.user.is_staff = True
         self.user.save()
         self.client.force_login(self.user)
         response = self.client.get(self.url)
@@ -130,7 +128,7 @@ class EmployeesViewTest(TestCase):
 
     def test_view_content_for_user_with_permission(self):
         # Тест на содержимое страницы для пользователя с разрешением на изменение данных
-        self.user.user_permissions.add(permission)
+        self.user.is_staff = True
         self.user.save()
         self.client.force_login(self.user)
         response = self.client.get(self.url)
@@ -147,7 +145,7 @@ class EmployeeDetailTest(TestCase):
 
     def setUp(self):
         self.user = User.objects.create(username='user', password='12345')
-        first_employee = Employee.objects.all().first()
+        first_employee = Employee.objects.first()
         self.url = reverse('structure:employee_detail', kwargs={'pk': first_employee.pk, 'num': 1})
         self.all_positions = Position.objects.all()
 
@@ -168,8 +166,7 @@ class UpdateEmployeeDetails(TestCase):
     """ Тест функции изменения данных сотрудника """
 
     def setUp(self):
-        self.user = User.objects.create(email='test_user', password='12345')
-        self.user.user_permissions.add(permission)
+        self.user = User.objects.create(email='test_user', password='12345', is_staff=True)
         self.user.save()
         self.client.force_login(self.user)
         self.all_positions = Position.objects.all().order_by('pk')
@@ -241,7 +238,7 @@ class DeleteEmployee(TestCase):
 
     def test_delete_employee_function(self):
         # Проверяем что кол-во сотрудников сократилось на 1, а также добавилась вакансия его должности
-        self.user.user_permissions.add(permission)
+        self.user.is_staff = True
         self.user.save()
         self.client.force_login(self.user)
         number_employees_before_delete_employee = Employee.objects.all().count()
@@ -259,8 +256,7 @@ class EmployeeCreateViewTest(TestCase):
     """ Тест представления приёма и распределения сотрудников """
 
     def setUp(self):
-        self.user = User.objects.create(email='test_user', password='12345')
-        self.user.user_permissions.add(permission)
+        self.user = User.objects.create(email='test_user', password='12345', is_staff=True)
         self.user.save()
         self.client.force_login(self.user)
         self.response = self.client.get(reverse('structure:recruit_distribution'))

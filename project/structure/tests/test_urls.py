@@ -1,6 +1,6 @@
 from http import HTTPStatus
 
-from django.contrib.auth.models import Permission, User
+from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
 from django.urls.base import resolve
@@ -18,7 +18,6 @@ class StructureURLsTest(TestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(username='test_user', password='12345')
-        self.permission = Permission.objects.get(codename='change_employee')
 
     # тест url ''
     def test_root_url_resolves_to_homepage_view(self):
@@ -140,7 +139,7 @@ class StructureURLsTest(TestCase):
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
 
     def test_update_employee_detail_url_as_an_authorized_user_with_permission(self):
-        self.user.user_permissions.add(self.permission)
+        self.user.is_staff = True
         self.user.save()
         self.client.force_login(self.user)
         response = self.client.get(reverse('structure:update_employee_detail', kwargs={
@@ -164,7 +163,7 @@ class StructureURLsTest(TestCase):
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
 
     def test_delete_employee_url_by_an_authorized_user_with_permission(self):
-        self.user.user_permissions.add(self.permission)
+        self.user.is_staff = True
         self.user.save()
         self.client.force_login(self.user)
         response = self.client.delete(reverse('structure:delete_employee', kwargs={'pk': 1}))
@@ -185,7 +184,7 @@ class StructureURLsTest(TestCase):
         self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
 
     def test_recruit_distribution_url_as_an_authorized_user_with_permission(self):
-        self.user.user_permissions.add(self.permission)
+        self.user.is_staff = True
         self.user.save()
         self.client.force_login(self.user)
         response = self.client.get(reverse('structure:recruit_distribution'))
