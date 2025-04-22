@@ -4,37 +4,26 @@ from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 from django.db.models import F
 
-from project.structure.permissions.staff_permissions import staff_required
+from structure.consumers import distribution_consumers
 from structure.models import Position
+from structure.permissions.staff_permissions import staff_required
 
 
-class Connection(WebsocketConsumer):
-    def connect(self):
-        print("server says connected")
-        self.accept()  # new
-
-    def receive(self, text_data=None, bytes_data=None):
-        print("server says client message received: ", text_data)
-        self.send("server sends Welcome")
-
-    def disconnect(self, code):
-        print("server says disconnected")
-
-
-class GroupConsumer(WebsocketConsumer):
-    room_group_name = "staff_group"
+class StructureGroupConsumer(WebsocketConsumer):
+    group_name = "staff_group"
+    distribution_group_name = distribution_consumers.DistributionGroupConsumer.group_name
 
     def connect(self):
         # Join room group
         async_to_sync(self.channel_layer.group_add)(
-            self.room_group_name, self.channel_name
+            self.group_name, self.channel_name
         )
         self.accept()
 
     def disconnect(self, close_code):
         # Leave room group
         async_to_sync(self.channel_layer.group_discard)(
-            self.room_group_name, self.channel_name
+            self.group_name, self.channel_name
         )
 
     # Receive message from WebSocket
@@ -50,6 +39,12 @@ class GroupConsumer(WebsocketConsumer):
                 current_employee.save()
                 Position.objects.filter(id=td['from_position_id']).update(vacancies=F('vacancies') + 1)
 
+                async_to_sync(self.channel_layer.group_send)(
+                    self.distribution_group_name, {
+                        "type": "group_message",
+                        "message": '',
+                    }
+                )
             # если в сообщении 'appoint_manager', то сотруднику присваивается новая должность,
             # вакансия закрывается у новой должности и открывается у старой
             if td['type_message'] == 'appoint_manager':
@@ -62,18 +57,13 @@ class GroupConsumer(WebsocketConsumer):
                 current_employee.save()
 
         async_to_sync(self.channel_layer.group_send)(
-            self.room_group_name, {
-                "type": "staff_structure_message",
+            self.group_name, {
+                "type": "group_message",
                 "message": '',
             }
         )
 
-    # def staff_message(self, event):
-    #     message = event["message"]
-    #     # Send message to WebSocket
-    #     self.send(text_data=json.dumps({"message": message}))
-
-    def staff_structure_message(self, event):
+    def group_message(self, event):
         message = self.get_positions()
         # Send message to WebSocket
         self.send(text_data=json.dumps({"message": message}))

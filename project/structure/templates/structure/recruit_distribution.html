@@ -51,4 +51,21 @@
             }
         });
     </script>
+    <script>
+        protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+        base_url = `${window.location.host}${window.location.pathname}`
+        const distributionSocket = new WebSocket(`${protocol}://${base_url}`);
+
+        distributionSocket.onopen = function(e) {
+            console.log("connected")
+        };
+
+        distributionSocket.onclose = function (e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        distributionSocket.onmessage = function (e) {
+            location.reload();
+        };
+    </script>
 {% endblock script %}

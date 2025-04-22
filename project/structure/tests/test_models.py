@@ -11,7 +11,7 @@ class PositionModelTest(TestCase):
     fixtures = {'positions.json'}
 
     def setUp(self):
-        main_position = Position.objects.all().first()
+        main_position = Position.objects.first()
         self.new_position = Position.objects.create(
             boss=main_position,
             name='Начальник ВОХР',

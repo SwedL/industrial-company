@@ -170,7 +170,7 @@ class UpdateEmployeeDetails(TestCase):
         self.user.save()
         self.client.force_login(self.user)
         self.all_positions = Position.objects.all().order_by('pk')
-        self.first_employee = Employee.objects.all().first()
+        self.first_employee = Employee.objects.first()
 
     def test_get_function_request(self):
         # Тест get запроса функции. Проверяем полученные данных.
@@ -233,7 +233,7 @@ class DeleteEmployee(TestCase):
 
     def setUp(self):
         self.all_positions = Position.objects.all()
-        self.first_employee = Employee.objects.all().first()
+        self.first_employee = Employee.objects.first()
         self.user = User.objects.create(email='test_user', password='12345')
 
     def test_delete_employee_function(self):

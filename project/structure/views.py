@@ -17,6 +17,7 @@ from django.urls import reverse_lazy
 from django.views.decorators.http import require_http_methods
 from django.views.generic import CreateView, TemplateView, View
 
+from structure.consumers.structure_consumers import StructureGroupConsumer
 from structure.forms import (AddEmployeeForm, SearchEmployeeForm,
                              UpdateEmployeeDetailForm, UserLoginForm)
 from structure.models import Employee, Position
@@ -196,8 +197,8 @@ def update_employee_details(request: ASGIRequest, employee_id: int, employee_num
             }
             if employee.position.is_manager:
                 channel_layer = get_channel_layer()
-                async_to_sync(channel_layer.group_send)('staff_group', {
-                    'type': 'staff_structure_message',
+                async_to_sync(channel_layer.group_send)(StructureGroupConsumer.group_name, {
+                    'type': 'group_message',
                     'message': '',
                 })
             return render(request, 'structure/employee_detail.html', context=context)
