@@ -17,6 +17,8 @@ from django.urls import reverse_lazy
 from django.views.decorators.http import require_http_methods
 from django.views.generic import CreateView, TemplateView, View
 
+from structure.consumers.distribution_consumers import \
+    DistributionGroupConsumer
 from structure.consumers.structure_consumers import StructureGroupConsumer
 from structure.forms import (AddEmployeeForm, SearchEmployeeForm,
                              UpdateEmployeeDetailForm, UserLoginForm)
@@ -179,8 +181,7 @@ def update_employee_details(request: ASGIRequest, employee_id: int, employee_num
 
     if request.method == 'POST':
         channel_layer = get_channel_layer()
-        if employee.position:
-            employee_was_is_manager = employee.position.is_manager
+        employee_was_is_manager = employee.position.is_manager if employee.position else None
         form = UpdateEmployeeDetailForm(request.POST, instance=employee)
         if form.is_valid():
             if any(map(lambda d: d == 'position', form.changed_data)):
@@ -198,8 +199,14 @@ def update_employee_details(request: ASGIRequest, employee_id: int, employee_num
                 'employee': employee,
                 'staff': staff_required(request.user),
             }
-            if employee.position.is_manager or employee_was_is_manager:
+            employee_current_is_manager = employee.position.is_manager if employee.position else None
+            if employee_current_is_manager or employee_was_is_manager:
                 async_to_sync(channel_layer.group_send)(StructureGroupConsumer.group_name, {
+                    'type': 'group_message',
+                    'message': '',
+                })
+            if employee.position is None:
+                async_to_sync(channel_layer.group_send)(DistributionGroupConsumer.group_name, {
                     'type': 'group_message',
                     'message': '',
                 })
