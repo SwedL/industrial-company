@@ -1,3 +1,6 @@
+from asgiref.sync import async_to_sync
+
+from channels.layers import get_channel_layer
 from collections import defaultdict
 
 from django.contrib.auth import logout
@@ -190,6 +193,12 @@ def update_employee_details(request, employee_id, employee_num):
                 'employee': employee,
                 'staff': staff_required(request.user),
             }
+            if employee.position.is_manager:
+                channel_layer = get_channel_layer()
+                async_to_sync(channel_layer.group_send)('staff_group', {
+                    'type': 'staff_structure_message',
+                    'message': '',
+                })
             return render(request, 'structure/employee_detail.html', context=context)
 
     context = {

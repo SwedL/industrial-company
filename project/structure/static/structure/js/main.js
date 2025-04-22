@@ -247,13 +247,10 @@ let mouse_up = function(event) {
         for (let key in ghost_blocks) {
             if (is_mouse_in_block(mouseX, mouseY, ghost_blocks[key])) {
                 is_dragging = false;
+                delete dict_blocks[dragging_block_key];
+                draw_all();
                 text_data = {type_message: "appoint_manager", from_position_id: dragging_block_key, to_position_id: key};
                 chatSocket.send(JSON.stringify(text_data));
-                start_blockX = ghost_blocks[key].x;
-                start_blockY = ghost_blocks[key].y;
-                dragging_block.width = ghost_blocks[key].width
-                dragging_block.height = ghost_blocks[key].height
-                delete ghost_blocks[key]
                 return
             }
         }

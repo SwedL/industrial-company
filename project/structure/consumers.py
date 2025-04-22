@@ -37,13 +37,8 @@ class GroupConsumer(WebsocketConsumer):
             self.room_group_name, self.channel_name
         )
 
-
-
     # Receive message from WebSocket
     def receive(self, text_data=None, bytes_data=None):
-        # Send message to room group
-        positions = {}  # словарь где key = position_id, value = ФИО сотрудника
-
         if text_data and 'type_message' in text_data:
             td = json.loads(text_data)
             # если в сообщении 'remove_manager', сотрудник становится без должности,
@@ -66,6 +61,26 @@ class GroupConsumer(WebsocketConsumer):
                 current_employee.position = to_position
                 current_employee.save()
 
+        async_to_sync(self.channel_layer.group_send)(
+            self.room_group_name, {
+                "type": "staff_structure_message",
+                "message": '',
+            }
+        )
+
+    # def staff_message(self, event):
+    #     message = event["message"]
+    #     # Send message to WebSocket
+    #     self.send(text_data=json.dumps({"message": message}))
+
+    def staff_structure_message(self, event):
+        message = self.get_positions()
+        # Send message to WebSocket
+        self.send(text_data=json.dumps({"message": message}))
+
+    def get_positions(self):
+        positions = {}  # словарь где key = position_id, value = ФИО сотрудника
+
         # наполняем словарь руководящими должностями и их ФИО
         for position_obj in Position.objects.filter(is_manager=True):
             employee = position_obj.employee_set.first()
@@ -77,15 +92,4 @@ class GroupConsumer(WebsocketConsumer):
             'permission': staff_required(self.scope['user']),
         }
 
-        async_to_sync(self.channel_layer.group_send)(
-            self.room_group_name, {
-                "type": "staff_message",
-                "message": data
-            }
-        )
-
-    # Receive message from room group
-    def staff_message(self, event):
-        message = event["message"]
-        # Send message to WebSocket
-        self.send(text_data=json.dumps({"message": message}))
+        return data
