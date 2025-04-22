@@ -1,13 +1,14 @@
 <p align="center"><img src="https://i.ibb.co/xYsQMXR/Industrial-Company.png" alt="Industrial-Company" border="0" width="200"></p>
 
 <p align="center">
-   <img src="https://img.shields.io/badge/Pyhton-3.11-orange)" alt="Python Version">
-   <img src="https://img.shields.io/badge/Django-5.0.3-E86F00" alt="Django Version">
+   <img src="https://img.shields.io/badge/Pyhton-3.12-orange)" alt="Python Version">
+   <img src="https://img.shields.io/badge/Django-5.2-E86F00" alt="Django Version">
 </p>
 
 <p>Приложение для сайта промышленной компании, выполненное по тестовому заданию. <br>
 Штат сотрудников компании более 50000 человек</p>
 
+Рабочую версию сайта вы можете посмотреть на [https://icompany-pro.ru](https://icompany-pro.ru)
 
 ## Описание работы приложения
 Приложение состоит из четырёх интерфейсов. 
@@ -104,122 +105,73 @@
 <a href="https://i.ibb.co/yFD9GXD/2024-03-11-07-08-00.png"><img src="https://i.ibb.co/yFD9GXD/2024-03-11-07-08-00.png" alt="image" border="0"></a>
 
 
-## Установка
+## Запуск сервера:
 
-Скачайте код:
-```sh
+### Локально в Docker контейнере 
+
+- Склонируйте репозиторий:
+```
 git clone https://github.com/SwedL/industrial-company.git
 ```
-Перейдите в каталог проекта `industrial-company`, создайте виртуальное окружение, выполнив команду:
-
-- Windows: `python -m venv venv`
-- Linux: `python3 -m venv venv`
-
-Активируйте его командой:
-
-- Windows: `.\venv\Scripts\activate`
-- Linux: `source venv/bin/activate`
-
-
-Создайте файл `.env` с переменными окружения и положите туда такой код:<br>
-
-```sh
-DEBUG=True
-SECRET_KEY='vu1c-=svhigsn81!1doknfa2zxchlq&^37vdyqgc165a8wswjr'
-ALLOWED_HOSTS='127.0.0.1 localhost'
-INTERNAL_IPS='127.0.0.1 localhost'
-
-POSTGRES_USER=user
-POSTGRES_PASSWORD=user_pass
-POSTGRES_DB=user_db
-
-SQL_ENGINE=django.db.backends.postgresql
-SQL_DATABASE=user_db
-SQL_USER=user
-SQL_PASSWORD=user_pass
-SQL_HOST=localhost
-SQL_PORT=5432
+ - Перейдите в каталог проекта
 ```
-! **Важно**: SECRET_KEY замените на свой.<br>
-Если вы хотите использовать базу данных `PostgreSQL`, то замените настройки доступа к базе данных на свои.
-
-Если хотите использовать базу данных по умолчанию `SQLite`,
-то файле `settings.py` каталога `ic` поменяйте базу данных на `SQLite`
-
-Перейдите в каталог `project` и установите зависимости в виртуальное окружение:
-
-```sh
-pip install -r requirements.txt
+cd industrial-company
 ```
-
-Создайте необходимые таблицы базы данных командой:
-```sh
-python manage.py migrate
+- Установите переменные окружения. Создайте файл .env и скопируйте содержимое из .env.dev.example, подставьте свои значения.
+- Запустите контейнеры.
 ```
-
-Для наполнения базы данных списком должностей, загрузите фикстуру командой:
-
-- Windows: `python manage.py loaddata structure\fixtures\positions.json`
-- Linux: `python manage.py loaddata structure/fixtures/positions.json`
-
-Для наполнения базы фейковыми данными сотрудников можно воспользоваться скриптом, путь его размещения `structure/management/commands/init_employees.py`<br>
+docker compose up --build
+```
+Создайте модель суперпользователя
+- Войдите в терминал контейнера с помощью команды:
+```
+docker exec -it project bash
+```
+- Создайте суперпользователя:
+```
+python3 manage.py createsuperuser
+```
+- Для наполнения базы фейковыми данными сотрудников можно воспользоваться скриптом<br>
 Команда запуска:
-```sh
-python manage.py init_employees
 ```
-Возможно для наполнения базы сотрудниками потребуется какое-то время
-<a href="https://i.ibb.co/RhVRm8N/init-employees1.png"><img src="https://i.ibb.co/RhVRm8N/init-employees1.png" alt="image" border="0"></a>
-Создайте модель суперпользователя командой:
-```sh
-python manage.py createsuperuser
+python3 manage.py init_employees
 ```
 
-Запустите сервер:
-```sh
-python manage.py runserver
-```
-Для добавления разрешения на изменения данных новому пользователю необходимо выдать право **structure.change_employee**
+### На удалённом сервере в Docker контейнере 
 
-## Как запустить версию сайта в docker.
-Скачайте код:
-```sh
+- Склонируйте репозиторий:
+```
 git clone https://github.com/SwedL/industrial-company.git
 ```
-Приложение в docker настроено на работу с использованием базы данных PostgreSQL.
-
-Перейдите в каталог проекта `industrial-company`.<br>
-Создайте файл `.env` с переменными окружения и положите туда такой код:<br>
-
-```sh
-DEBUG=True
-SECRET_KEY='vu1c-=svhigsn81!1doknfa2zxchlq&^37vdyqgc165a8wswjr'
-ALLOWED_HOSTS='127.0.0.1 localhost'
-INTERNAL_IPS='127.0.0.1 localhost'
-
-POSTGRES_USER=user
-POSTGRES_PASSWORD=user_pass
-POSTGRES_DB=user_db
-
-SQL_ENGINE=django.db.backends.postgresql
-SQL_DATABASE=user_db
-SQL_USER=user
-SQL_PASSWORD=user_pass
-SQL_HOST=postgres
-SQL_PORT=5432
+ - Перейдите в каталог проекта
 ```
-**! Важно**: SECRET_KEY замените на свой.<br>
-
-Затем выполните сборку и запуск образа:
+cd industrial-company
 ```
-docker-compose up -d
+- Установите переменные окружения. Создайте файл .env и скопируйте содержимое из .env.prod.example, подставьте свои значения.
+- Создайте директории для certbot, выполнив:
 ```
-Если необходимо наполнить базу фейковыми данными сотрудников, используйте команду:
+mkdir -p certbot/conf
+mkdir certbot/www
 ```
-docker exec -it project python manage.py init_employees
+- Измените в docker-compose.prod.yml в строке 75 ваш <ins>email</ins> и <ins>ваш домен</ins>, для получения SSL-сертификата от Let's Encrypt
+- Перейдите в директорию nginx/prod/default.conf и в строках 4, 17, 19, 20 установите значение <ins>вашего домена</ins>
+- Запустите контейнеры.
 ```
-Создайте суперпользователя:
+docker compose -f docker-compose.prod.yml up --build
 ```
-docker exec -it project python manage.py createsuperuser
+Создайте модель суперпользователя
+- Войдите в терминал контейнера с помощью команды:
+```
+docker exec -it project bash
+```
+- Создайте суперпользователя:
+```
+python3 manage.py createsuperuser
+```
+- Для наполнения базы фейковыми данными сотрудников можно воспользоваться скриптом<br>
+Команда запуска:
+```
+python3 manage.py init_employees
 ```
 
 

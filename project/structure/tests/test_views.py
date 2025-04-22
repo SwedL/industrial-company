@@ -1,7 +1,7 @@
 from datetime import date
 from http import HTTPStatus
 
-from django.contrib.auth.models import Permission, User
+from django.contrib.auth.models import User
 from django.core import management
 from django.test import SimpleTestCase, TestCase
 from django.urls import reverse
