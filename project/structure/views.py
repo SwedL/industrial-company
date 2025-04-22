@@ -1,8 +1,7 @@
-from asgiref.sync import async_to_sync
-
-from channels.layers import get_channel_layer
 from collections import defaultdict
 
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -168,6 +167,7 @@ def employee_detail(request, pk, num):
         'staff': staff_required(request.user),
     }
     return render(request, 'structure/employee_detail.html', context=context)
+
 
 @user_passes_test(staff_required, login_url='/')
 def update_employee_details(request, employee_id, employee_num):

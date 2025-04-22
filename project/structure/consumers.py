@@ -4,9 +4,8 @@ from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 from django.db.models import F
 
-from structure.models import Position
-
 from project.structure.permissions.staff_permissions import staff_required
+from structure.models import Position
 
 
 class Connection(WebsocketConsumer):
@@ -24,6 +23,7 @@ class Connection(WebsocketConsumer):
 
 class GroupConsumer(WebsocketConsumer):
     room_group_name = "staff_group"
+
     def connect(self):
         # Join room group
         async_to_sync(self.channel_layer.group_add)(

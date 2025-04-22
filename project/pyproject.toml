@@ -18,6 +18,10 @@ tqdm = "^4.67.1"
 channels-redis = "^4.2.1"
 
 
+[tool.poetry.group.dev.dependencies]
+flake8 = "^7.2.0"
+isort = "^6.0.1"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

@@ -61,7 +61,7 @@ class Command(BaseCommand):
             gender = choice([Gender.MALE, Gender.FEMALE, Gender.MALE])  # выбор пола создаваемого сотрудника
             td = choice(range(0, 3650))  # рандомное кол-во дней назад устроился сотрудник от текущего дня
             employment_date = date.today() - timedelta(days=td)
-            salary = salary_list[position_id] * uniform(0.9, 1.1)    # изменение з/п на 10%
+            salary = salary_list[position_id] * uniform(0.9, 1.1)  # изменение з/п на 10%
             # уменьшаем количество необходимых сотрудников, выбранной должности, на 1
             vacancies_for_positions[position_id] = vacancies_for_positions.get(position_id) - 1
 
@@ -84,8 +84,7 @@ class Command(BaseCommand):
             p.vacancies = vacancies_for_positions[p.id]
             p.save()
 
-        self.stdout.write(f'Наполнение базы данных завершено за время: {str((time.time() - start_time) / 60 )} минут')
-
+        self.stdout.write(f'Наполнение базы данных завершено за время: {str((time.time() - start_time) / 60)} минут')
 
 # загрузка всех объектов Position из фикстуры
 # python manage.py loaddata structure\fixtures\positions.json
