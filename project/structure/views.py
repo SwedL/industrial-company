@@ -6,6 +6,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import LoginView
+from django.core.handlers.asgi import ASGIRequest
 from django.core.paginator import Paginator
 from django.db.models import F, Q, QuerySet
 from django.db.models.expressions import Window
@@ -93,7 +94,7 @@ class EmployeesView(LoginRequiredMixin, View):
     paginate_by = 25
     title = 'Список сотрудников'
 
-    def get(self, request, order_by: str, direction: str, position_id: str = None):
+    def get(self, request, order_by: str, direction: str, position_id: str = None) -> render:
         global common_form_data
 
         # если переход впервые - по блоку отдела, то фильтрация по position_id и занесение фильтра в common_form_data
@@ -120,7 +121,7 @@ class EmployeesView(LoginRequiredMixin, View):
 
         return render(request, 'structure/department.html', context=context)
 
-    def post(self, request, order_by: str, direction: str, position_id: str = None):
+    def post(self, request, order_by: str, direction: str, position_id: str = None) -> render:
 
         form = SearchEmployeeForm(request.POST)
 
@@ -148,7 +149,7 @@ class EmployeesView(LoginRequiredMixin, View):
 
 @login_required
 @require_http_methods(['GET'])
-def clear_search(request):
+def clear_search(request: ASGIRequest) -> render:
     """ Функция для очистки полей формы поиска EmployeesView """
 
     form = SearchEmployeeForm()
@@ -157,7 +158,7 @@ def clear_search(request):
 
 @login_required
 @require_http_methods(['GET'])
-def employee_detail(request, pk, num):
+def employee_detail(request: ASGIRequest, pk: int, num: int) -> render:
     """ Функция для возврата исходных данных, при отмене изменений данных сотрудника """
 
     employee = get_object_or_404(Employee, pk=pk)
@@ -170,7 +171,7 @@ def employee_detail(request, pk, num):
 
 
 @user_passes_test(staff_required, login_url='/')
-def update_employee_details(request, employee_id, employee_num):
+def update_employee_details(request: ASGIRequest, employee_id: int, employee_num: int) -> render:
     """ Функция изменения данных сотрудника """
 
     employee = get_object_or_404(Employee, pk=employee_id)
@@ -212,7 +213,7 @@ def update_employee_details(request, employee_id, employee_num):
 
 @user_passes_test(staff_required, login_url='/')
 @require_http_methods(['DELETE'])
-def delete_employee(request, pk):
+def delete_employee(request: ASGIRequest, pk: int) -> HttpResponse:
     """ Функция удаления сотрудника из базы данных (кнопка уволить) """
 
     employee = get_object_or_404(Employee, pk=pk)
@@ -237,7 +238,7 @@ class EmployeeCreateView(UserPassesTestMixin, CreateView):
     def test_func(self):
         return staff_required(self.request.user)
 
-    def get_context_data(self, *, object_list=None, **kwargs):
+    def get_context_data(self, *, object_list=None, **kwargs) -> dict:
         context = super().get_context_data(**kwargs)
 
         employees_list = Employee.objects.filter(
@@ -255,5 +256,5 @@ class EmployeeCreateView(UserPassesTestMixin, CreateView):
         return context
 
 
-def pageNotFound(request, exception):
+def pageNotFound(request: ASGIRequest, exception):
     return HttpResponseNotFound('<h1>Страница не найдена</h1>')
