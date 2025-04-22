@@ -178,6 +178,9 @@ def update_employee_details(request: ASGIRequest, employee_id: int, employee_num
     employee = get_object_or_404(Employee, pk=employee_id)
 
     if request.method == 'POST':
+        channel_layer = get_channel_layer()
+        if employee.position:
+            employee_was_is_manager = employee.position.is_manager
         form = UpdateEmployeeDetailForm(request.POST, instance=employee)
         if form.is_valid():
             if any(map(lambda d: d == 'position', form.changed_data)):
@@ -195,8 +198,7 @@ def update_employee_details(request: ASGIRequest, employee_id: int, employee_num
                 'employee': employee,
                 'staff': staff_required(request.user),
             }
-            if employee.position.is_manager:
-                channel_layer = get_channel_layer()
+            if employee.position.is_manager or employee_was_is_manager:
                 async_to_sync(channel_layer.group_send)(StructureGroupConsumer.group_name, {
                     'type': 'group_message',
                     'message': '',

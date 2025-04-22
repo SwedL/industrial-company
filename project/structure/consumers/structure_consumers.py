@@ -10,6 +10,7 @@ from structure.permissions.staff_permissions import staff_required
 
 
 class StructureGroupConsumer(WebsocketConsumer):
+    """ Соединение группы для страницы 'structure-company/' """
     group_name = "staff_group"
     distribution_group_name = distribution_consumers.DistributionGroupConsumer.group_name
 

@@ -2,6 +2,7 @@ from channels.generic.websocket import WebsocketConsumer
 
 
 class Connection(WebsocketConsumer):
+    """ Соединение группы для страницы '' """
     def connect(self):
         print("server says connected")
         self.accept()  # new
