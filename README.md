@@ -62,6 +62,8 @@
 </table>
 
 ### Страница списка сотрудников
+- переход в подразделение компании, осуществляется при нажатии на подразделение в древовидной структуре компании  
+
 <a href="https://i.ibb.co/TKcDnHg/2024-03-11-07-06-50.png"><img src="https://i.ibb.co/TKcDnHg/2024-03-11-07-06-50.png" alt="image" border="0"></a>
 <table>
    <thead>
@@ -174,6 +176,35 @@ python3 manage.py createsuperuser
 python3 manage.py init_employees
 ```
 
+## Структура проекта
+
+```
+industrial-company/
+├── nginx/               # Директория конфигурационных файлов обратного прокси сервера           
+│   └── ...   
+└── project/             # Директория Django проекта
+    ├── ic/              # Django проект ic
+    │   └── ... 
+    ├── structure/       # Приложение structure
+    │   ├── consumers/   # Обработка асинхронных событий websocket соединений
+    │   ├── fixtures/    # Начальные данные для заполнения БД
+    │   ├── management/  # Собственные скрипты проекта для manage.py
+    │   ├── migrations/   
+    │   ├── permissions/ # Функции-разрешения для пользователей
+    │   ├── services/    # Сервисы - выполняют операции над данными
+    │   ├── static/       
+    │   ├── templates/    
+    │   ├── tests/       # Тесты шаблонов, форм, представлений
+    │   ├── admin.py     
+    │   ├── models.py    
+    │   ├── routing.py   # Маршрутизация асинхронных событий websocket соединений
+    │   ├── urls.py      
+    │   ├── views.py     
+    │   └── ...
+    ├── Dockerfile    
+    ├── manage.py    
+    └── pyproject.toml   # Конфигурация Poetry    
+```
 
 ### Тестирование
 
@@ -189,4 +220,3 @@ docker exec -it project python manage.py test
 ## Автор проекта
 
 * **Осминин Алексей** - [SwedL](https://github.com/SwedL)
-
