@@ -1,14 +1,10 @@
 from collections import defaultdict
 
-from asgiref.sync import async_to_sync
-from channels.layers import get_channel_layer
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import LoginView
 from django.core.handlers.asgi import ASGIRequest
-from django.core.paginator import Paginator
-from django.db.models import F, Q, QuerySet
 from django.db.models.expressions import Window
 from django.db.models.functions import RowNumber
 from django.http import HttpResponse, HttpResponseNotFound
@@ -17,16 +13,12 @@ from django.urls import reverse_lazy
 from django.views.decorators.http import require_http_methods
 from django.views.generic import CreateView, TemplateView, View
 
-from structure.consumers.distribution_consumers import \
-    DistributionGroupConsumer
-from structure.consumers.structure_consumers import StructureGroupConsumer
 from structure.forms import (AddEmployeeForm, SearchEmployeeForm,
                              UpdateEmployeeDetailForm, UserLoginForm)
-from structure.models import Employee, Position
+from structure.models import Employee
 from structure.permissions.staff_permissions import staff_required
-
-# Словарь для хранения данных полей фильтра SearchEmployeeForm
-common_form_data = defaultdict(str)
+from structure.services import update_employee_details_service
+from structure.services.employees_view_service import EmployeesViewService
 
 
 class UserLoginView(LoginView):
@@ -60,32 +52,7 @@ class StructureCompanyTemplateView(LoginRequiredMixin, TemplateView):
         return self.render_to_response(context)
 
 
-def get_employees_list(order_by: str, direction: str) -> QuerySet:
-    """ Функция фильтрует Employee QuerySet согласно заполненным полям формы SearchEmployeeForm,
-        возвращает пронумерованный и отсортированный queryset """
-
-    # если условие верно сортировка меняется на обратную
-    if direction == 'descend':
-        order_by = '-' + order_by
-
-    employees_list = Employee.objects.filter(
-        Q(last_name__contains=f'{common_form_data["last_name"]}') &
-        Q(first_name__contains=f'{common_form_data["first_name"]}') &
-        Q(patronymic__contains=f'{common_form_data["patronymic"]}')
-    ).select_related('position')
-
-    # дополнительная фильтрация, если в форме есть фильтр по отделу, дате трудоустройства или зарплате
-    if common_form_data['position_id']:
-        employees_list = employees_list.filter(position_id=common_form_data['position_id'])
-    elif common_form_data['employment_date']:
-        employees_list = employees_list.filter(employment_date=common_form_data['employment_date'])
-    elif common_form_data['salary']:
-        employees_list = employees_list.filter(salary=common_form_data['salary'])
-
-    return employees_list.order_by(order_by).annotate(num=Window(expression=RowNumber(), order_by=[order_by]))
-
-
-class EmployeesView(LoginRequiredMixin, View):
+class EmployeesView(LoginRequiredMixin, View, EmployeesViewService):
     """
     Представление страницы списка сотрудников с использованием фильтров формы поиска,
      сортировки данных и изменения данных сотрудника
@@ -96,57 +63,19 @@ class EmployeesView(LoginRequiredMixin, View):
 
     paginate_by = 25
     title = 'Список сотрудников'
+    common_form_data = defaultdict(str)
 
-    def get(self, request, order_by: str, direction: str, position_id: str = None) -> render:
-        global common_form_data
-
-        # если переход впервые - по блоку отдела, то фильтрация по position_id и занесение фильтра в common_form_data
-        if not request.GET.get('page') and position_id:
-            common_form_data.clear()
-            common_form_data['position_id'] = position_id
-
-        form = SearchEmployeeForm(common_form_data)
-
-        employees_list = get_employees_list(order_by, direction)
-
-        paginator = Paginator(employees_list, 20)
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-
-        context = {
-            'employees': page_obj,
-            'form': form,
-            'paginator_range': page_obj.paginator.get_elided_page_range(page_obj.number),
-            'common_form_data': common_form_data,
-            'title': self.title,
-            'staff': staff_required(request.user),
-        }
-
+    def get(self, request: ASGIRequest, order_by: str, direction: str, position_id: str = None) -> render:
+        context = self.get_context_for_get_request(
+            request=request,
+            order_by=order_by,
+            direction=direction,
+            position_id=position_id,
+        )
         return render(request, 'structure/department.html', context=context)
 
-    def post(self, request, order_by: str, direction: str, position_id: str = None) -> render:
-
-        form = SearchEmployeeForm(request.POST)
-
-        # обновление словаря common_form_data
-        if form.is_valid():
-            common_form_data.update(form.cleaned_data)
-
-        employees_list = get_employees_list(order_by, direction)
-
-        paginator = Paginator(employees_list, 20)
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-
-        context = {
-            'employees': page_obj,
-            'form': form,
-            'paginator_range': page_obj.paginator.get_elided_page_range(page_obj.number),
-            'common_form_data': common_form_data,
-            'title': self.title,
-            'staff': staff_required(request.user),
-        }
-
+    def post(self, request: ASGIRequest, order_by: str, direction: str, position_id: str = None) -> render:
+        context = self.get_context_for_post_request(request=request, order_by=order_by, direction=direction)
         return render(request, 'structure/department.html', context=context)
 
 
@@ -180,36 +109,9 @@ def update_employee_details(request: ASGIRequest, employee_id: int, employee_num
     employee = get_object_or_404(Employee, pk=employee_id)
 
     if request.method == 'POST':
-        channel_layer = get_channel_layer()
-        employee_was_is_manager = employee.position.is_manager if employee.position else None
-        form = UpdateEmployeeDetailForm(request.POST, instance=employee)
-        if form.is_valid():
-            if any(map(lambda d: d == 'position', form.changed_data)):
-                # добавление вакансии в предыдущей должности, если у сотрудника была должность (не None)
-                if form.initial['position']:
-                    Position.objects.filter(id=form.initial['position']).update(vacancies=F('vacancies') + 1)
-                # уменьшение кол-ва вакансий в новой должности сотрудника, если у сотрудника была должность (не None)
-                if form.data['position']:
-                    Position.objects.filter(id=form.data['position']).update(vacancies=F('vacancies') - 1)
-
-            # сохранение изменённых данных сотрудника
-            employee = form.save()
+        context = update_employee_details_service.get_context(request=request, employee=employee)
+        if context:
             employee.num = employee_num
-            context = {
-                'employee': employee,
-                'staff': staff_required(request.user),
-            }
-            employee_current_is_manager = employee.position.is_manager if employee.position else None
-            if employee_current_is_manager or employee_was_is_manager:
-                async_to_sync(channel_layer.group_send)(StructureGroupConsumer.group_name, {
-                    'type': 'group_message',
-                    'message': '',
-                })
-            if employee.position is None:
-                async_to_sync(channel_layer.group_send)(DistributionGroupConsumer.group_name, {
-                    'type': 'group_message',
-                    'message': '',
-                })
             return render(request, 'structure/employee_detail.html', context=context)
 
     context = {
