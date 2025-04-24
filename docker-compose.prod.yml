@@ -22,9 +22,9 @@ services:
     container_name: project
     command: >
       sh -c "python manage.py collectstatic --noinput \
-            && python manage.py migrate \
-            && python manage.py loaddata structure/fixtures/positions.json \
-            && python manage.py runserver 0.0.0.0:8000"
+      && python manage.py migrate \
+      && python manage.py loaddata structure/fixtures/positions.json \
+      && python manage.py runserver 0.0.0.0:8000"
     networks:
       - backend
     volumes:
@@ -73,7 +73,7 @@ services:
       volumes:
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
-      command: certonly --webroot --webroot-path=/var/www/certbot/ --email ваш@email --agree-tos --no-eff-email -d имя_вашего_домена ->
+      command: certonly --webroot --webroot-path=/var/www/certbot/ --email ваш@email --agree-tos --no-eff-email -d имя_вашего_домена -d www.имя_вашего_домена
       depends_on:
       - nginx
 

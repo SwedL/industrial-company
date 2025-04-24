@@ -26,9 +26,10 @@ urlpatterns = [
     path('', include('structure.urls', namespace='structure'))
 ]
 
-if settings.DEBUG:
+if settings.DEBUG == 'True':
+    import debug_toolbar
     urlpatterns = [
-        path("__debug__/", include("debug_toolbar.urls")),
+        path("__debug__/", include(debug_toolbar.urls)),
     ] + urlpatterns
 
 handler404 = pageNotFound
